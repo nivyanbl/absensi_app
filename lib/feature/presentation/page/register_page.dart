@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  const RegisterPage({super.key});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -24,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   Image.asset(
                     'assets/logo.png',
                     height: 120,
@@ -40,9 +40,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   const SizedBox(height: 32),
                   // Create an account 👋
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text(
                         'Create an account',
                         style: TextStyle(
@@ -60,10 +60,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 24),
                   TextField(
                     controller: _emailController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Email',
                       border: OutlineInputBorder(),
-                      prefixIcon: const Icon(Icons.email),
+                      prefixIcon: Icon(Icons.email),
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
@@ -73,7 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     obscureText: _obscurePassword,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -92,7 +92,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     onPressed: () {
                       // Handle registration logic here
                     },
-                    child: const Text('Register'),
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
@@ -100,6 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       textStyle: const TextStyle(fontSize: 18),
                     ),
+                    child: const Text('Register'),
                   ),
                   const SizedBox(height: 16),
                   TextButton(

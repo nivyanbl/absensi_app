@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage ({Key? key}) : super(key: key);
+  const LoginPage ({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   Image.asset(
                     'assets/logo.png',
                     height: 120,
@@ -41,9 +41,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 32),
                   // Welcome back 👋
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text(
                         'Welcome back',
                         style: TextStyle(
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: 'siesta@gmail.com',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.black12),
+                        borderSide: const BorderSide(color: Colors.black12),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 18),
@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: 'Enter your password',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.black12),
+                        borderSide: const BorderSide(color: Colors.black12),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 18),
@@ -133,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {},
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
-                        minimumSize: Size(0, 0),
+                        minimumSize: const Size(0, 0),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         alignment: Alignment.centerLeft,
                       ),
