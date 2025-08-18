@@ -1,25 +1,26 @@
+import 'package:employment_attendance/feature/presentation/controller/profile_controller.dart';
+import 'package:employment_attendance/feature/presentation/page/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class EditProfilePage extends StatelessWidget {
   const EditProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ProfileController controller = Get.find();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed:  () => Get.back(), 
         ),
         title: const Text(
           "Edit Profile",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
+      body: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,53 +58,55 @@ class EditProfilePage extends StatelessWidget {
                   OutlinedButton(
                       onPressed: () {},
                       style: OutlinedButton.styleFrom(
-                        padding:  const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 4),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
-
                         ),
                       ),
                       child: const Text(
                         "Choose Your Photo",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 16),
                       )),
                 ],
               ),
               const SizedBox(height: 32),
               //list of text fields
-              _buildTextField(label: 'Name', hint: 'Enter your name'),
+              _buildTextField(label: 'Name', hint: 'Enter your name',  controller: controller.nameController),
               const SizedBox(height: 24),
-              _buildTextField(label: 'Email', hint: 'Enter your email'),
+              _buildTextField(label: 'Email', hint: 'Enter your email',  controller: controller.emailController),
               const SizedBox(height: 24),
-              _buildTextField(label: 'Phone Number', prefixText: '+1 '),
+              _buildTextField(label: 'Phone Number',  controller: controller.phoneController,  keyboardType: TextInputType.phone,),
               const SizedBox(height: 48),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF6EA07A),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+               ElevatedButton(
+              onPressed: () {
+
+                controller.saveProfile();
+              },
+                  child: const Text(
+                      'Save',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 48),
+                      backgroundColor: const Color(0xFF6EA07A),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ),
-              ),
             ],
           ),
-        ),
+        
       ),
     );
   }
 
   Widget _buildTextField(
-      {required String label, String? prefixText, String? hint}) {
+      {required String label, String? prefixText, String? hint, TextEditingController? controller,  TextInputType? keyboardType,}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -125,6 +128,8 @@ class EditProfilePage extends StatelessWidget {
         ),
         const SizedBox(height: 2),
         TextField(
+          controller: controller,
+          keyboardType: keyboardType, 
           decoration: InputDecoration(
             hintText: hint,
             prefixText: prefixText,
