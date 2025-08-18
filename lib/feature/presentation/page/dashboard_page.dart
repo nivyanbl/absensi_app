@@ -52,19 +52,96 @@ class DashboardPage extends StatelessWidget {
             const Text("Overview",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              childAspectRatio: 2,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              children: [
-                _buildCard(Icons.login, "Check In", "07:57 A.M"),
-                _buildCard(Icons.logout, "Check Out", "06:20 P.M"),
-                _buildCard(Icons.calendar_today, "Absence", "2 Day"),
-                _buildCard(Icons.check_circle, "Total Attended", "16 Day"),
-              ],
+            // Responsive Overview Grid
+            LayoutBuilder(
+              builder: (context, constraints) {
+                double gridWidth = constraints.maxWidth;
+                double cardWidth = (gridWidth - 15) / 2; // 15 = mainAxisSpacing
+                double valueFontSize = cardWidth * 0.22; // Responsive font size
+                double labelFontSize = cardWidth * 0.09;
+
+                final overviewData = [
+                  [Icons.login, "Check In", "07:57 A.M"],
+                  [Icons.logout, "Check Out", "06:20 P.M"],
+                  [Icons.calendar_today, "Absence", "2 Day"],
+                  [Icons.check_circle, "Total Attended", "16 Day"],
+                ];
+
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: overviewData.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 15,
+                    childAspectRatio: 1.7,
+                  ),
+                  itemBuilder: (context, index) {
+                    final data = overviewData[index];
+                    return Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(data[0] as IconData, color: Colors.green, size: 24),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    data[1] as String,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: labelFontSize,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Flexible(
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      (data[2] as String).split(' ')[0],
+                                      style: TextStyle(
+                                        fontSize: valueFontSize,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                if ((data[2] as String).split(' ').length > 1) ...[
+                                  const SizedBox(width: 3),
+                                  Text(
+                                    (data[2] as String).split(' ')[1],
+                                    style: TextStyle(
+                                      fontSize: labelFontSize,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
             const SizedBox(height: 20),
             const Text("Company News",
@@ -100,32 +177,6 @@ class DashboardPage extends StatelessWidget {
               icon: Icon(Icons.history), label: "History"),
           BottomNavigationBarItem(icon: Icon(Icons.receipt), label: "Slip Pay"),
         ],
-      ),
-    );
-  }
-
-  static Widget _buildCard(IconData icon, String title, String value) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, color: Colors.green),
-            const SizedBox(height: 8),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
-            const Spacer(),
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            )
-          ],
-        ),
       ),
     );
   }
