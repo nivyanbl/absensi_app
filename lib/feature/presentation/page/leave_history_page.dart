@@ -1,40 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:employment_attendance/feature/presentation/page/dashboard_page.dart';
-import 'package:employment_attendance/feature/presentation/page/leave_history_page.dart';
 import 'package:get/get.dart';
+import 'package:employment_attendance/feature/presentation/page/leave_request_page.dart';
 
-class LeaveRequestPage extends StatefulWidget {
-  const LeaveRequestPage({super.key});
-
-  @override
-  State<LeaveRequestPage> createState() => _LeaveRequestPageState();
-}
-
-class _LeaveRequestPageState extends State<LeaveRequestPage> {
-  String selectedType = 'Sick';
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now();
-  TextEditingController reasonController = TextEditingController();
-
-  final List<String> leaveTypes = ['Sick', 'Annual leave', 'Other'];
-
-  Future<void> pickDate(BuildContext context, bool isStart) async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: isStart ? startDate : endDate,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null) {
-      setState(() {
-        if (isStart) {
-          startDate = picked;
-        } else {
-          endDate = picked;
-        }
-      });
-    }
-  }
+class LeaveHistoryPage extends StatelessWidget {
+  const LeaveHistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +19,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                 const SizedBox(height: 8),
                 const Center(
                   child: Text(
-                    'Leave Request',
+                    'Leave History',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -164,15 +133,19 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text('Leave Request',
+                        child: const Text('Add leave time',
                             style: TextStyle(color: Colors.white)),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {
-                          Get.to(() => const LeaveHistoryPage());
+                          Get.to(() => const LeaveRequestPage());
                         },
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: Color(0xFF6EA07A)),
@@ -180,13 +153,28 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text('History',
+                        child: const Text('Leave Request',
                             style: TextStyle(color: Color(0xFF6EA07A))),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF6EA07A),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text('History',
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 24),
+                // List of leave history
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -197,138 +185,22 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Types of leave',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-                      DropdownButtonFormField<String>(
-                        value: selectedType,
-                        items: leaveTypes.map((type) {
-                          return DropdownMenuItem(
-                            value: type,
-                            child: Text(type),
-                          );
-                        }).toList(),
-                        onChanged: (val) {
-                          setState(() {
-                            selectedType = val!;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 8),
-                        ),
+                      LeaveHistoryCard(
+                        type: 'Annual leave',
+                        status: 'Approved',
+                        name: 'Akhmad Faozi',
+                        position: 'UI / UX Designer',
+                        start: '2025-11-27',
+                        end: '2025-11-30',
                       ),
-                      const SizedBox(height: 16),
-                      const Text('Duration',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: InkWell(
-                              onTap: () => pickDate(context, true),
-                              child: InputDecorator(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.calendar_today,
-                                        size: 18, color: Colors.grey),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                        '${startDate.day}/${startDate.month}/${startDate.year}'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          const Text('to'),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () => pickDate(context, false),
-                              child: InputDecorator(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.calendar_today,
-                                        size: 18, color: Colors.grey),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                        '${endDate.day}/${endDate.month}/${endDate.year}'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      const Text('Reason (optional)',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-                      TextField(
-                        controller: reasonController,
-                        maxLines: 2,
-                        decoration: InputDecoration(
-                          hintText: 'Write description here..',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 8),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 24),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black12),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          children: const [
-                            Icon(Icons.upload_file,
-                                size: 32, color: Colors.grey),
-                            SizedBox(height: 8),
-                            Text('Upload supporting documents',
-                                style: TextStyle(color: Colors.grey)),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF6EA07A),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                          ),
-                          child: const Text('Submit request',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                        ),
+                      const SizedBox(height: 12),
+                      LeaveHistoryCard(
+                        type: 'Sick Leave',
+                        status: 'Pending',
+                        name: 'Ken Majas I',
+                        position: 'Front End',
+                        start: '2025-11-27',
+                        end: '2025-11-30',
                       ),
                     ],
                   ),
@@ -356,6 +228,97 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
               icon: Icon(Icons.calendar_today), label: 'Absence'),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
           BottomNavigationBarItem(icon: Icon(Icons.receipt), label: 'Slip Pay'),
+        ],
+      ),
+    );
+  }
+}
+
+class LeaveHistoryCard extends StatelessWidget {
+  final String type;
+  final String status;
+  final String name;
+  final String position;
+  final String start;
+  final String end;
+
+  const LeaveHistoryCard({
+    super.key,
+    required this.type,
+    required this.status,
+    required this.name,
+    required this.position,
+    required this.start,
+    required this.end,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.black12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                decoration: BoxDecoration(
+                  color: status == 'Approved'
+                      ? const Color(0xFF6EA07A)
+                      : Colors.yellow[700],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      status == 'Approved'
+                          ? Icons.check_circle
+                          : Icons.hourglass_bottom,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      status,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+              Text(type, style: const TextStyle(fontWeight: FontWeight.bold)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              const Icon(Icons.person, size: 16, color: Colors.grey),
+              const SizedBox(width: 4),
+              Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(width: 8),
+              Text(position, style: const TextStyle(color: Colors.grey)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              const Icon(Icons.calendar_today, size: 16, color: Colors.grey),
+              const SizedBox(width: 4),
+              Text(start, style: const TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(width: 8),
+              Text(end, style: const TextStyle(fontWeight: FontWeight.bold)),
+            ],
+          ),
         ],
       ),
     );
