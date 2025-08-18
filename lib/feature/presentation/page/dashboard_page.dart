@@ -26,7 +26,7 @@ class DashboardPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: const Color(0xFF6EA07A),
         elevation: 0,
         leading: Builder(
           builder: (context) => IconButton(
@@ -58,7 +58,7 @@ class DashboardPage extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: const BoxDecoration(color: Colors.green),
+              decoration: const BoxDecoration(color: Color(0xFF6EA07A)),
               child: Row(
                 children: [
                   const CircleAvatar(
@@ -119,7 +119,7 @@ class DashboardPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: const Color(0xFF6EA07A),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Text(
