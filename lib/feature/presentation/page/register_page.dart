@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:employment_attendance/feature/presentation/page/login_page.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -77,7 +79,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                          _obscurePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
                         onPressed: () {
                           setState(() {
@@ -91,6 +95,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   ElevatedButton(
                     onPressed: () {
                       // Handle registration logic here
+                      // After registration, navigate to LoginPage
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 50),
@@ -98,14 +108,20 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       textStyle: const TextStyle(fontSize: 18),
+                      backgroundColor: const Color(0xFF6EA07A), // Green color
                     ),
-                    child: const Text('Register'),
+                    child: const Text('Register',
+                        style: TextStyle(color: Colors.white)),
                   ),
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () {
                       // Navigate to login page
-                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
+                      );
                     },
                     child: const Text(
                       'Already have an account? Login',
