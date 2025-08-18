@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:employment_attendance/feature/presentation/page/register_page.dart';
+import 'package:employment_attendance/feature/presentation/page/dashboard_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
+class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _obscurePassword = true;
+  final RxBool _obscurePassword = true.obs;
+
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +38,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  // Welcome back 👋
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -60,7 +56,6 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   const SizedBox(height: 40),
-                  // Email label
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -72,7 +67,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // Email field
                   TextField(
                     controller: _emailController,
                     decoration: InputDecoration(
@@ -88,7 +82,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  // Password label
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -100,43 +93,35 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // Password field
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.black12),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 18),
-                      filled: true,
-                      fillColor: Colors.white,
-                      suffixIcon: IconButton(
-                        icon: Icon(_obscurePassword
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
+                  Obx(() => TextField(
+                        controller: _passwordController,
+                        obscureText: _obscurePassword.value,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.black12),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 18),
+                          filled: true,
+                          fillColor: Colors.white,
+                          suffixIcon: IconButton(
+                            icon: Icon(_obscurePassword.value
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                            onPressed: () {
+                              _obscurePassword.value = !_obscurePassword.value;
+                            },
+                          ),
+                        ),
+                      )),
                   const SizedBox(height: 8),
-                  // Forgot password
                   Align(
                     alignment: Alignment.centerLeft,
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const RegisterPage()),
-                        );
+                        Get.to(() => RegisterPage());
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -155,12 +140,13 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  // Sign In button
                   SizedBox(
                     width: double.infinity,
                     height: 60,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.offAll(() => const DashboardPage());
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF6EA07A),
                         shape: RoundedRectangleBorder(
@@ -178,7 +164,20 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () {
+                      Get.to(() => RegisterPage());
+                    },
+                    child: const Text(
+                      'Don\'t have an account? Register',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 16,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

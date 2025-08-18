@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:employment_attendance/feature/presentation/page/login_page.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
-
-  @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
+class RegisterPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _obscurePassword = true;
+  final RxBool _obscurePassword = true.obs;
+
+  RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,37 +66,27 @@ class _RegisterPageState extends State<RegisterPage> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 16),
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: const OutlineInputBorder(),
-                      prefixIcon: const Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                  Obx(() => TextField(
+                        controller: _passwordController,
+                        obscureText: _obscurePassword.value,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          border: const OutlineInputBorder(),
+                          prefixIcon: const Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(_obscurePassword.value
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () {
+                              _obscurePassword.value = !_obscurePassword.value;
+                            },
+                          ),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
+                      )),
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
-                      // Handle registration logic here
-                      // After registration, navigate to LoginPage
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
-                      );
+                      Get.offAll(() => LoginPage());
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 50),
@@ -108,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       textStyle: const TextStyle(fontSize: 18),
-                      backgroundColor: const Color(0xFF6EA07A), // Green color
+                      backgroundColor: const Color(0xFF6EA07A),
                     ),
                     child: const Text('Register',
                         style: TextStyle(color: Colors.white)),
@@ -116,12 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () {
-                      // Navigate to login page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
-                      );
+                      Get.to(() => LoginPage());
                     },
                     child: const Text(
                       'Already have an account? Login',

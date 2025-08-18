@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:employment_attendance/feature/presentation/page/login_page.dart';
+import 'package:employment_attendance/feature/presentation/page/register_page.dart';
+import 'package:employment_attendance/feature/presentation/page/notification_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +16,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Absensi App',
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }

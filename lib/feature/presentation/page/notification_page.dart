@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:employment_attendance/feature/presentation/page/dashboard_page.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -20,11 +21,7 @@ class NotificationPage extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.arrow_back, size: 28),
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const DashboardPage()),
-                      );
+                      Get.offAll(() => const DashboardPage());
                     },
                   ),
                   const SizedBox(width: 12),
@@ -129,11 +126,7 @@ class NotificationPage extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DashboardPage()),
-                    );
+                    Get.offAll(() => const DashboardPage());
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF6EA07A),
