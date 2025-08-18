@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/dashboard',
+      initialRoute: '/login',
       getPages: [
         GetPage(name: '/dashboard', page: () => const DashboardPage()),
         GetPage(name: '/leave-request', page: () => const LeaveRequestPage()),
