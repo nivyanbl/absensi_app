@@ -2,8 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:employment_attendance/feature/presentation/page/leave_request_page.dart';
 
-class LeaveHistoryPage extends StatelessWidget {
+class LeaveHistoryPage extends StatefulWidget {
   const LeaveHistoryPage({super.key});
+
+  @override
+  State<LeaveHistoryPage> createState() => _LeaveHistoryPageState();
+}
+
+class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
+  bool showAdditionalDuration = false;
+  DateTime additionalStartDate = DateTime.now();
+  DateTime additionalEndDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +90,7 @@ class LeaveHistoryPage extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Color(0xFF6EA07A)),
+                                border: Border.all(color: Colors.black12),
                               ),
                               child: Column(
                                 children: const [
@@ -126,7 +135,11 @@ class LeaveHistoryPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            showAdditionalDuration = !showAdditionalDuration;
+                          });
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF6EA07A),
                           shape: RoundedRectangleBorder(
@@ -139,6 +152,86 @@ class LeaveHistoryPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                if (showAdditionalDuration) ...[
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            final picked = await showDatePicker(
+                              context: context,
+                              initialDate: additionalStartDate,
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2100),
+                            );
+                            if (picked != null) {
+                              setState(() {
+                                additionalStartDate = picked;
+                              });
+                            }
+                          },
+                          child: InputDecorator(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.calendar_today,
+                                    size: 18, color: Colors.grey),
+                                const SizedBox(width: 8),
+                                Text(
+                                    '${additionalStartDate.day}/${additionalStartDate.month}/${additionalStartDate.year}'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const Text('to'),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            final picked = await showDatePicker(
+                              context: context,
+                              initialDate: additionalEndDate,
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2100),
+                            );
+                            if (picked != null) {
+                              setState(() {
+                                additionalEndDate = picked;
+                              });
+                            }
+                          },
+                          child: InputDecorator(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.calendar_today,
+                                    size: 18, color: Colors.grey),
+                                const SizedBox(width: 8),
+                                Text(
+                                    '${additionalEndDate.day}/${additionalEndDate.month}/${additionalEndDate.year}'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
                 const SizedBox(height: 24),
                 Row(
                   children: [

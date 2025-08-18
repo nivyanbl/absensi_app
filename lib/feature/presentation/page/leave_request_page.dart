@@ -112,7 +112,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Color(0xFF6EA07A)),
+                                border: Border.all(color: Colors.black12),
                               ),
                               child: Column(
                                 children: const [
