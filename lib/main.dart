@@ -16,9 +16,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DashboardPage(),
+      initialRoute: '/dashboard',
+      getPages: [
+        GetPage(name: '/dashboard', page: () => const DashboardPage()),
+        GetPage(name: '/leave-request', page: () => const LeaveRequestPage()),
+        GetPage(name: '/lms', page: () => const LmsPage()),
+        GetPage(name: '/login', page: () =>  LoginPage()),
+        GetPage(name: '/register', page: () => RegisterPage()),
+        GetPage(name: '/notification', page: () => const NotificationPage()),
+        // Tambahkan GetPage lain jika ada
+      ],
     );
   }
 }
