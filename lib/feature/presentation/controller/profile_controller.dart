@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 
 class UserModel {
   String name;
@@ -24,6 +24,7 @@ class ProfileController extends GetxController {
   late TextEditingController nameController;
   late TextEditingController emailController;
   late TextEditingController phoneController;
+  late TextEditingController positionController;
 
   @override
   void onInit() {
@@ -31,17 +32,21 @@ class ProfileController extends GetxController {
     nameController = TextEditingController(text: user.value.name);
     emailController = TextEditingController(text: user.value.email);
     phoneController = TextEditingController(text: user.value.phone);
+    positionController = TextEditingController(text: user.value.position);
+    
   }
 
   void saveProfile() {
     final newName = nameController.text;
     final newEmail = emailController.text;
     final newPhone = phoneController.text;
-
+    final newPosition = positionController.text;
+    
     user.update((val) {
       val?.name = newName;
       val?.email = newEmail;
       val?.phone = newPhone;
+      val?.position = newPosition;
     });
 
     //Get.back();

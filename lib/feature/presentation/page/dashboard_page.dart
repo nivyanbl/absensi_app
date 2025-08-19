@@ -322,9 +322,9 @@ class DashboardPage extends StatelessWidget {
         onTap: (index) {
           if (index == 0) return;
           if (index == 1) {
-            Get.offAllNamed('/leave-request');
+            Get.toNamed(AppRoutes.LEAVE_REQUEST);
           } else if (index == 2) {
-            // Get.offAllNamed('/absence');
+             Get.toNamed(AppRoutes.CHECK_IN);
           } else if (index == 3) {
             // Get.offAllNamed('/history');
           } else if (index == 4) {

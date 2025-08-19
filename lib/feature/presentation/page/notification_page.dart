@@ -38,9 +38,9 @@ class NotificationPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children:  [
                   Text(
                     'Previously',
                     style: TextStyle(
@@ -70,12 +70,12 @@ class NotificationPage extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
                           CircleAvatar(
-                            backgroundColor: const Color(0xFF6EA07A),
+                            backgroundColor:  Color(0xFF6EA07A),
                             radius: 24,
-                            child: const Text(
+                            child:  Text(
                               'S.',
                               style: TextStyle(
                                 color: Colors.black,
@@ -84,11 +84,11 @@ class NotificationPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 16),
+                         SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children:  [
                                 Text(
                                   'Siesta absent..',
                                   style: TextStyle(
@@ -107,8 +107,8 @@ class NotificationPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          const Text(
+                           SizedBox(width: 8),
+                           Text(
                             'July 16, 2025',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,

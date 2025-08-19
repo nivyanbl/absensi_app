@@ -1,5 +1,4 @@
 import 'package:employment_attendance/feature/presentation/controller/profile_controller.dart';
-import 'package:employment_attendance/feature/presentation/page/edit_profile_page.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -40,15 +39,15 @@ class ProfilePage extends StatelessWidget {
                       children: [
                         Text(
                           controller.user.value.name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           controller.user.value.position,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 14,
                               fontWeight: FontWeight.bold),
@@ -66,8 +65,10 @@ class ProfilePage extends StatelessWidget {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
+               
                 const SizedBox(height: 8),
-                // Info items
+                
+                // informasi
                 Obx(() => Column(
                       children: [
                         _buildInfoItem(
@@ -83,8 +84,9 @@ class ProfilePage extends StatelessWidget {
                             Icons.calendar_today, 'Join Date', '7 July 2023'),
                       ],
                     )),
-                SizedBox(height: 15),
-
+                
+                const SizedBox(height: 15),
+                // tombol edit profile
                 ElevatedButton.icon(
                   onPressed: () {
                     Get.toNamed(AppRoutes.EDIT_PROFILE);
@@ -111,6 +113,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+// Helper method to build information items
   Widget _buildInfoItem(
     IconData icon,
     String label,

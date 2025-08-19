@@ -8,5 +8,6 @@ class AppRoutes {
   static const LEAVE_HISTORY = '/leave-history';
   static const PROFILE = '/profile';
   static const EDIT_PROFILE = '/edit-profile';
-  static const ABSENCE = '/absence';
+  static const CHECK_IN = '/check-in';
+  static const CHECK_IN_SUCCESS = '/check-in-success';
 }

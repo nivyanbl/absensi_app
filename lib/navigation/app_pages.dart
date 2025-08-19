@@ -1,3 +1,5 @@
+import 'package:employment_attendance/feature/presentation/page/check_in_page.dart';
+import 'package:employment_attendance/feature/presentation/page/check_in_success_page.dart';
 import 'package:employment_attendance/feature/presentation/page/dashboard_page.dart';
 import 'package:employment_attendance/feature/presentation/page/edit_profile_page.dart';
 import 'package:employment_attendance/feature/presentation/page/leave_history_page.dart';
@@ -21,5 +23,7 @@ class AppPages {
     GetPage(name: AppRoutes.LEAVE_HISTORY, page: () => const LeaveHistoryPage()),
     GetPage(name: AppRoutes.PROFILE, page: () => const ProfilePage()),
     GetPage(name: AppRoutes.EDIT_PROFILE, page: () => const EditProfilePage()),
+    GetPage(name: AppRoutes.CHECK_IN, page: () => const CheckInPage()),
+    GetPage(name: AppRoutes.CHECK_IN_SUCCESS, page: () => const CheckInSuccessPage()),
   ];
 }

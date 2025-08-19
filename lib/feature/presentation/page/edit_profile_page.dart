@@ -12,7 +12,7 @@ class EditProfilePage extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed:  () => Get.back(), 
+          onPressed: () => Get.back(),
         ),
         title: const Text(
           "Edit Profile",
@@ -21,95 +21,109 @@ class EditProfilePage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Profile Image",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Profile Image",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      const CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Color(0xFFBDBDBD),
+                        child: Icon(Icons.person, size: 50, color: Colors.grey),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        child: const Icon(Icons.image,
+                            color: Colors.black, size: 12),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        const CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Color(0xFFBDBDBD),
-                          child: Icon(Icons.person, size: 50, color: Colors.grey),
+                  const SizedBox(width: 30),
+                  OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 4),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                          child: const Icon(Icons.image,
-                              color: Colors.black, size: 12),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 30),
-                    OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 4),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text(
-                          "Choose Your Photo",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 16),
-                        )),
-                  ],
-                ),
-                const SizedBox(height: 32),
-                //list of text fields
-                _buildTextField(label: 'Name', hint: 'Enter your name',  controller: controller.nameController),
-                const SizedBox(height: 24),
-                _buildTextField(label: 'Email', hint: 'Enter your email',  controller: controller.emailController),
-                const SizedBox(height: 24),
-                _buildTextField(label: 'Phone Number',  controller: controller.phoneController,  keyboardType: TextInputType.phone,),
-                const SizedBox(height: 48),
-                 ElevatedButton(
+                      ),
+                      child: const Text(
+                        "Choose Your Photo",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 16),
+                      )),
+                ],
+              ),
+              const SizedBox(height: 32),
+              
+              //list of text fields
+              _buildTextField(
+                  label: 'Name',
+                  hint: 'Enter your name',
+                  controller: controller.nameController),
+              const SizedBox(height: 24),
+              _buildTextField(
+                  label: 'Email',
+                  hint: 'Enter your email',
+                  controller: controller.emailController),
+              const SizedBox(height: 24),
+              _buildTextField(
+                label: 'Phone Number',
+                controller: controller.phoneController,
+                keyboardType: TextInputType.phone,
+              ),
+              const SizedBox(height: 48),
+              
+              ElevatedButton(
                 onPressed: () {
-        
                   controller.saveProfile();
                   Get.back();
                 },
-                
-                    child: const Text(
-                        'Save',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 48),
-                        backgroundColor: const Color(0xFF6EA07A),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                    ),
-              ],
-            ),
-          
+                child: Text(
+                  'Save',
+                  style: const TextStyle(color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 48),
+                  backgroundColor: const Color(0xFF6EA07A),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTextField(
-      {required String label, String? prefixText, String? hint, TextEditingController? controller,  TextInputType? keyboardType,}) {
+  Widget _buildTextField({
+    required String label,
+    String? prefixText,
+    String? hint,
+    TextEditingController? controller,
+    TextInputType? keyboardType,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -129,10 +143,10 @@ class EditProfilePage extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 2),
+        const SizedBox(height: 8,),
         TextField(
           controller: controller,
-          keyboardType: keyboardType, 
+          keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hint,
             prefixText: prefixText,
