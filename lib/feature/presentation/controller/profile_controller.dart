@@ -44,6 +44,6 @@ class ProfileController extends GetxController {
       val?.phone = newPhone;
     });
 
-    Get.back();
+    //Get.back();
   }
 }

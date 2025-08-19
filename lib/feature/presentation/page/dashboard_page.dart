@@ -1,3 +1,4 @@
+import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -76,7 +77,9 @@ class DashboardPage extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                      Get.toNamed(AppRoutes.PROFILE);
+                    },
             ),
             ListTile(
               leading: const Icon(Icons.access_time),

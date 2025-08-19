@@ -1,5 +1,6 @@
 import 'package:employment_attendance/feature/presentation/controller/profile_controller.dart';
 import 'package:employment_attendance/feature/presentation/page/edit_profile_page.dart';
+import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -86,8 +87,8 @@ class ProfilePage extends StatelessWidget {
 
                 ElevatedButton.icon(
                   onPressed: () {
-                    Get.to(() =>  EditProfilePage());
-                  },
+                    Get.toNamed(AppRoutes.EDIT_PROFILE);
+                  }, 
                   icon: const Icon(
                     Icons.edit_outlined,
                     color: Colors.white,
@@ -112,22 +113,22 @@ class ProfilePage extends StatelessWidget {
 
   Widget _buildInfoItem(
     IconData icon,
+    String label,
     String value,
-    String title,
   ) {
     return ListTile(
       dense: true,
       contentPadding: EdgeInsets.zero,
       leading: Icon(icon),
       title: Text(
-        value,
+        label,
         style: const TextStyle(
           color: Colors.grey,
           fontWeight: FontWeight.bold,
           fontSize: 15,
         ),
       ),
-      subtitle: Text(title,
+      subtitle: Text(value,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 15,

@@ -1,7 +1,7 @@
+import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:employment_attendance/feature/presentation/page/register_page.dart';
-import 'package:employment_attendance/feature/presentation/page/dashboard_page.dart';
+
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -121,7 +121,7 @@ class LoginPage extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: TextButton(
                       onPressed: () {
-                        Get.to(() => RegisterPage());
+                         Get.toNamed(AppRoutes.REGISTER);
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -145,7 +145,7 @@ class LoginPage extends StatelessWidget {
                     height: 60,
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.offAll(() => const DashboardPage());
+                         Get.toNamed(AppRoutes.DASHBOARD);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF6EA07A),
@@ -167,7 +167,7 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () {
-                      Get.to(() => RegisterPage());
+                      Get.toNamed(AppRoutes.REGISTER);
                     },
                     child: const Text(
                       'Don\'t have an account? Register',
