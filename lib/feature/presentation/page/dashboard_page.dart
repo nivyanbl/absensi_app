@@ -45,7 +45,12 @@ class DashboardPage extends StatelessWidget {
           ],
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
+          IconButton(
+            onPressed: () {
+              Get.toNamed('/notification');
+            },
+            icon: const Icon(Icons.notifications),
+          ),
           const CircleAvatar(
             backgroundImage: NetworkImage("https://i.pravatar.cc/150?img=3"),
           ),
@@ -138,8 +143,7 @@ class DashboardPage extends StatelessWidget {
               LayoutBuilder(
                 builder: (context, constraints) {
                   double gridWidth = constraints.maxWidth;
-                  double cardWidth = (gridWidth - 24) /
-                      2;
+                  double cardWidth = (gridWidth - 24) / 2;
                   double valueFontSize = cardWidth * 0.16;
                   double labelFontSize = cardWidth * 0.09;
 

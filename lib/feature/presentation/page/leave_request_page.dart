@@ -316,7 +316,22 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.snackbar(
+                              "Success",
+                              "Leave request sudah terkirim",
+                              backgroundColor: Colors.white,
+                              colorText: Colors.black,
+                              snackPosition: SnackPosition.TOP,
+                              margin: const EdgeInsets.all(16),
+                              icon: const Icon(Icons.check_circle,
+                                  color: Color(0xFF6EA07A)),
+                            );
+                            Future.delayed(const Duration(milliseconds: 800),
+                                () {
+                              Get.offAllNamed('/dashboard');
+                            });
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF6EA07A),
                             shape: RoundedRectangleBorder(
