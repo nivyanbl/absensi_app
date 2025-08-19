@@ -1,9 +1,9 @@
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:employment_attendance/feature/presentation/page/login_page.dart';
 
 class DashboardController extends GetxController {
-  // Add any necessary variables and methods for your controller
   void openLMS() {
     Get.snackbar("LMS", "LMS option selected");
   }
@@ -46,10 +46,14 @@ class DashboardPage extends StatelessWidget {
           ],
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
+          IconButton(
+            onPressed: () {
+              Get.toNamed('/notification');
+            },
+            icon: const Icon(Icons.notifications),
+          ),
           const CircleAvatar(
-            backgroundImage: NetworkImage(
-                "https://i.pravatar.cc/150?img=3"),
+            backgroundImage: NetworkImage("https://i.pravatar.cc/150?img=3"),
           ),
           const SizedBox(width: 10),
         ],
@@ -63,13 +67,17 @@ class DashboardPage extends StatelessWidget {
               child: Row(
                 children: [
                   const CircleAvatar(
-                    backgroundImage: NetworkImage("https://i.pravatar.cc/150?img=3"),
+                    backgroundImage:
+                        NetworkImage("https://i.pravatar.cc/150?img=3"),
                     radius: 30,
                   ),
                   const SizedBox(width: 10),
                   const Text(
                     "John Doe",
-                    style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -102,7 +110,7 @@ class DashboardPage extends StatelessWidget {
               title: const Text('Log Out'),
               onTap: () {
                 controller.logOut();
-                Navigator.pop(context);
+                Get.offAll(() => LoginPage());
               },
             ),
           ],
@@ -120,7 +128,8 @@ class DashboardPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: const Color(0xFF6EA07A),
                   borderRadius: BorderRadius.circular(20),
@@ -134,11 +143,10 @@ class DashboardPage extends StatelessWidget {
               const Text("Overview",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 12),
-              // Responsive Overview Grid with margin
               LayoutBuilder(
                 builder: (context, constraints) {
                   double gridWidth = constraints.maxWidth;
-                  double cardWidth = (gridWidth - 24) / 2; // 24 = mainAxisSpacing + extra margin
+                  double cardWidth = (gridWidth - 24) / 2;
                   double valueFontSize = cardWidth * 0.16;
                   double labelFontSize = cardWidth * 0.09;
 
@@ -155,7 +163,8 @@ class DashboardPage extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: overviewData.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
@@ -171,14 +180,17 @@ class DashboardPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 14),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(data[0] as IconData, color: Colors.black, size: 22),
+                                      Icon(data[0] as IconData,
+                                          color: Colors.black, size: 22),
                                       const SizedBox(width: 6),
                                       Expanded(
                                         child: Text(
@@ -206,7 +218,10 @@ class DashboardPage extends StatelessWidget {
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                      if ((data[2] as String).split(' ').length > 1) ...[
+                                      if ((data[2] as String)
+                                              .split(' ')
+                                              .length >
+                                          1) ...[
                                         const SizedBox(width: 3),
                                         Text(
                                           (data[2] as String).split(' ')[1],
@@ -240,19 +255,23 @@ class DashboardPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final newsList = [
                     {
-                      "image": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0",
+                      "image":
+                          "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0",
                       "title": "New Project Launch"
                     },
                     {
-                      "image": "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2",
+                      "image":
+                          "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2",
                       "title": "New Office Opening Soon"
                     },
                     {
-                      "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
+                      "image":
+                          "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
                       "title": "Team Building Event"
                     },
                     {
-                      "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+                      "image":
+                          "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
                       "title": "Annual Company Gathering"
                     },
                   ];
@@ -273,7 +292,8 @@ class DashboardPage extends StatelessWidget {
                             bottom: 16,
                             child: Container(
                               color: Colors.black54,
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
                               child: Text(
                                 newsList[index]["title"]!,
                                 style: const TextStyle(
@@ -296,7 +316,7 @@ class DashboardPage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 0, // Home tab
+        currentIndex: 0,
         selectedItemColor: const Color(0xFF6EA07A),
         unselectedItemColor: Colors.grey,
         onTap: (index) {
@@ -313,8 +333,10 @@ class DashboardPage extends StatelessWidget {
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.timer_off), label: 'Time Off'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Absence'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.timer_off), label: 'Time Off'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_today), label: 'Absence'),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
           BottomNavigationBarItem(icon: Icon(Icons.receipt), label: 'Slip Pay'),
         ],

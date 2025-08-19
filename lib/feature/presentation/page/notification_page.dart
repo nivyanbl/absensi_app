@@ -136,7 +136,7 @@ class NotificationPage extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                   ),
-                  child: const Text('kembali', style: TextStyle(fontSize: 16)),
+                  child: const Text('kembali', style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
               ),
               const SizedBox(height: 16),
