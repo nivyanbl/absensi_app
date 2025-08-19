@@ -8,6 +8,11 @@ class AppRoutes {
   static const LEAVE_HISTORY = '/leave-history';
   static const PROFILE = '/profile';
   static const EDIT_PROFILE = '/edit-profile';
+<<<<<<< HEAD
   static const CHECK_IN = '/check-in';
   static const CHECK_IN_SUCCESS = '/check-in-success';
+=======
+  static const ABSENCE = '/absence';
+  static const SLIP = '/slip';
+>>>>>>> ff0a5cd1bfb570ff60f4e7b113526e57b691c276
 }
