@@ -10,6 +10,8 @@ class AppRoutes {
   static const EDIT_PROFILE = '/edit-profile';
   static const CHECK_IN = '/check-in';
   static const CHECK_IN_SUCCESS = '/check-in-success';
+=======
+  static const ABSENCE = '/absence';
   static const SLIP = '/slip';
-
+>>>>>>> ff0a5cd1bfb570ff60f4e7b113526e57b691c276
 }
