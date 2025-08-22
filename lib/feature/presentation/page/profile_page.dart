@@ -2,6 +2,7 @@ import 'package:employment_attendance/feature/presentation/controller/profile_co
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:io';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -29,9 +30,12 @@ class ProfilePage extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const CircleAvatar(
+                     CircleAvatar(
                       radius: 40,
-                      backgroundImage: AssetImage('assets/image/profile.png'),
+                      backgroundImage: controller.pickedImage.value != null
+                      ? FileImage (controller.pickedImage.value as File)
+                      : const AssetImage('assets/image/profile.png')
+                      as ImageProvider,
                     ),
                     const SizedBox(width: 16),
                     Column(
@@ -69,7 +73,7 @@ class ProfilePage extends StatelessWidget {
                 const SizedBox(height: 8),
                 
                 // informasi
-                Obx(() => Column(
+                Column(
                       children: [
                         _buildInfoItem(
                             Icons.person_outline, 'ID Employee', '1234567'),
@@ -83,7 +87,8 @@ class ProfilePage extends StatelessWidget {
                         _buildInfoItem(
                             Icons.calendar_today, 'Join Date', '7 July 2023'),
                       ],
-                    )),
+                ),
+                    
                 
                 const SizedBox(height: 15),
                 // tombol edit profile

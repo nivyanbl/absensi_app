@@ -24,11 +24,9 @@ class AppPages {
     GetPage(name: AppRoutes.LEAVE_HISTORY, page: () => const LeaveHistoryPage()),
     GetPage(name: AppRoutes.PROFILE, page: () => const ProfilePage()),
     GetPage(name: AppRoutes.EDIT_PROFILE, page: () => const EditProfilePage()),
-<<<<<<< HEAD
     GetPage(name: AppRoutes.CHECK_IN, page: () => const CheckInPage()),
     GetPage(name: AppRoutes.CHECK_IN_SUCCESS, page: () => const CheckInSuccessPage()),
-=======
-    GetPage(name: AppRoutes.SLIP, page: () => const SlipPayPage()),    // <-- SlipPayPage
->>>>>>> ff0a5cd1bfb570ff60f4e7b113526e57b691c276
+    GetPage(name: AppRoutes.SLIP, page: () => const SlipPayPage()),   
+
   ];
 }

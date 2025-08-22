@@ -8,6 +8,8 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProfileController controller = Get.find();
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -22,95 +24,130 @@ class EditProfilePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Profile Image",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      const CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Color(0xFFBDBDBD),
-                        child: Icon(Icons.person, size: 50, color: Colors.grey),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                        child: const Icon(Icons.image,
-                            color: Colors.black, size: 12),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 30),
-                  OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 4),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        "Choose Your Photo",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 16),
-                      )),
-                ],
-              ),
-              const SizedBox(height: 32),
-              
-              //list of text fields
-              _buildTextField(
-                  label: 'Name',
-                  hint: 'Enter your name',
-                  controller: controller.nameController),
-              const SizedBox(height: 24),
-              _buildTextField(
-                  label: 'Email',
-                  hint: 'Enter your email',
-                  controller: controller.emailController),
-              const SizedBox(height: 24),
-              _buildTextField(
-                label: 'Phone Number',
-                controller: controller.phoneController,
-                keyboardType: TextInputType.phone,
-              ),
-              const SizedBox(height: 48),
-              
-              ElevatedButton(
-                onPressed: () {
-                  controller.saveProfile();
-                  Get.back();
-                },
-                child: Text(
-                  'Save',
-                  style: const TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 48),
-                  backgroundColor: const Color(0xFF6EA07A),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Profile Image",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => controller.pickImage(),
+                      child: Obx((){
+                          final pickedImage = controller.pickedImage.value; 
+                       return Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            CircleAvatar(
+                              radius: 40,
+                              backgroundColor: const Color(0xFFBDBDBD),
+                              backgroundImage: pickedImage != null
+                                  ? FileImage(pickedImage)
+                                  : null,
+                              child: pickedImage == null
+                                  ? const Icon(Icons.person, size: 50, color: Colors.grey)
+                                  : null,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: const Icon(Icons.image,
+                                  color: Colors.black, size: 12),
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                    const SizedBox(width: 30),
+                    OutlinedButton(
+                        onPressed: () => controller.pickImage(),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 4),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text(
+                          "Choose Your Photo",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 16),
+                        )),
+                  ],
+                ),
+                const SizedBox(height: 32),
+
+                //list of text fields
+                _buildTextField(
+                    label: 'Name',
+                    hint: 'Enter your name',
+                    controller: controller.nameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    }),
+                const SizedBox(height: 24),
+                _buildTextField(
+                    label: 'Email',
+                    hint: 'Enter your email',
+                    controller: controller.emailController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    }),
+                const SizedBox(height: 24),
+                _buildTextField(
+                  label: 'Phone Number',
+                  hint: 'Enter your phone number',
+                  controller: controller.phoneController,
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your phone number';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 48),
+
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      controller.saveProfile();
+                      Get.back();
+                    }
+                  },
+                  child: Text(
+                    'Save',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 48),
+                    backgroundColor: const Color(0xFF6EA07A),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -123,6 +160,7 @@ class EditProfilePage extends StatelessWidget {
     String? hint,
     TextEditingController? controller,
     TextInputType? keyboardType,
+    String? Function(String?)? validator,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,13 +176,15 @@ class EditProfilePage extends StatelessWidget {
             children: const [
               TextSpan(
                   text: '*',
-                  style: TextStyle(
-                      color: Colors.red, fontWeight: FontWeight.bold)),
+                  style:
+                      TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
-        const SizedBox(height: 8,),
-        TextField(
+        const SizedBox(
+          height: 8,
+        ),
+        TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           decoration: InputDecoration(
@@ -157,6 +197,7 @@ class EditProfilePage extends StatelessWidget {
               borderSide: BorderSide(color: Colors.black),
             ),
           ),
+          validator: validator,
         )
       ],
     );

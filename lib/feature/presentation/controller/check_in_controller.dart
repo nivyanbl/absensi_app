@@ -80,9 +80,6 @@ class CheckInController extends GetxController {
           return;
         }
       }
-      // //demo
-      // currentLocation('Inside office area');
-
       
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,

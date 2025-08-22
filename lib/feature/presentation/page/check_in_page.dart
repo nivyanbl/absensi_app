@@ -3,7 +3,6 @@ import 'package:employment_attendance/feature/presentation/controller/check_in_c
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class CheckInPage extends StatelessWidget {
   const CheckInPage({super.key});
 
@@ -18,7 +17,8 @@ class CheckInPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
-        title: const Text('Absence', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('Absence',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -46,17 +46,23 @@ class CheckInPage extends StatelessWidget {
           return Stack(
             alignment: Alignment.center,
             children: [
-              Positioned.fill(
-                child: AspectRatio(
-                  aspectRatio: controller.cameraController!.value.aspectRatio,
-                  child: CameraPreview(controller.cameraController!),
+              SizedBox.expand(
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: SizedBox(
+                    width:
+                        controller.cameraController!.value.previewSize!.height,
+                    height:
+                        controller.cameraController!.value.previewSize!.width,
+                    child: CameraPreview(controller.cameraController!),
+                  ),
                 ),
               ),
-
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.4,
                   padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
                   decoration: const BoxDecoration(
                     color: Colors.white,
@@ -66,7 +72,7 @@ class CheckInPage extends StatelessWidget {
                     ),
                   ),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
                         width: 150,
@@ -77,12 +83,15 @@ class CheckInPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      
-                      _buildInfoRow(Icons.location_on, 'Location', controller.currentLocation.value,),
-                      const SizedBox(height: 12),
-                      _buildInfoRow(Icons.calendar_today, 'Date', controller.currentDate.value),
+                      _buildInfoRow(
+                        Icons.location_on,
+                        'Location',
+                        controller.currentLocation.value,
+                      ),
+                      const SizedBox(height: 4),
+                      _buildInfoRow(Icons.calendar_today, 'Date',
+                          controller.currentDate.value),
                       const SizedBox(height: 24),
-                      
                       Text(
                         controller.currentTime.value,
                         style: const TextStyle(
@@ -91,7 +100,6 @@ class CheckInPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-
                       ElevatedButton(
                         onPressed: controller.checkIn,
                         style: ElevatedButton.styleFrom(
@@ -124,19 +132,19 @@ class CheckInPage extends StatelessWidget {
   Widget _buildInfoRow(IconData icon, String label, String value) {
     return Row(
       children: [
-        Icon(icon, color: const Color(0xFF6EA07A), size:25),
+        Icon(icon, color: const Color(0xFF6EA07A), size: 25),
         const SizedBox(width: 8),
         Text(
           '$label   :',
-          style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
         ),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             value,
             style: const TextStyle(
-              fontSize: 16
-              ,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),

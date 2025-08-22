@@ -359,7 +359,7 @@ class DashboardPage extends StatelessWidget {
           if (index == 1) {
             Get.offAllNamed('/leave-request');
           } else if (index == 2) {
-            // Get.offAllNamed('/absence');
+            Get.offAllNamed(AppRoutes.CHECK_IN);
           } else if (index == 3) {
             Get.offAllNamed(AppRoutes.LEAVE_HISTORY);
           } else if (index == 4) {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 
 class UserModel {
@@ -26,6 +28,8 @@ class ProfileController extends GetxController {
   late TextEditingController phoneController;
   late TextEditingController positionController;
 
+  var pickedImage = Rx<File?>(null);
+
   @override
   void onInit() {
     super.onInit();
@@ -34,6 +38,18 @@ class ProfileController extends GetxController {
     phoneController = TextEditingController(text: user.value.phone);
     positionController = TextEditingController(text: user.value.position);
     
+  }
+
+  Future<void> pickImage () async {
+    final ImagePicker picker = ImagePicker();
+
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      pickedImage.value = File (image.path);
+    } else {
+      Get.snackbar('Image Selection', 'No image selected');
+    }
   }
 
   void saveProfile() {

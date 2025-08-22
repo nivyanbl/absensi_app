@@ -73,6 +73,7 @@ class CheckInSuccessPage extends StatelessWidget {
                 ),
               const SizedBox(height: 60),
 
+              //button
               ElevatedButton(
                 onPressed: () {
                   Get.toNamed(AppRoutes.DASHBOARD);
