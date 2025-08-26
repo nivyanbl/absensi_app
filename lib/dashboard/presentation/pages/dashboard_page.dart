@@ -361,7 +361,7 @@ class DashboardPage extends StatelessWidget {
           } else if (index == 2) {
             Get.offAllNamed(AppRoutes.CHECK_IN);
           } else if (index == 3) {
-            Get.offAllNamed(AppRoutes.LEAVE_HISTORY);
+            Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
           } else if (index == 4) {
             Get.offAllNamed(AppRoutes.SLIP);
           }

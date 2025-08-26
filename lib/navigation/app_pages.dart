@@ -1,3 +1,4 @@
+import 'package:employment_attendance/attendance/presentation/pages/attendance_history_page.dart';
 import 'package:employment_attendance/leave/presentation/pages/check_in_page.dart';
 import 'package:employment_attendance/leave/presentation/pages/check_in_success_page.dart';
 import 'package:employment_attendance/dashboard/presentation/pages/dashboard_page.dart';
@@ -21,17 +22,14 @@ class AppPages {
     GetPage(name: AppRoutes.DASHBOARD, page: () => const DashboardPage()),
     GetPage(name: AppRoutes.NOTIFICATION, page: () => const NotificationPage()),
     GetPage(name: AppRoutes.LMS, page: () => const LmsPage()),
-    GetPage(
-        name: AppRoutes.LEAVE_REQUEST, page: () => const LeaveRequestPage()),
-    GetPage(
-        name: AppRoutes.LEAVE_HISTORY, page: () => const LeaveHistoryPage()),
+    GetPage(name: AppRoutes.LEAVE_REQUEST, page: () => const LeaveRequestPage()),
+    GetPage(name: AppRoutes.LEAVE_HISTORY, page: () => const LeaveHistoryPage()),
     GetPage(name: AppRoutes.PROFILE, page: () => const ProfilePage()),
     GetPage(name: AppRoutes.EDIT_PROFILE, page: () => const EditProfilePage()),
     GetPage(name: AppRoutes.CHECK_IN, page: () => const CheckInPage()),
-    GetPage(
-        name: AppRoutes.CHECK_IN_SUCCESS,
-        page: () => const CheckInSuccessPage()),
+    GetPage(name: AppRoutes.CHECK_IN_SUCCESS,page: () => const CheckInSuccessPage()),
     GetPage(name: AppRoutes.SLIP, page: () => const SlipPayPage()),
     GetPage(name: AppRoutes.FORGOT_PASSWORD, page: () => ForgotPasswordPage()),
+    GetPage(name: AppRoutes.ATTENDANCE_HISTORY, page: ()=> const AttendanceHistoryPage())
   ];
 }
