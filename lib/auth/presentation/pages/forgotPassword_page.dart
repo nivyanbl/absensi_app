@@ -65,7 +65,6 @@ class ForgotPasswordPage extends StatelessWidget {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
-                      // TODO: Implement forgot password logic
                       Get.offAll(() => LoginPage());
                     },
                     style: ElevatedButton.styleFrom(
