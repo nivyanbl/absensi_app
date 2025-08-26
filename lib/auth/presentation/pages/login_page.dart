@@ -121,7 +121,7 @@ class LoginPage extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: TextButton(
                       onPressed: () {
-                         Get.toNamed(AppRoutes.REGISTER);
+                         Get.toNamed(AppRoutes.FORGOT_PASSWORD);
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,

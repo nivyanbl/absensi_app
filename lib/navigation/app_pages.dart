@@ -9,6 +9,7 @@ import 'package:employment_attendance/auth/presentation/pages/login_page.dart';
 import 'package:employment_attendance/notification/presentation/pages/notification_page.dart';
 import 'package:employment_attendance/profile/presentation/pages/profile_page.dart';
 import 'package:employment_attendance/auth/presentation/pages/register_page.dart';
+import 'package:employment_attendance/auth/presentation/pages/forgotPassword_page.dart';
 import 'package:employment_attendance/slip/presentation/pages/slip_page.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:get/get.dart';
@@ -20,12 +21,17 @@ class AppPages {
     GetPage(name: AppRoutes.DASHBOARD, page: () => const DashboardPage()),
     GetPage(name: AppRoutes.NOTIFICATION, page: () => const NotificationPage()),
     GetPage(name: AppRoutes.LMS, page: () => const LmsPage()),
-    GetPage(name: AppRoutes.LEAVE_REQUEST, page: () => const LeaveRequestPage()),
-    GetPage(name: AppRoutes.LEAVE_HISTORY, page: () => const LeaveHistoryPage()),
+    GetPage(
+        name: AppRoutes.LEAVE_REQUEST, page: () => const LeaveRequestPage()),
+    GetPage(
+        name: AppRoutes.LEAVE_HISTORY, page: () => const LeaveHistoryPage()),
     GetPage(name: AppRoutes.PROFILE, page: () => const ProfilePage()),
     GetPage(name: AppRoutes.EDIT_PROFILE, page: () => const EditProfilePage()),
     GetPage(name: AppRoutes.CHECK_IN, page: () => const CheckInPage()),
-    GetPage(name: AppRoutes.CHECK_IN_SUCCESS, page: () => const CheckInSuccessPage()),
+    GetPage(
+        name: AppRoutes.CHECK_IN_SUCCESS,
+        page: () => const CheckInSuccessPage()),
     GetPage(name: AppRoutes.SLIP, page: () => const SlipPayPage()),
+    GetPage(name: AppRoutes.FORGOT_PASSWORD, page: () => ForgotPasswordPage()),
   ];
 }

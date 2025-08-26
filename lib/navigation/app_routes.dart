@@ -12,4 +12,5 @@ class AppRoutes {
   static const CHECK_IN_SUCCESS = '/check-in-success';
   static const ABSENCE = '/absence';
   static const SLIP = '/slip';
+  static const FORGOT_PASSWORD = '/forgot-password';
 }
