@@ -1,3 +1,4 @@
+import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:employment_attendance/leave/presentation/pages/leave_request_page.dart';
@@ -44,9 +45,9 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
                   ),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -92,8 +93,8 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(color: Colors.black12),
                               ),
-                              child: Column(
-                                children: const [
+                              child: const Column(
+                                children: [
                                   Text('12 Day',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -113,8 +114,8 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(color: Colors.black12),
                               ),
-                              child: Column(
-                                children: const [
+                              child: const Column(
+                                children: [
                                   Text('8 Day',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -275,7 +276,7 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: Colors.black12),
                   ),
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       LeaveHistoryCard(
@@ -286,7 +287,7 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
                         start: '2025-11-27',
                         end: '2025-11-30',
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
                       LeaveHistoryCard(
                         type: 'Sick Leave',
                         status: 'Pending',
@@ -305,12 +306,20 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 1, // Time Off tab
+        currentIndex: 1, // 1 untuk Time Off/Leave
         selectedItemColor: const Color(0xFF6EA07A),
         unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
         onTap: (index) {
+          if (index == 1) return;
           if (index == 0) {
             Get.offAllNamed('/dashboard');
+          } else if (index == 2) {
+            Get.offAllNamed(AppRoutes.CHECK_IN); 
+          } else if (index == 3) {
+            Get.offAllNamed('/history');
+          } else if (index == 4) {
+            Get.offAllNamed('/slip');
           }
         },
         items: const [
