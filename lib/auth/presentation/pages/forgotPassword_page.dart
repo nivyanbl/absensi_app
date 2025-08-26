@@ -65,7 +65,23 @@ class ForgotPasswordPage extends StatelessWidget {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
-                      Get.offAll(() => LoginPage());
+                      Get.snackbar(
+                        'Success',
+                        'Link reset password sudah dikirim ke email kamu.',
+                        snackPosition: SnackPosition.TOP,
+                        backgroundColor: Colors.white,
+                        colorText: Colors.black,
+                        margin: const EdgeInsets.all(16),
+                        borderRadius: 16,
+                        icon: const Icon(Icons.check_circle,
+                            color: Color(0xFF6EA07A), size: 32),
+                        duration: const Duration(seconds: 2),
+                        isDismissible: true,
+                        overlayBlur: 0.0,
+                      );
+                      Future.delayed(const Duration(seconds: 2), () {
+                        Get.offAll(() => LoginPage());
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 50),
