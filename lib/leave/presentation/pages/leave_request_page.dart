@@ -66,9 +66,9 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                   ),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -114,8 +114,8 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(color: Colors.black12),
                               ),
-                              child: Column(
-                                children: const [
+                              child: const Column(
+                                children: [
                                   Text('12 Day',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -135,8 +135,8 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(color: Colors.black12),
                               ),
-                              child: Column(
-                                children: const [
+                              child: const Column(
+                                children: [
                                   Text('8 Day',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -201,7 +201,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
-                        value: selectedType,
+                        initialValue: selectedType,
                         items: leaveTypes.map((type) {
                           return DropdownMenuItem(
                             value: type,
@@ -302,8 +302,8 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                           border: Border.all(color: Colors.black12),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Column(
-                          children: const [
+                        child: const Column(
+                          children: [
                             Icon(Icons.upload_file,
                                 size: 32, color: Colors.grey),
                             SizedBox(height: 8),
@@ -355,20 +355,26 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 1, // Time Off tab
+        currentIndex: 1, // 1 untuk Leave/Time Off
         selectedItemColor: const Color(0xFF6EA07A),
         unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
         onTap: (index) {
+          if (index == 1) return;
           if (index == 0) {
             Get.offAllNamed('/dashboard');
+          } else if (index == 2) {
+            Get.offAllNamed('/check-in'); 
+          } else if (index == 3) {
+            Get.offAllNamed('/history');
+          } else if (index == 4) {
+            Get.offAllNamed('/slip');
           }
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.timer_off), label: 'Time Off'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today), label: 'Absence'),
+          BottomNavigationBarItem(icon: Icon(Icons.timer_off), label: 'Time Off'),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Absence'),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
           BottomNavigationBarItem(icon: Icon(Icons.receipt), label: 'Slip Pay'),
         ],

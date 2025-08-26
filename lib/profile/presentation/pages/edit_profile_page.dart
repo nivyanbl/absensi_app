@@ -8,7 +8,7 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProfileController controller = Get.find();
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     return Scaffold(
       appBar: AppBar(
@@ -25,7 +25,7 @@ class EditProfilePage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -129,21 +129,21 @@ class EditProfilePage extends StatelessWidget {
 
                 ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       controller.saveProfile();
                       Get.back();
                     }
                   },
-                  child: Text(
-                    'Save',
-                    style: const TextStyle(color: Colors.white),
-                  ),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
                     backgroundColor: const Color(0xFF6EA07A),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
+                  ),
+                  child: Text(
+                    'Save',
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ],

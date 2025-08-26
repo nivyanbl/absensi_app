@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class CheckInSuccessPage extends StatelessWidget {
   const CheckInSuccessPage({super.key});

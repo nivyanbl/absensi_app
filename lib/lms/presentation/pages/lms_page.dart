@@ -136,7 +136,7 @@ class _LmsPageState extends State<LmsPage> {
                               minHeight: 6,
                               backgroundColor: Colors.grey[200],
                               valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.green),
+                                  const AlwaysStoppedAnimation<Color>(Colors.green),
                             ),
                             const SizedBox(height: 8),
                             Row(
