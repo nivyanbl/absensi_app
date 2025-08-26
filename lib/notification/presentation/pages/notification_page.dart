@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:employment_attendance/feature/presentation/page/dashboard_page.dart';
+import 'package:employment_attendance/dashboard/presentation/pages/dashboard_page.dart';
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({super.key});

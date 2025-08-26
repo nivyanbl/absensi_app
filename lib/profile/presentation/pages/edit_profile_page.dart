@@ -1,4 +1,4 @@
-import 'package:employment_attendance/feature/presentation/controller/profile_controller.dart';
+import 'package:employment_attendance/profile/presentation/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

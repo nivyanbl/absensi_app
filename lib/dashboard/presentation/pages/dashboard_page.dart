@@ -1,7 +1,7 @@
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:employment_attendance/feature/presentation/page/login_page.dart';
+import 'package:employment_attendance/auth/presentation/pages/login_page.dart';
 
 class DashboardController extends GetxController {
   void openLMS() {

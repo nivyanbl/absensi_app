@@ -1,5 +1,5 @@
 import 'package:camera/camera.dart';
-import 'package:employment_attendance/feature/presentation/controller/check_in_controller.dart';
+import 'package:employment_attendance/leave/presentation/controller/check_in_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

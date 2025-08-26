@@ -1,15 +1,15 @@
-import 'package:employment_attendance/feature/presentation/page/check_in_page.dart';
-import 'package:employment_attendance/feature/presentation/page/check_in_success_page.dart';
-import 'package:employment_attendance/feature/presentation/page/dashboard_page.dart';
-import 'package:employment_attendance/feature/presentation/page/edit_profile_page.dart';
-import 'package:employment_attendance/feature/presentation/page/leave_history_page.dart';
-import 'package:employment_attendance/feature/presentation/page/leave_request_page.dart';
-import 'package:employment_attendance/feature/presentation/page/lms_page.dart';
-import 'package:employment_attendance/feature/presentation/page/login_page.dart';
-import 'package:employment_attendance/feature/presentation/page/notification_page.dart';
-import 'package:employment_attendance/feature/presentation/page/profile_page.dart';
-import 'package:employment_attendance/feature/presentation/page/register_page.dart';
-import 'package:employment_attendance/feature/presentation/page/slip_page.dart';
+import 'package:employment_attendance/leave/presentation/pages/check_in_page.dart';
+import 'package:employment_attendance/leave/presentation/pages/check_in_success_page.dart';
+import 'package:employment_attendance/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:employment_attendance/profile/presentation/pages/edit_profile_page.dart';
+import 'package:employment_attendance/leave/presentation/pages/leave_history_page.dart';
+import 'package:employment_attendance/leave/presentation/pages/leave_request_page.dart';
+import 'package:employment_attendance/lms/presentation/pages/lms_page.dart';
+import 'package:employment_attendance/auth/presentation/pages/login_page.dart';
+import 'package:employment_attendance/notification/presentation/pages/notification_page.dart';
+import 'package:employment_attendance/profile/presentation/pages/profile_page.dart';
+import 'package:employment_attendance/auth/presentation/pages/register_page.dart';
+import 'package:employment_attendance/slip/presentation/pages/slip_page.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:get/get.dart';
 

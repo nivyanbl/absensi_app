@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:employment_attendance/feature/presentation/page/leave_request_page.dart';
+import 'package:employment_attendance/leave/presentation/pages/leave_request_page.dart';
 
 class LeaveHistoryPage extends StatefulWidget {
   const LeaveHistoryPage({super.key});
