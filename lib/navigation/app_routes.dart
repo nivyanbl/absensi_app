@@ -14,5 +14,6 @@ class AppRoutes {
   static const SLIP = '/slip';
   static const FORGOT_PASSWORD = '/forgot-password';
   static const ATTENDANCE_HISTORY = '/attendance-history';
+  static const SETTINGS = '/settings';
   
 }

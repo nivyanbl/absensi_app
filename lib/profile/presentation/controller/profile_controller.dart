@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 
+
 class UserModel {
   String name;
   String email;

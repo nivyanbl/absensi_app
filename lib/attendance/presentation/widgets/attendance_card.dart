@@ -1,6 +1,6 @@
 import 'package:employment_attendance/attendance/presentation/controllers/attendance_controller.dart';
 import 'package:flutter/material.dart';
-import '../controllers/attendance_controller.dart'; 
+
 
 class AttendanceCard extends StatelessWidget {
   final AttendanceModel attendance;

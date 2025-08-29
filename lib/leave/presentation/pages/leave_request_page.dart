@@ -1,3 +1,5 @@
+import 'package:employment_attendance/dashboard/presentation/widgets/custom_bottom_navbar.dart';
+import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:employment_attendance/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:employment_attendance/leave/presentation/pages/leave_history_page.dart';
@@ -353,31 +355,16 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 1, // 1 untuk Leave/Time Off
-        selectedItemColor: const Color(0xFF6EA07A),
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
+      bottomNavigationBar: CustomBottomNav(
+        currentIndex: 1, 
+        // primary: primaryColor,
         onTap: (index) {
-          if (index == 1) return;
-          if (index == 0) {
-            Get.offAllNamed('/dashboard');
-          } else if (index == 2) {
-            Get.offAllNamed('/check-in'); 
-          } else if (index == 3) {
-            Get.offAllNamed('/history');
-          } else if (index == 4) {
-            Get.offAllNamed('/slip');
-          }
+          if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
+          if (index == 1) Get.offAllNamed(AppRoutes.LEAVE_REQUEST);
+          if (index == 2) Get.offAllNamed(AppRoutes.CHECK_IN);
+          if (index == 3) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
+          if (index == 4) Get.offAllNamed(AppRoutes.SLIP);
         },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.timer_off), label: 'Time Off'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Absence'),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-          BottomNavigationBarItem(icon: Icon(Icons.receipt), label: 'Slip Pay'),
-        ],
       ),
     );
   }

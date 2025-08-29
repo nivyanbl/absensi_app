@@ -1,3 +1,4 @@
+import 'package:employment_attendance/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,9 +42,13 @@ class DashboardPage extends StatelessWidget {
         title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Good Morning", style: TextStyle(fontSize: 14, color: Colors.white)),
+            Text("Good Morning",
+                style: TextStyle(fontSize: 14, color: Colors.white)),
             Text("John Doe",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
           ],
         ),
         actions: [
@@ -68,7 +73,8 @@ class DashboardPage extends StatelessWidget {
               child: Row(
                 children: [
                   const CircleAvatar(
-                    backgroundImage: NetworkImage("https://i.pravatar.cc/150?img=3"),
+                    backgroundImage:
+                        NetworkImage("https://i.pravatar.cc/150?img=3"),
                     radius: 30,
                   ),
                   const SizedBox(width: 10),
@@ -132,7 +138,8 @@ class DashboardPage extends StatelessWidget {
                   ),
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(20),
@@ -306,7 +313,8 @@ class DashboardPage extends StatelessWidget {
                                   height: 150,
                                   color: Colors.grey[200],
                                   child: const Center(
-                                    child: CircularProgressIndicator(strokeWidth: 2),
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 2),
                                   ),
                                 );
                               },
@@ -348,33 +356,16 @@ class DashboardPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 0,
-        selectedItemColor: primaryColor,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
+      bottomNavigationBar: CustomBottomNav(
+        currentIndex: 0, 
+        // primary: primaryColor,
         onTap: (index) {
-          if (index == 0) return;
-          if (index == 1) {
-            Get.offAllNamed('/leave-request');
-          } else if (index == 2) {
-            Get.offAllNamed(AppRoutes.CHECK_IN);
-          } else if (index == 3) {
-            Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
-          } else if (index == 4) {
-            Get.offAllNamed(AppRoutes.SLIP);
-          }
+          if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
+          if (index == 1) Get.offAllNamed(AppRoutes.LEAVE_REQUEST);
+          if (index == 2) Get.offAllNamed(AppRoutes.CHECK_IN);
+          if (index == 3) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
+          if (index == 4) Get.offAllNamed(AppRoutes.SLIP);
         },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.timer_off), label: 'Time Off'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today), label: 'Absence'),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-          BottomNavigationBarItem(icon: Icon(Icons.receipt), label: 'Slip Pay'),
-        ],
       ),
     );
   }

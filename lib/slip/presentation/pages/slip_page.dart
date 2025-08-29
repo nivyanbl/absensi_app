@@ -1,3 +1,5 @@
+import 'package:employment_attendance/dashboard/presentation/widgets/custom_bottom_navbar.dart';
+import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -284,32 +286,16 @@ class SlipPayPage extends StatelessWidget {
               ),
             ),
           )),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 4, // 4 untuk Slip Pay
-        selectedItemColor: primaryColor,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
+     bottomNavigationBar: CustomBottomNav(
+        currentIndex: 4, 
+        // primary: primaryColor,
         onTap: (index) {
-          if (index == 0) {
-            Get.offAllNamed('/dashboard');
-          } else if (index == 1) {
-            Get.offAllNamed('/leave-request');
-          } else if (index == 2) {
-            Get.offAllNamed('/check-in'); 
-          } else if (index == 3) {
-            Get.offAllNamed('/history');
-          } else if (index == 4) {
-            // Stay on this page
-          }
+          if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
+          if (index == 1) Get.offAllNamed(AppRoutes.LEAVE_REQUEST);
+          if (index == 2) Get.offAllNamed(AppRoutes.CHECK_IN);
+          if (index == 3) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
+          if (index == 4) Get.offAllNamed(AppRoutes.SLIP);
         },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.timer_off), label: 'Time Off'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Absence'),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-          BottomNavigationBarItem(icon: Icon(Icons.receipt), label: 'Slip Pay'),
-        ],
       ),
     );
   }

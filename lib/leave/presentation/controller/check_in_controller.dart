@@ -3,15 +3,18 @@ import 'package:camera/camera.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CheckInController extends GetxController {
 
   RxBool isLoading = true.obs;
   RxString currentTime = ''.obs;
   RxString currentDate = ''.obs;
-  RxString currentLocation = 'Search Loation...'.obs;
+  RxString currentLocation = 'Searching Location...'.obs;
+  RxBool isLocationReady = false.obs;
 
   CameraController? cameraController;
   late List<CameraDescription> cameras;
@@ -42,8 +45,8 @@ class CheckInController extends GetxController {
   Future<void> _initializeCamera() async {
     try {
       cameras = await availableCameras();
-       if (cameras.isEmpty) {
-        Get.snackbar('Camera Error', 'No camera Found.');
+        if (cameras.isEmpty) {
+        Fluttertoast.showToast(msg: "Camera Error: No camera found.");
         return;
       }
 
@@ -61,35 +64,100 @@ class CheckInController extends GetxController {
       await cameraController!.initialize();
     } catch (e) {
       cameraController = null; 
-      Get.snackbar(
-        'Camera Error',
-        'Failed to initialize camera. Ensure permission has been granted..',
+      Fluttertoast.showToast(
+        msg: "Failed to initialize camera. Ensure permission has been granted.",
         backgroundColor: Colors.red,
-        colorText: Colors.white,
+        textColor: Colors.white,
+        toastLength: Toast.LENGTH_LONG,
       );
     }
   }
 
   Future<void> _getCurrentLocation() async {
+    isLocationReady(false);
+    currentLocation('Searching for location...');
     try {
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          currentLocation('Location permission denied');
-          return;
+          throw PermissionDeniedException("Location permission denied by user.");
         }
       }
-      
+
+      if (permission == LocationPermission.deniedForever) {
+        throw PermissionDeniedException(
+            "Location permission is permanently denied. Please enable it manually in settings.");
+      }
+
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
+        desiredAccuracy: LocationAccuracy.medium,
+      ).timeout(const Duration(seconds: 15));
       
-      currentLocation('Lat: ${position.latitude}, Long: ${position.longitude}');
-    
-    } catch (e) {
+      await _updateLocationFromPosition(position);
+
+    } on TimeoutException {
       currentLocation('Failed to get location');
-      Get.snackbar('Location Error', 'Failed to get location: $e');
+      isLocationReady(false);
+      Fluttertoast.showToast(
+        msg: "Request Timed Out: GPS signal is weak. Try again in an open area.",
+        backgroundColor: Colors.orange,
+        textColor: Colors.white,
+        toastLength: Toast.LENGTH_LONG,
+      );
+    } on PermissionDeniedException catch (e) {
+      currentLocation('Location permission denied');
+      isLocationReady(false);
+      Fluttertoast.showToast(
+        msg: e.message ?? "Permission denied. Please enable it in the app settings.",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        toastLength: Toast.LENGTH_LONG,
+      );
+    } on LocationServiceDisabledException {
+      currentLocation('Location service is off');
+      isLocationReady(false);
+      Fluttertoast.showToast(
+        msg: "GPS is not Active. Please enable location services.",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        toastLength: Toast.LENGTH_LONG,
+      );
+    } catch (e) {
+      currentLocation('An error occurred');
+      isLocationReady(false);
+      Fluttertoast.showToast(
+        msg: "An unknown error occurred: $e",
+        toastLength: Toast.LENGTH_LONG,
+      );
+      print("Unknown error: $e");
+    }
+  }
+
+  // ==========================================================
+  // PERBAIKAN UTAMA ADA DI FUNGSI DI BAWAH INI
+  // ==========================================================
+  Future<void> _updateLocationFromPosition(Position position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+        String address = "${place.street}, ${place.subLocality}, ${place.locality}";
+        currentLocation(address);
+        isLocationReady(true);
+      } else {
+        currentLocation("Address not found.");
+        isLocationReady(false);
+      }
+    } catch (e) {
+      currentLocation("Lat: ${position.latitude}, Long: ${position.longitude}");
+      // INI BAGIAN PENTING YANG DIPERBAIKI:
+      // Pastikan status menjadi true meskipun hanya menampilkan koordinat
+      isLocationReady(true);
     }
   }
 
@@ -101,6 +169,15 @@ class CheckInController extends GetxController {
   }
 
   void checkIn() {
+    if (!isLocationReady.value) {
+      Fluttertoast.showToast(
+        msg: "Cannot check in. Please wait until your location is found.",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return;
+    }
+
     final Map<String, String> arguments = {
       'time': currentTime.value,
       'location': currentLocation.value,
@@ -109,6 +186,6 @@ class CheckInController extends GetxController {
     timer?.cancel();
     cameraController = null;
 
-       Get.offNamed(AppRoutes.CHECK_IN_SUCCESS, arguments: arguments);
+    Get.offNamed(AppRoutes.CHECK_IN_SUCCESS, arguments: arguments);
   }
 }

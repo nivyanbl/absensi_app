@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
-import 'package:employment_attendance/leave/presentation/controller/check_in_controller.dart';
+// Pastikan path ke controller Anda sudah benar
+import 'package:employment_attendance/leave/presentation/controller/check_in_controller.dart'; 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -100,24 +101,33 @@ class CheckInPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      ElevatedButton(
-                        onPressed: controller.checkIn,
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: const Color(0xFF6EA07A),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
+
+                      Obx(() {
+                        return ElevatedButton(
+                          onPressed: controller.isLocationReady.value
+                              ? controller.checkIn
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 50),
+                            backgroundColor: controller.isLocationReady.value
+                                ? const Color(0xFF6EA07A) 
+                                : Colors.grey,            
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                           ),
-                        ),
-                        child: const Text(
-                          'Check In',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                          child: Text(
+                            controller.isLocationReady.value
+                                ? 'Check In'
+                                : 'Waiting for Location...',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                     ],
                   ),
                 ),

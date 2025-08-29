@@ -11,6 +11,7 @@ import 'package:employment_attendance/notification/presentation/pages/notificati
 import 'package:employment_attendance/profile/presentation/pages/profile_page.dart';
 import 'package:employment_attendance/auth/presentation/pages/register_page.dart';
 import 'package:employment_attendance/auth/presentation/pages/forgotPassword_page.dart';
+import 'package:employment_attendance/settings/presentation/pages/settings_page.dart';
 import 'package:employment_attendance/slip/presentation/pages/slip_page.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:get/get.dart';
@@ -30,6 +31,7 @@ class AppPages {
     GetPage(name: AppRoutes.CHECK_IN_SUCCESS,page: () => const CheckInSuccessPage()),
     GetPage(name: AppRoutes.SLIP, page: () => const SlipPayPage()),
     GetPage(name: AppRoutes.FORGOT_PASSWORD, page: () => ForgotPasswordPage()),
-    GetPage(name: AppRoutes.ATTENDANCE_HISTORY, page: ()=> const AttendanceHistoryPage())
+    GetPage(name: AppRoutes.ATTENDANCE_HISTORY, page: ()=> const AttendanceHistoryPage()),
+    GetPage(name: AppRoutes.SETTINGS, page:()=> const SettingsPage())
   ];
 }
