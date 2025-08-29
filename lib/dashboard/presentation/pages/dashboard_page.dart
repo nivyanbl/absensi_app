@@ -110,6 +110,13 @@ class DashboardPage extends StatelessWidget {
               title: const Text('Report'),
               onTap: () => Navigator.pop(context),
             ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: ()  {
+                Get.toNamed(AppRoutes.SETTINGS);
+              },
+            ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout),
