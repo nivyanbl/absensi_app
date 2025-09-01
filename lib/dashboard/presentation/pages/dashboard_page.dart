@@ -103,7 +103,9 @@ class DashboardPage extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.task),
               title: const Text('Tasks'),
-              onTap: () => Navigator.pop(context),
+              onTap: (){
+                Get.toNamed(AppRoutes.TASK);
+              },
             ),
             ListTile(
               leading: const Icon(Icons.report),

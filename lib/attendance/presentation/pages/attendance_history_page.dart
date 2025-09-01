@@ -15,6 +15,10 @@ class AttendanceHistoryPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Get.back(),
+        ),
         title: const Text(
           'Attendance History',
           style: TextStyle(fontWeight: FontWeight.bold),
