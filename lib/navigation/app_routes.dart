@@ -15,7 +15,5 @@ class AppRoutes {
   static const FORGOT_PASSWORD = '/forgot-password';
   static const ATTENDANCE_HISTORY = '/attendance-history';
   static const SETTINGS = '/settings';
-  static const TASK =   '/task';
-  static const ADDTASK = '/add-task';
   
 }
