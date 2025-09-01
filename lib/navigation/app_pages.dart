@@ -14,6 +14,8 @@ import 'package:employment_attendance/auth/presentation/pages/forgotPassword_pag
 import 'package:employment_attendance/settings/presentation/pages/settings_page.dart';
 import 'package:employment_attendance/slip/presentation/pages/slip_page.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
+import 'package:employment_attendance/task/presentation/pages/create_task_page.dart';
+import 'package:employment_attendance/task/presentation/pages/task_page.dart';
 import 'package:get/get.dart';
 
 class AppPages {
@@ -32,6 +34,8 @@ class AppPages {
     GetPage(name: AppRoutes.SLIP, page: () => const SlipPayPage()),
     GetPage(name: AppRoutes.FORGOT_PASSWORD, page: () => ForgotPasswordPage()),
     GetPage(name: AppRoutes.ATTENDANCE_HISTORY, page: ()=> const AttendanceHistoryPage()),
-    GetPage(name: AppRoutes.SETTINGS, page:()=> const SettingsPage())
+    GetPage(name: AppRoutes.SETTINGS, page:()=> const SettingsPage()),
+    GetPage(name: AppRoutes.TASK, page: ()=> const TaskPage()),
+    GetPage(name: AppRoutes.ADDTASK, page:()=> const CreateTaskPage()),
   ];
 }
