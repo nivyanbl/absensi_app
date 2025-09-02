@@ -1,4 +1,3 @@
-import 'dart:html' as html;
 import 'package:employment_attendance/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -47,53 +46,21 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
       isUploading = true;
     });
     try {
-      if (identical(0, 0.0)) {
-        html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
-        uploadInput.accept = '*/*';
-        uploadInput.click();
-        bool fileHandled = false;
-        uploadInput.onChange.listen((e) {
-          fileHandled = true;
-          final files = uploadInput.files;
-          if (files != null && files.isNotEmpty) {
-            final file = files[0];
-            setState(() {
-              uploadedFileName = file.name;
-            });
-            Get.snackbar('Success', 'File berhasil dipilih!',
-                snackPosition: SnackPosition.TOP,
-                backgroundColor: Colors.white,
-                colorText: Colors.black,
-                icon: const Icon(Icons.check_circle, color: Color(0xFF6EA07A)));
-          }
-          setState(() {
-            isUploading = false;
-          });
-        });
-        Future.delayed(const Duration(seconds: 2), () {
-          if (!fileHandled) {
-            setState(() {
-              isUploading = false;
-            });
-          }
-        });
-      } else {
-        final result = await FilePicker.platform.pickFiles();
-        if (result != null && result.files.single.path != null) {
-          final fileName = result.files.single.name;
-          setState(() {
-            uploadedFileName = fileName;
-          });
-          Get.snackbar('Success', 'File berhasil diupload!',
-              snackPosition: SnackPosition.TOP,
-              backgroundColor: Colors.white,
-              colorText: Colors.black,
-              icon: const Icon(Icons.check_circle, color: Color(0xFF6EA07A)));
-        }
+      final result = await FilePicker.platform.pickFiles();
+      if (result != null && result.files.single.path != null) {
+        final fileName = result.files.single.name;
         setState(() {
-          isUploading = false;
+          uploadedFileName = fileName;
         });
+        Get.snackbar('Success', 'File berhasil diupload!',
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.white,
+            colorText: Colors.black,
+            icon: const Icon(Icons.check_circle, color: Color(0xFF6EA07A)));
       }
+      setState(() {
+        isUploading = false;
+      });
     } catch (e) {
       setState(() {
         isUploading = false;
