@@ -1,11 +1,13 @@
 class Task{
+  final String id;
   final String title;
   final String description;
   final String date;
-  final String status;
+  String status;
   final String image;
 
   Task({
+    required this.id,
     required this.title,
     required this.description,
     required this.date,
