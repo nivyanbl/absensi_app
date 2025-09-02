@@ -1,9 +1,11 @@
+import 'dart:html' as html;
 import 'package:employment_attendance/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:employment_attendance/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:employment_attendance/leave/presentation/pages/leave_history_page.dart';
 import 'package:get/get.dart';
+import 'package:file_picker/file_picker.dart';
 
 class LeaveRequestPage extends StatefulWidget {
   const LeaveRequestPage({super.key});
@@ -17,6 +19,8 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
   TextEditingController reasonController = TextEditingController();
+  String? uploadedFileName;
+  bool isUploading = false;
 
   final List<String> leaveTypes = ['Sick', 'Annual leave', 'Other'];
 
@@ -35,6 +39,70 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
           endDate = picked;
         }
       });
+    }
+  }
+
+  Future<void> pickAndUploadFile() async {
+    setState(() {
+      isUploading = true;
+    });
+    try {
+      if (identical(0, 0.0)) {
+        html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
+        uploadInput.accept = '*/*';
+        uploadInput.click();
+        bool fileHandled = false;
+        uploadInput.onChange.listen((e) {
+          fileHandled = true;
+          final files = uploadInput.files;
+          if (files != null && files.isNotEmpty) {
+            final file = files[0];
+            setState(() {
+              uploadedFileName = file.name;
+            });
+            Get.snackbar('Success', 'File berhasil dipilih!',
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Colors.white,
+                colorText: Colors.black,
+                icon: const Icon(Icons.check_circle, color: Color(0xFF6EA07A)));
+          }
+          setState(() {
+            isUploading = false;
+          });
+        });
+        Future.delayed(const Duration(seconds: 2), () {
+          if (!fileHandled) {
+            setState(() {
+              isUploading = false;
+            });
+          }
+        });
+      } else {
+        final result = await FilePicker.platform.pickFiles();
+        if (result != null && result.files.single.path != null) {
+          final fileName = result.files.single.name;
+          setState(() {
+            uploadedFileName = fileName;
+          });
+          Get.snackbar('Success', 'File berhasil diupload!',
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: Colors.white,
+              colorText: Colors.black,
+              icon: const Icon(Icons.check_circle, color: Color(0xFF6EA07A)));
+        }
+        setState(() {
+          isUploading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isUploading = false;
+      });
+      Get.snackbar('Error', 'Gagal upload file! $e',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.white,
+          colorText: Colors.red,
+          icon: const Icon(Icons.error, color: Colors.red));
     }
   }
 
@@ -297,21 +365,37 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 24),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black12),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Column(
-                          children: [
-                            Icon(Icons.upload_file,
-                                size: 32, color: Colors.grey),
-                            SizedBox(height: 8),
-                            Text('Upload supporting documents',
-                                style: TextStyle(color: Colors.grey)),
-                          ],
+                      InkWell(
+                        onTap: isUploading ? null : pickAndUploadFile,
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(vertical: 24),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black12),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(
+                                uploadedFileName != null
+                                    ? Icons.check_circle
+                                    : Icons.upload_file,
+                                size: 32,
+                                color: uploadedFileName != null
+                                    ? Color(0xFF6EA07A)
+                                    : Colors.grey,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                uploadedFileName != null
+                                    ? 'File uploaded: $uploadedFileName'
+                                    : (isUploading
+                                        ? 'Uploading...'
+                                        : 'Upload supporting documents'),
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -356,7 +440,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
         ),
       ),
       bottomNavigationBar: CustomBottomNav(
-        currentIndex: 1, 
+        currentIndex: 1,
         // primary: primaryColor,
         onTap: (index) {
           if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
