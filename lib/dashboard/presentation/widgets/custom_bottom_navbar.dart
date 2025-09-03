@@ -28,90 +28,90 @@ class CustomBottomNav extends StatelessWidget {
       NavItem(Icons.account_balance_wallet_outlined, 'Slip Pay'),
     ];
 
+    List<Widget> navItems = [];
+
+    for (int i = 0; i < items.length; i++) {
+      bool isActive = i == currentIndex;
+
+      navItems.add(
+        Expanded(
+          child: InkWell(
+            onTap: () => onTap(i),
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            child: _buildNavItem(items[i], isActive),
+          ),
+        ),
+      );
+
+      if (i < items.length - 1) {
+        navItems.add(
+          const VerticalDivider(
+            width: 1,
+            thickness: 1,
+            color: Colors.black12,
+            indent: 18,
+            endIndent: 18, 
+          ),
+        );
+      }
+    }
+
     return SafeArea(
-      top: false, 
+      top: false,
       child: Container(
         height: 68,
         decoration: const BoxDecoration(
           color: Colors.white,
           border: Border(top: BorderSide(color: Colors.black12)),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 8), 
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: List.generate(items.length, (i) {
-            final isActive = i == currentIndex;
-
-            
-            final tab = AnimatedContainer(
-              duration: const Duration(milliseconds: 180),
-              curve: Curves.easeInOut,
-              padding: EdgeInsets.symmetric(
-                horizontal: isActive ? 18 : 12,
-                vertical: isActive ? 10 : 8, 
-              ),
-              decoration: isActive
-                  ? BoxDecoration(
-                      color: primary,
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(28), 
-                      ),
-                    )
-                  : const BoxDecoration(color: Colors.transparent),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    items[i].icon,
-                    size: 22,
-                    color: isActive ? Colors.white : Colors.black87,
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    items[i].label,
-                    style: TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-                      color: isActive ? Colors.white : Colors.black54,
-                    ),
-                  ),
-                ],
-              ),
-            );
-
-            final withDivider = i == 0
-                ? tab
-                : Stack(
-                    children: [
-                      Positioned.fill(
-                        left: 0,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            width: 1,
-                            height: 32,
-                            color: Colors.black12,
-                          ),
-                        ),
-                      ),
-                      tab,
-                    ],
-                  );
-
-            return Expanded(
-              child: InkWell(
-                onTap: () => onTap(i),
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                child: Align(
-                  alignment: Alignment.bottomCenter, 
-                  child: withDivider,
-                ),
-              ),
-            );
-          }),
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.stretch, 
+          children: navItems,
         ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(NavItem item, bool isActive) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 180),
+      curve: Curves.easeInOut,
+      alignment: Alignment.center, 
+      padding: EdgeInsets.symmetric(
+        horizontal: isActive ? 18 : 12,
+        vertical: isActive ? 10 : 8,
+      ),
+      decoration: isActive
+          ? BoxDecoration(
+              color: primary,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(28),
+              ),
+            )
+          : const BoxDecoration(color: Colors.transparent),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            item.icon,
+            size: 22,
+            color: isActive ? Colors.white : Colors.black87,
+          ),
+          const SizedBox(height: 6),
+          Text(
+            item.label,
+            style: TextStyle(
+              fontSize: 12.5,
+              fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
+              color: isActive ? Colors.white : Colors.black54,
+            ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+        ],
       ),
     );
   }
