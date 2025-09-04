@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:employment_attendance/task/domain/models/task_model.dart';
 import 'package:employment_attendance/task/presentation/controllers/task_controller.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +29,13 @@ class TaskCard extends StatelessWidget {
         height: 60,
         width: 60,
         fit: BoxFit.cover,
+        errorBuilder: (context, error, StackTrace){
+          return Image.asset
+          ("assets/image/task.png",
+          height: 60,
+          width: 60,
+          );
+        }
       );
     }
 
@@ -130,12 +136,7 @@ class TaskCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    task.image,
-                    height: 60,
-                    width: 60,
-                    fit: BoxFit.cover,
-                  ),
+                   child: imageWidget, 
                 ),
                 const SizedBox(width: 16),
                 Expanded(

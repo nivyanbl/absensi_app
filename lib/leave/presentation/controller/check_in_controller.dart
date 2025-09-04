@@ -134,9 +134,6 @@ class CheckInController extends GetxController {
     }
   }
 
-  // ==========================================================
-  // PERBAIKAN UTAMA ADA DI FUNGSI DI BAWAH INI
-  // ==========================================================
   Future<void> _updateLocationFromPosition(Position position) async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -155,8 +152,6 @@ class CheckInController extends GetxController {
       }
     } catch (e) {
       currentLocation("Lat: ${position.latitude}, Long: ${position.longitude}");
-      // INI BAGIAN PENTING YANG DIPERBAIKI:
-      // Pastikan status menjadi true meskipun hanya menampilkan koordinat
       isLocationReady(true);
     }
   }

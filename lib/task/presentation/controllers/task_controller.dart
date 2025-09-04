@@ -1,3 +1,4 @@
+import 'package:employment_attendance/task/data/repositories/task_repository.dart';
 import 'package:employment_attendance/task/domain/models/task_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,74 +6,39 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class TaskController extends GetxController {
+  final TaskRepository _taskRepository = TaskRepository();
+
   var tasks = <Task>[].obs;
   var pickedImage = Rx<File?>(null);
+  var isLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-
     fetchTasks();
   }
 
-  void fetchTasks() {
-    var dummyTask = [
-      Task(
-          id: '1',
-          title: 'Prepare monthly report',
-          description:
-              'A brief summary of the company/divsions performance for 1 month',
-          date: 'Wednesday 30 July 2025',
-          status: 'Pending',
-          image: "assets/image/task.png"),
-      Task(
-          id: '2',
-          title: 'Prepare monthly report',
-          description:
-              'A brief summary of the company/divsions performance for 1 month',
-          date: 'Wednesday 30 July 2025',
-          status: 'Pending',
-          image: "assets/image/task.png"),
-      Task(
-          id: '3',
-          title: 'Meeting with client',
-          description: 'Continue discussing the website project',
-          date: 'Monday 4 August 2025',
-          status: 'Complate',
-          image: "assets/image/task.png"),
-      Task(
-          id: '4',
-          title: 'Meeting with client',
-          description: 'Continue discussing the website project',
-          date: 'Monday 4 August 2025',
-          status: 'Complate',
-          image: "assets/image/task.png"),
-      Task(
-        id: '5',
-        title: 'Meeting with client',
-        description: 'Continue discussing the website project',
-        date: 'Monday 4 August 2025',
-        status: 'Complate',
-        image: "assets/image/task.png",
-      ),
-    ];
-    tasks.assignAll(dummyTask);
+  void fetchTasks() async {
+    try {
+      isLoading.value = true;
+      var fetchedTasks = await _taskRepository.getTasks();
+      tasks.assignAll(fetchedTasks);
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  //untuk mengubah status
+  // buat ubah status
   void updateTaskStatus(String id) {
     int index = tasks.indexWhere((task) => task.id == id);
     if (index != -1) {
       tasks[index].status =
-          tasks[index].status == 'Pending' ? 'Complate' : 'Pending';
-          tasks.refresh();
-          Get.snackbar('Succses', 'Task status has been update',
+          tasks[index].status == 'Pending' ? 'Completed' : 'Pending';
+      tasks.refresh();
+      Get.snackbar('Success', 'Task status has been updated',
           backgroundColor: Colors.green, colorText: Colors.white);
     }
   }
-
-
-  
 
   void addTask({
     required String title,
@@ -80,7 +46,7 @@ class TaskController extends GetxController {
     required String date,
     required String status,
     File? imageFile,
-  }) {
+  }) async {
     final newTask = Task(
       id: DateTime.now().toString(),
       title: title,
@@ -89,8 +55,8 @@ class TaskController extends GetxController {
       status: status,
       image: imageFile?.path ?? 'assets/image/task.png',
     );
-
-    tasks.insert(0, newTask);
+    await _taskRepository.addTask(newTask);
+    fetchTasks();
     pickedImage.value = null;
   }
 

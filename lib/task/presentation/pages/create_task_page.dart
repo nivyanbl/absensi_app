@@ -38,6 +38,7 @@ class CreateTaskPage extends StatelessWidget {
                   description: descriptionController.text,
                   date: dateController.text,
                   status: status.value,
+                  imageFile: taskController.pickedImage.value,
                 );
                 Get.back();
               },
