@@ -2,6 +2,7 @@ import 'package:employment_attendance/attendance/presentation/pages/attendance_h
 import 'package:employment_attendance/leave/presentation/pages/check_in_page.dart';
 import 'package:employment_attendance/leave/presentation/pages/check_in_success_page.dart';
 import 'package:employment_attendance/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:employment_attendance/leave/presentation/pages/check_out_page.dart';
 import 'package:employment_attendance/profile/presentation/pages/edit_profile_page.dart';
 import 'package:employment_attendance/leave/presentation/pages/leave_history_page.dart';
 import 'package:employment_attendance/leave/presentation/pages/leave_request_page.dart';
@@ -37,5 +38,6 @@ class AppPages {
     GetPage(name: AppRoutes.SETTINGS, page:()=> const SettingsPage()),
     GetPage(name: AppRoutes.TASK, page: ()=> const TaskPage()),
     GetPage(name: AppRoutes.ADDTASK, page:()=> const CreateTaskPage()),
+    GetPage(name: AppRoutes.CHECK_OUT, page: ()=> const CheckOutPage()),
   ];
 }

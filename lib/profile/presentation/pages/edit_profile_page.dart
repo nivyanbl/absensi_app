@@ -141,9 +141,9 @@ class EditProfilePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Save',
-                    style: const TextStyle(color: Colors.white),
+                    style:  TextStyle(color: Colors.white),
                   ),
                 ),
               ],

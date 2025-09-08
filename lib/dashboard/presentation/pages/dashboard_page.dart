@@ -1,3 +1,4 @@
+import 'package:employment_attendance/dashboard/presentation/widgets/check_out_card.dart';
 import 'package:employment_attendance/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class DashboardPage extends StatelessWidget {
     final Color primaryColor = const Color(0xFF6EA07A);
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         backgroundColor: primaryColor,
         elevation: 0,
@@ -103,7 +104,7 @@ class DashboardPage extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.task),
               title: const Text('Tasks'),
-              onTap: (){
+              onTap: () {
                 Get.toNamed(AppRoutes.TASK);
               },
             ),
@@ -115,7 +116,7 @@ class DashboardPage extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
-              onTap: ()  {
+              onTap: () {
                 Get.toNamed(AppRoutes.SETTINGS);
               },
             ),
@@ -190,7 +191,7 @@ class DashboardPage extends StatelessWidget {
                         crossAxisCount: 2,
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
-                        childAspectRatio: 1.7,
+                        childAspectRatio: 1.6,
                       ),
                       itemBuilder: (context, index) {
                         final data = overviewData[index];
@@ -199,8 +200,9 @@ class DashboardPage extends StatelessWidget {
                           curve: Curves.easeInOut,
                           padding: const EdgeInsets.all(2.0),
                           child: Card(
-                            elevation: 3,
-                            shadowColor: Colors.black12,
+                            color: Colors.white,
+                            elevation: 2,
+                            // shadowColor: Colors.black12,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
                             ),
@@ -271,6 +273,9 @@ class DashboardPage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 24),
+              const CheckOutCard(),
+              const SizedBox(height: 24),
+
               // Company News Section
               const Text("Company News",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -366,7 +371,7 @@ class DashboardPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: CustomBottomNav(
-        currentIndex: 0, 
+        currentIndex: 0,
         // primary: primaryColor,
         onTap: (index) {
           if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);

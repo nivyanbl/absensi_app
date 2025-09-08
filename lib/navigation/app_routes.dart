@@ -17,5 +17,6 @@ class AppRoutes {
   static const SETTINGS = '/settings';
   static const TASK =   '/task';
   static const ADDTASK = '/add-task';
+  static const CHECK_OUT = '/check-out';
   
 }
