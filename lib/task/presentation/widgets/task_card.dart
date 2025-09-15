@@ -24,19 +24,21 @@ class TaskCard extends StatelessWidget {
         fit: BoxFit.cover,
       );
     } else {
-      imageWidget = Image.file(
-        File(task.image),
-        height: 60,
-        width: 60,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, StackTrace){
-          return Image.asset
-          ("assets/image/task.png",
+      imageWidget = Image.file(File(task.image),
           height: 60,
           width: 60,
-          );
-        }
-      );
+          fit: BoxFit.cover, errorBuilder: (context, error, StackTrace) {
+        print("Error loading image: $error");
+        return Container(
+          height: 60,
+          width: 60,
+          color: Colors.grey,
+          child: const Icon(
+            Icons.broken_image,
+            color: Colors.grey,
+          ),
+        );
+      });
     }
 
     return GestureDetector(
@@ -68,7 +70,6 @@ class TaskCard extends StatelessWidget {
                   ),
                   onTap: () {
                     controller.updateTaskStatus(task.id);
-                     
                   },
                 ),
               ],
@@ -136,7 +137,7 @@ class TaskCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                   child: imageWidget, 
+                  child: imageWidget,
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -150,7 +151,7 @@ class TaskCard extends StatelessWidget {
                           fontSize: 16,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         task.description,
                         style: const TextStyle(

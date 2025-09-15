@@ -1,12 +1,12 @@
+import 'package:employment_attendance/auth/presentation/controllers/auth.controller.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class LoginPage extends StatelessWidget {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   final RxBool _obscurePassword = true.obs;
+
+  final AuthController authController = Get.put(AuthController());
 
   LoginPage({super.key});
 
@@ -68,7 +68,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   TextField(
-                    controller: _emailController,
+                    controller: authController.emailController,
                     decoration: InputDecoration(
                       hintText: 'siesta@gmail.com',
                       border: OutlineInputBorder(
@@ -94,7 +94,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Obx(() => TextField(
-                        controller: _passwordController,
+                        controller: authController.passwordController,
                         obscureText: _obscurePassword.value,
                         decoration: InputDecoration(
                           hintText: 'Enter your password',
@@ -121,7 +121,7 @@ class LoginPage extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: TextButton(
                       onPressed: () {
-                         Get.toNamed(AppRoutes.FORGOT_PASSWORD);
+                        Get.toNamed(AppRoutes.FORGOT_PASSWORD);
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -140,30 +140,36 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 60,
-                    child: ElevatedButton(
-                      onPressed: () {
-                         Get.toNamed(AppRoutes.DASHBOARD);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF6EA07A),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                  Obx(() {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 60,
+                      child: ElevatedButton(
+                        onPressed:  authController.isLoading.value
+                            ? null
+                            : () => authController.loginUser(),
+                        style: ElevatedButton.styleFrom(
+                           backgroundColor: const Color(0xFF6EA07A),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 0,
                         ),
-                        elevation: 0,
+                        child: authController.isLoading.value
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                'Sign In',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22,
+                                  color: Colors.white,
+                                ),
+                              ),
                       ),
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
+                    );
+                  }),
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () {

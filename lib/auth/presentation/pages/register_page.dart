@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:employment_attendance/auth/presentation/pages/login_page.dart';
+import 'package:employment_attendance/auth/presentation/controllers/auth.controller.dart';
 
 class RegisterPage extends StatelessWidget {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   final RxBool _obscurePassword = true.obs;
+  final AuthController authController = Get.put(AuthController());
 
   RegisterPage({super.key});
 
@@ -37,7 +36,6 @@ class RegisterPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  // Create an account 👋
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -57,7 +55,17 @@ class RegisterPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   TextField(
-                    controller: _emailController,
+                    controller: authController.fullNameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Full Name',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.person),
+                    ),
+                    keyboardType: TextInputType.name,
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: authController.registerEmailController,
                     decoration: const InputDecoration(
                       labelText: 'Email',
                       border: OutlineInputBorder(),
@@ -67,7 +75,7 @@ class RegisterPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Obx(() => TextField(
-                        controller: _passwordController,
+                        controller: authController.registerPasswordController,
                         obscureText: _obscurePassword.value,
                         decoration: InputDecoration(
                           labelText: 'Password',
@@ -83,26 +91,32 @@ class RegisterPage extends StatelessWidget {
                           ),
                         ),
                       )),
+                  const SizedBox(height: 16),
+                 
                   const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.offAll(() => LoginPage());
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  Obx(() {
+                    return ElevatedButton(
+                      onPressed: authController.isLoading.value
+                          ? null
+                          : () => authController.registerUser(),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        textStyle: const TextStyle(fontSize: 18),
+                        backgroundColor: const Color(0xFF6EA07A),
                       ),
-                      textStyle: const TextStyle(fontSize: 18),
-                      backgroundColor: const Color(0xFF6EA07A),
-                    ),
-                    child: const Text('Register',
-                        style: TextStyle(color: Colors.white)),
-                  ),
+                      child: authController.isLoading.value
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text('Register',
+                              style: TextStyle(color: Colors.white)),
+                    );
+                  }),
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () {
-                      Get.to(() => LoginPage());
+                      Get.back();
                     },
                     child: const Text(
                       'Already have an account? Login',

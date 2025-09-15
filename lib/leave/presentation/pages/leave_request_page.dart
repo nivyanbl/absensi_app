@@ -1,7 +1,6 @@
 import 'package:employment_attendance/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:employment_attendance/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:employment_attendance/leave/presentation/pages/leave_history_page.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
@@ -349,7 +348,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                     : Icons.upload_file,
                                 size: 32,
                                 color: uploadedFileName != null
-                                    ? Color(0xFF6EA07A)
+                                    ?const Color(0xFF6EA07A)
                                     : Colors.grey,
                               ),
                               const SizedBox(height: 8),

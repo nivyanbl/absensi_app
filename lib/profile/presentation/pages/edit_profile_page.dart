@@ -2,14 +2,51 @@ import 'package:employment_attendance/profile/presentation/controller/profile_co
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class EditProfilePage extends StatelessWidget {
+class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final ProfileController controller = Get.find();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
 
+class _EditProfilePageState extends State<EditProfilePage> {
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+  
+  final ProfileController controller = Get.find();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    final user = controller.user.value;
+    _nameController = TextEditingController(text: user?.fullName ?? '');
+    _emailController = TextEditingController(text: user?.email ?? '');
+    _phoneController = TextEditingController(); 
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+  
+  void _pickImage() {
+    print('Fungsi pickImage dipanggil! Logika akan ditambahkan nanti.');
+  }
+
+  void _saveProfile() {
+    if (_formKey.currentState!.validate()) {
+       print('Fungsi saveProfile dipanggil! Data siap disimpan.');
+       Get.back();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -24,54 +61,57 @@ class EditProfilePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Profile Image",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+          child: Theme(
+            data: Theme.of(context).copyWith(
+                textSelectionTheme: const TextSelectionThemeData(
+                  cursorColor: Color(0xFF6EA07A),
+                  selectionColor: Color(0xFF6EA07A),
+                  selectionHandleColor: Color(0xFF6EA07A),),
+                  inputDecorationTheme: const InputDecorationTheme(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF6EA07A), width: 2)
+                    ),
+                  )
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () => controller.pickImage(),
-                      child: Obx((){
-                          final pickedImage = controller.pickedImage.value; 
-                       return Stack(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Profile Image",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: _pickImage,
+                        child:  Stack(
                           alignment: Alignment.bottomRight,
                           children: [
-                            CircleAvatar(
+                             CircleAvatar(
                               radius: 40,
-                              backgroundColor: const Color(0xFFBDBDBD),
-                              backgroundImage: pickedImage != null
-                                  ? FileImage(pickedImage)
-                                  : null,
-                              child: pickedImage == null
-                                  ? const Icon(Icons.person, size: 50, color: Colors.grey)
-                                  : null,
+                              backgroundColor: Color(0xFFBDBDBD),
+                              child: Icon(Icons.person, size: 50, color: Colors.grey),
                             ),
-                            Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: const BoxDecoration(
+                              Container(
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              child: const Icon(Icons.image,
-                                  color: Colors.black, size: 12),
+                              child: Icon(Icons.image, color: Colors.black, size: 12),
                             ),
                           ],
-                        );
-                      }),
-                    ),
-                    const SizedBox(width: 30),
-                    OutlinedButton(
-                        onPressed: () => controller.pickImage(),
+                        ),
+                      ),
+                      const SizedBox(width: 30),
+                      OutlinedButton(
+                        onPressed: _pickImage,
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 24, vertical: 4),
@@ -86,67 +126,60 @@ class EditProfilePage extends StatelessWidget {
                               color: Colors.black,
                               fontSize: 16),
                         )),
-                  ],
-                ),
-                const SizedBox(height: 32),
-
-                //list of text fields
-                _buildTextField(
-                    label: 'Name',
-                    hint: 'Enter your name',
-                    controller: controller.nameController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your name';
-                      }
-                      return null;
-                    }),
-                const SizedBox(height: 24),
-                _buildTextField(
-                    label: 'Email',
-                    hint: 'Enter your email',
-                    controller: controller.emailController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      return null;
-                    }),
-                const SizedBox(height: 24),
-                _buildTextField(
-                  label: 'Phone Number',
-                  hint: 'Enter your phone number',
-                  controller: controller.phoneController,
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 48),
-
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      controller.saveProfile();
-                      Get.back();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 48),
-                    backgroundColor: const Color(0xFF6EA07A),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  _buildTextField(
+                      label: 'Name',
+                      hint: 'Enter your name',
+                      controller: _nameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        return null;
+                      }),
+                  const SizedBox(height: 24),
+                  _buildTextField(
+                      label: 'Email',
+                      hint: 'Enter your email',
+                      controller: _emailController,
+                      validator: (value) {
+                         if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        return null;
+                      }),
+                  const SizedBox(height: 24),
+                  _buildTextField(
+                    label: 'Phone Number',
+                    hint: 'Enter your phone number',
+                    controller: _phoneController,
+                    keyboardType: TextInputType.phone,
+                     validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your phone number';
+                        }
+                        return null;
+                      },
+                  ),
+                  const SizedBox(height: 48),
+                  ElevatedButton(
+                    onPressed: _saveProfile,
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 48),
+                      backgroundColor: const Color(0xFF6EA07A),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                    child: const Text(
+                      'Save',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  child: const Text(
-                    'Save',
-                    style:  TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -156,7 +189,6 @@ class EditProfilePage extends StatelessWidget {
 
   Widget _buildTextField({
     required String label,
-    String? prefixText,
     String? hint,
     TextEditingController? controller,
     TextInputType? keyboardType,
@@ -176,8 +208,8 @@ class EditProfilePage extends StatelessWidget {
             children: const [
               TextSpan(
                   text: '*',
-                  style:
-                      TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      color: Colors.red, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
@@ -189,12 +221,8 @@ class EditProfilePage extends StatelessWidget {
           keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hint,
-            prefixText: prefixText,
             border: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
-            ),
-            focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.black),
             ),
           ),
           validator: validator,

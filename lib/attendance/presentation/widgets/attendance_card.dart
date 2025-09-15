@@ -1,10 +1,9 @@
-import 'package:employment_attendance/attendance/domain/models/attendance_model.dart';
-import 'package:employment_attendance/attendance/presentation/controllers/attendance_controller.dart';
 import 'package:flutter/material.dart';
-
+import 'package:employment_attendance/attendance/domain/models/attendance_model.dart';
 
 class AttendanceCard extends StatelessWidget {
   final AttendanceModel attendance;
+
   const AttendanceCard({super.key, required this.attendance});
 
   @override
@@ -13,114 +12,92 @@ class AttendanceCard extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.grey.withOpacity(0.1),
             spreadRadius: 1,
-            blurRadius: 10,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
           ),
-        ],
+        ], 
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             decoration: BoxDecoration(
-              color: primaryGreen,
-              borderRadius: BorderRadius.circular(12),
+              color: primaryGreen.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  attendance.date,
+                  attendance.date, 
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 32,
+                    color: primaryGreen,
                     fontWeight: FontWeight.bold,
+                    fontSize: 24,
                   ),
                 ),
                 Text(
-                  attendance.day,
+                  attendance.day, 
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
+                    color: primaryGreen,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
                   ),
                 ),
               ],
             ),
           ),
           const SizedBox(width: 16),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IntrinsicHeight(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildDetailColumn(attendance.checkIn, 'Check In'),
-                      const VerticalDivider(width: 1),
-                      _buildDetailColumn(attendance.checkOut, 'Check Out'),
-                      const VerticalDivider(width: 1),
-                      _buildDetailColumn(attendance.totalHours, 'Total Hours'),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on,
-                      color: primaryGreen,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        attendance.location,
-                        style: TextStyle(
-                          color: Colors.grey[700],
-                          fontSize: 14,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
+                _buildInfoRow(Icons.login, 'Check In', attendance.checkIn),
+                const SizedBox(height: 8),
+                _buildInfoRow(Icons.logout, 'Check Out', attendance.checkOut),
+                const SizedBox(height: 8),
+                _buildInfoRow(Icons.hourglass_bottom, 'Total Hours',
+                    attendance.totalHours),
               ],
             ),
+          ),
+          const SizedBox(width: 16),
+          const Icon(
+            Icons.location_on,
+            color: primaryGreen,
+            size: 28,
           ),
         ],
       ),
     );
   }
-  Widget _buildDetailColumn(String time, String label) {
-    return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            time,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.grey, size: 16),
+        const SizedBox(width: 8),
+        Text(
+          '$label: ',
+          style: const TextStyle(color: Colors.grey, fontSize: 12),
+        ),
+        Text(
+          value, 
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+            fontSize: 12,
           ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 12,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -50,7 +50,7 @@ class CheckOutPage extends StatelessWidget {
             Obx(() => Text(
                   controller.userPosition.value,
                   style: const TextStyle(
-                    color: Colors.grey,
+                    color: Colors.black,
                     fontSize: 16,
                   ),
                 )),
@@ -77,7 +77,7 @@ class CheckOutPage extends StatelessWidget {
             const SizedBox(height: 64,),
             const Text(
               "Check Time",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 8,
@@ -131,7 +131,7 @@ class CheckOutPage extends StatelessWidget {
         Text(
           value,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 20,
             color: Colors.black,
           ),
         ),

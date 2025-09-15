@@ -1,19 +1,25 @@
+import 'package:dio/dio.dart'; 
+import 'package:employment_attendance/core/services/api_service.dart';
 import 'package:employment_attendance/profile/domain/models/user_model.dart';
 
 class ProfileRepository {
-  Future<UserModel> getProfileData() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    print("Mengambil data dummy dari ProfileRepository...");
-    return UserModel(
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      position: 'UI/UX Designer',
-      phone: '+1 (555) 405-1234',
-    );
-  }
+  final ApiService _apiService = ApiService();
 
-  Future <void> saveProfileData (UserModel user ) async {
-    await Future.delayed(const Duration(seconds: 1));
-    print("Menyimpan data dari user: ${user.name} ke sumber data" );
+  Future<UserModel?> getUserProfile() async {
+    try {
+      final response = await _apiService.get('/auth/me');
+
+      if (response.statusCode == 200) {
+        return UserModel.fromJson(response.data['data']);
+      } else {
+        return null;
+      }
+    } on DioException catch (e) {
+      print('Error while retrieving profile: ${e.response?.data}');
+      return null;
+    } catch (e) {
+      print('An unexpected error occurred: $e');
+      return null;
+    }
   }
 }

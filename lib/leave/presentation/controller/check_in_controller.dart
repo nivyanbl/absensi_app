@@ -1,16 +1,19 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
+import 'package:employment_attendance/core/services/api_service.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 class CheckInController extends GetxController {
+  final ApiService _apiService = ApiService();
 
   RxBool isLoading = true.obs;
+  RxBool isCheckingIn = false.obs;
   RxString currentTime = ''.obs;
   RxString currentDate = ''.obs;
   RxString currentLocation = 'Searching Location...'.obs;
@@ -21,7 +24,7 @@ class CheckInController extends GetxController {
 
   Timer? timer;
 
-  @override
+   @override
   void onInit() {
     super.onInit();
     _initialize();
@@ -46,7 +49,7 @@ class CheckInController extends GetxController {
     try {
       cameras = await availableCameras();
         if (cameras.isEmpty) {
-        Fluttertoast.showToast(msg: "Camera Error: No camera found.");
+        Fluttertoast.showToast(msg: "Camera Error : Camera not found");
         return;
       }
 
@@ -163,7 +166,7 @@ class CheckInController extends GetxController {
     });
   }
 
-  void checkIn() {
+  void checkIn() async {
     if (!isLocationReady.value) {
       Fluttertoast.showToast(
         msg: "Cannot check in. Please wait until your location is found.",
@@ -173,14 +176,36 @@ class CheckInController extends GetxController {
       return;
     }
 
-    final Map<String, String> arguments = {
-      'time': currentTime.value,
-      'location': currentLocation.value,
-    };
-    cameraController?.dispose();
-    timer?.cancel();
-    cameraController = null;
+    try {
+      isCheckingIn(true); 
 
-    Get.offNamed(AppRoutes.CHECK_IN_SUCCESS, arguments: arguments);
+      final response = await _apiService.post(
+        '/attendance/clock-in',
+        data: {
+          'note': currentLocation.value,
+          'method': 'MOBILE'
+        },
+      );
+
+      if (response.statusCode == 201) {
+        final Map<String, String> arguments = {
+          'time': currentTime.value,
+          'location': currentLocation.value,
+        };
+        
+        cameraController?.dispose();
+        timer?.cancel();
+        cameraController = null;
+        
+        Get.offNamed(AppRoutes.CHECK_IN_SUCCESS, arguments: arguments);
+      } else {
+        Fluttertoast.showToast(msg: "Failed to clock in. Server returned status: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error during clock in: $e");
+      Fluttertoast.showToast(msg: "An error occurred during clock in.");
+    } finally {
+      isCheckingIn(false);
+    }
   }
 }

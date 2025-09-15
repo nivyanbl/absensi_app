@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
-import 'package:employment_attendance/leave/presentation/controller/check_in_controller.dart'; 
+import 'package:employment_attendance/leave/presentation/controller/check_in_controller.dart';
+import 'package:employment_attendance/navigation/app_routes.dart'; 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,7 @@ class CheckInPage extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Get.back(),
+          onPressed: () => Get.toNamed( AppRoutes.DASHBOARD),
         ),
         title: const Text('Absence',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),

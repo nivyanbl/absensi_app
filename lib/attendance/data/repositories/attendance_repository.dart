@@ -1,35 +1,46 @@
+import 'package:employment_attendance/core/services/api_service.dart';
+import 'package:intl/intl.dart';
 import 'package:employment_attendance/attendance/domain/models/attendance_model.dart';
 
 class AttendanceRepository {
-  Future<List<AttendanceModel>> getAttendanceHistory() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    
-    print("Mengambil data dummy dari AttendanceRepository...");
-    return [
-      AttendanceModel(
-        date: '22',
-        day: 'Wed',
-        checkIn: '07:59',
-        checkOut: '17:02',
-        totalHours: '09:03',
-        location: 'Office, Bandung, Indonesia',
-      ),
-      AttendanceModel(
-        date: '21',
-        day: 'Tue',
-        checkIn: '08:01',
-        checkOut: '17:05',
-        totalHours: '09:04',
-        location: 'Office, Bandung, Indonesia',
-      ),
-      AttendanceModel(
-        date: '20',
-        day: 'Mon',
-        checkIn: '07:55',
-        checkOut: '17:00',
-        totalHours: '09:05',
-        location: 'Office, Bandung, Indonesia',
-      ),
-    ];
+  final ApiService _apiService = ApiService();
+
+  Future<List<AttendanceModel>> getAttendanceHistory({
+    required String month,
+    required String year,
+    required String status, 
+  }) async {
+    try {
+      final Map<String, dynamic> queryParameters = {
+        'month': month,
+        'year': year,
+      };
+
+      final response = await _apiService.get('/attendance', queryParameters: queryParameters);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data['data'];
+
+        return data.map((item) {
+          final clockIn = DateTime.parse(item['clockInAt']);
+          final clockOut = item['clockOutAt'] != null ? DateTime.parse(item['clockOutAt']) : null;
+          final minutesWorked = item['minutesWorked'] ?? 0;
+
+          return AttendanceModel(
+            date: DateFormat('dd').format(clockIn),
+            day: DateFormat('EEE').format(clockIn),
+            checkIn: DateFormat('HH:mm').format(clockIn.toLocal()),
+            checkOut: clockOut != null ? DateFormat('HH:mm').format(clockOut.toLocal()) : '--:--',
+            totalHours: '${(minutesWorked / 60).floor().toString().padLeft(2, '0')}:${(minutesWorked % 60).toString().padLeft(2, '0')}',
+            location: item['note'] ?? 'Office, Bandung, Indonesia',
+          );
+        }).toList(); 
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print("Error fetching attendance history: $e");
+      return [];
+    }
   }
 }

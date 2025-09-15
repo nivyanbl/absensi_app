@@ -1,20 +1,15 @@
+import 'package:employment_attendance/navigation/app_routes.dart';
+import 'package:employment_attendance/settings/presentation/controllers/settings_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../widgets/settings_tile.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  bool isNotificationOn = true;
-
-  @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF071C7A);
-
+    final SettingsController controller = Get.put(SettingsController());
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -64,13 +59,13 @@ class _SettingsPageState extends State<SettingsPage> {
                   SettingsTile(
                     icon: Icons.dark_mode,
                     title: 'Dark Mode',
-                    onTap: () {},
+                    onTap: () {
+                      controller.toggleDarkMode(!controller.isDarkModeOn.value);
+                    },
                     trailing: Switch(
-                      value: isNotificationOn,
+                      value: controller.isDarkModeOn.value,
                       onChanged: (value) {
-                        setState(() {
-                          isNotificationOn = value;
-                        });
+                        controller.toggleDarkMode(value);
                       },
                       activeColor: const Color.fromARGB(255, 108, 220, 108),
                     ),
@@ -127,7 +122,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             const SizedBox(height: 24),
-            
+
             const Text('Account',
                 style: TextStyle(
                     fontSize: 16,
@@ -135,7 +130,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     color: Colors.grey)),
             const SizedBox(height: 10),
             Container(
-                decoration: BoxDecoration(
+              decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -143,14 +138,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   SettingsTile(
                     icon: Icons.person_add_alt_1_outlined,
-                    title: 'Add Account', 
+                    title: 'Add Account',
                     onTap: () {},
                   ),
                   const Divider(height: 1, indent: 72),
-                   SettingsTile(
+                  SettingsTile(
                     icon: Icons.exit_to_app,
                     title: 'Log Out',
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed(AppRoutes.LOGIN);
+                    },
                   ),
                 ],
               ),

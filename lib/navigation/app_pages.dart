@@ -28,7 +28,7 @@ class AppPages {
     GetPage(name: AppRoutes.LMS, page: () => const LmsPage()),
     GetPage(name: AppRoutes.LEAVE_REQUEST, page: () => const LeaveRequestPage()),
     GetPage(name: AppRoutes.LEAVE_HISTORY, page: () => const LeaveHistoryPage()),
-    GetPage(name: AppRoutes.PROFILE, page: () => const ProfilePage()),
+    GetPage(name: AppRoutes.PROFILE, page: () =>  ProfilePage()),
     GetPage(name: AppRoutes.EDIT_PROFILE, page: () => const EditProfilePage()),
     GetPage(name: AppRoutes.CHECK_IN, page: () => const CheckInPage()),
     GetPage(name: AppRoutes.CHECK_IN_SUCCESS,page: () => const CheckInSuccessPage()),
