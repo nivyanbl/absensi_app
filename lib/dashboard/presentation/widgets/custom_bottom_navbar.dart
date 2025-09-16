@@ -22,9 +22,9 @@ class CustomBottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     const items = <NavItem>[
       NavItem(Icons.home_outlined, 'Home'),
-      NavItem(Icons.assignment_outlined, 'Time Off'),
+      NavItem(Icons.assignment_outlined, 'Atteandance'),
       NavItem(Icons.add_box_outlined, 'Absence'),
-      NavItem(Icons.history, 'History'),
+      NavItem(Icons.history, 'LMS'),
       NavItem(Icons.account_balance_wallet_outlined, 'Slip Pay'),
     ];
 

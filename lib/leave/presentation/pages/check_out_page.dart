@@ -8,10 +8,11 @@ class CheckOutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CheckOutController controller = Get.put(CheckOutController());
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-      backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Get.back(),
@@ -27,16 +28,12 @@ class CheckOutPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             const CircleAvatar(
               radius: 60,
               backgroundImage: AssetImage('assets/image/profile.png'),
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             Obx(() => Text(
                   controller.userName.value,
                   style: const TextStyle(
@@ -44,9 +41,7 @@ class CheckOutPage extends StatelessWidget {
                     fontSize: 24,
                   ),
                 )),
-            const SizedBox(
-              height: 4,
-            ),
+            const SizedBox(height: 4),
             Obx(() => Text(
                   controller.userPosition.value,
                   style: const TextStyle(
@@ -54,34 +49,24 @@ class CheckOutPage extends StatelessWidget {
                     fontSize: 16,
                   ),
                 )),
-            const SizedBox(
-              height: 24,
-            ),
+            const SizedBox(height: 24),
             const Divider(),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             Obx(
               () => _buildInfoRow('Check In: ', controller.checkInTime.value),
             ),
-            const SizedBox(
-              height: 8,
-            ),
+            const SizedBox(height: 8),
             Obx(
               () => _buildInfoRow('Location: ', controller.checkInLocation.value),
             ),
-            const SizedBox(
-              height: 8,
-            ),
+            const SizedBox(height: 8),
             const Divider(),
-            const SizedBox(height: 64,),
+            const SizedBox(height: 64),
             const Text(
               "Check Time",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(
-              height: 8,
-            ),
+            const SizedBox(height: 8),
             Obx(() => Text(
                   controller.currentTime.value,
                   style: const TextStyle(
@@ -89,27 +74,37 @@ class CheckOutPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 )),
-            const SizedBox(height: 64,),
+            const SizedBox(height: 64),
             SizedBox(
               width: double.infinity,
               height: 50,
-              child: ElevatedButton(
-                  onPressed: controller.checkOutNow,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF6EA07A),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+              child: Obx(() => ElevatedButton(
+                    onPressed: controller.isCheckingOut.value ? null : controller.checkOutNow,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF6EA07A),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                  ),
-                  child: const Text(
-                    "Check Out Now",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
+                    child: controller.isCheckingOut.value
+                        ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 3,
+                            ),
+                          )
+                        : const Text(
+                            "Check Out Now",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
                   )),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -123,16 +118,16 @@ class CheckOutPage extends StatelessWidget {
         Text(
           label,
           style: const TextStyle(
-            fontSize: 20,
-            color: Colors.black,
-            fontWeight: FontWeight.bold
-          ),
+              fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 20,
-            color: Colors.black,
+        Expanded(
+          child: Text(
+            value,
+            textAlign: TextAlign.start,
+            style: const TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+            ),
           ),
         ),
       ],
