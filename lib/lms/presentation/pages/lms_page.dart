@@ -1,3 +1,5 @@
+import 'package:employment_attendance/dashboard/presentation/widgets/custom_bottom_navbar.dart';
+import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -238,25 +240,16 @@ class _LmsPageState extends State<LmsPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 0, // Home tab
-        selectedItemColor: const Color(0xFF6EA07A),
-        unselectedItemColor: Colors.grey,
+       bottomNavigationBar: CustomBottomNav(
+        currentIndex: 3, 
+        // primary: primaryColor,
         onTap: (index) {
-          if (index == 0) {
-            Get.offAllNamed('/dashboard');
-          }
+          if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
+          if (index == 1) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
+          if (index == 2) Get.offAllNamed(AppRoutes.CHECK_IN);
+          if (index == 3) Get.offAllNamed(AppRoutes.LMS);
+          if (index == 4) Get.offAllNamed(AppRoutes.SLIP);
         },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.timer_off), label: 'Time Off'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today), label: 'Absence'),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-          BottomNavigationBarItem(icon: Icon(Icons.receipt), label: 'Slip Pay'),
-        ],
       ),
     );
   }

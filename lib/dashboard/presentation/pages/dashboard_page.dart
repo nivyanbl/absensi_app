@@ -1,4 +1,4 @@
-import 'package:employment_attendance/auth/presentation/pages/login_page.dart';
+import 'package:employment_attendance/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:employment_attendance/dashboard/presentation/widgets/check_out_card.dart';
 import 'package:employment_attendance/dashboard/presentation/widgets/company_new_list.dart';
 import 'package:employment_attendance/dashboard/presentation/widgets/custom_bottom_navbar.dart';
@@ -20,6 +20,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  final DashboardController controller = Get.put(DashboardController());
   final ProfileController profileController = Get.put(ProfileController());
 
   late Timer _timer;
@@ -122,10 +123,10 @@ class _DashboardPageState extends State<DashboardPage> {
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Text(
-                      "Bandung, Indonesia",
-                      style: TextStyle(color: Colors.white, fontSize: 13),
-                    ),
+                    child: Obx(() => Text( 
+                          controller.location.value, 
+                          style: const TextStyle(color: Colors.white, fontSize: 13),
+                        )),
                   ),
                 ],
               ),

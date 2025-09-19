@@ -83,7 +83,7 @@ class CreateTaskPage extends StatelessWidget {
                 controller: dateController,
                 hintText: 'Select Date',
                 readOnly: true,
-                prefixIcon: Icon(Icons.calendar_month),
+                prefixIcon:const Icon(Icons.calendar_month),
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(
                     context: context,
@@ -100,7 +100,7 @@ class CreateTaskPage extends StatelessWidget {
                           ),
                           textButtonTheme: TextButtonThemeData(
                             style: TextButton.styleFrom(
-                              foregroundColor: Color(0xFF6EA07A),
+                              foregroundColor: const Color(0xFF6EA07A),
                             ),
                           ),
                         ),
@@ -207,7 +207,7 @@ class CreateTaskPage extends StatelessWidget {
                                     color: Colors.white, fontSize: 16),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF6EA07A),
+                                backgroundColor: const Color(0xFF6EA07A),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 100, vertical: 12),
                                 shape: RoundedRectangleBorder(
