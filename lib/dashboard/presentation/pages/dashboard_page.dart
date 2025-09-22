@@ -146,9 +146,9 @@ class _DashboardPageState extends State<DashboardPage> {
         currentIndex: 0,
         onTap: (index) {
           if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
-          if (index == 1) Get.offAllNamed(AppRoutes.LEAVE_REQUEST);
+          if (index == 1) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
           if (index == 2) Get.offAllNamed(AppRoutes.CHECK_IN);
-          if (index == 3) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
+          if (index == 3) Get.offAllNamed(AppRoutes.LMS);
           if (index == 4) Get.offAllNamed(AppRoutes.SLIP);
         },
       ),

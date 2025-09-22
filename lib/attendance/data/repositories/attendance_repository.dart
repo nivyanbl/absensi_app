@@ -11,15 +11,33 @@ class AttendanceRepository {
     required String status, 
   }) async {
     try {
+
+      final monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      final monthNumber = monthNames.indexOf(month) + 1;
+      final formattedMonth = '$year-${monthNumber.toString().padLeft(2, '0')}';
+      
       final Map<String, dynamic> queryParameters = {
-        'month': month,
-        'year': year,
+        'month': formattedMonth,
       };
 
       final response = await _apiService.get('/attendance', queryParameters: queryParameters);
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = response.data['data'];
+        final responseData = response.data;
+        
+        final List<dynamic> data;
+        if (responseData is List) {
+          data = responseData;
+        } else if (responseData is Map && responseData.containsKey('data')) {
+          data = responseData['data'] as List<dynamic>;
+        } else {
+          print('Unexpected response format: $responseData');
+          return [];
+        }
+
 
         return data.map((item) {
           final clockIn = DateTime.parse(item['clockInAt']);

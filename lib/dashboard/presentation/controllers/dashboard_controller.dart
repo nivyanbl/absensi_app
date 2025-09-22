@@ -41,7 +41,14 @@ class DashboardController extends GetxController {
       List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
       Placemark place = placemarks[0];
       
-      location.value = "${place.locality}, ${place.country}";
+      String? city = place.subAdministrativeArea;
+      String? country = place.country;
+
+      if (city != null && city.isNotEmpty && country != null && country.isNotEmpty) {
+        location.value = "$city, $country";
+      } else {
+        location.value = "Failed to get address";
+      }
     } catch (e) {
       location.value = "Failed to get address";
     }
