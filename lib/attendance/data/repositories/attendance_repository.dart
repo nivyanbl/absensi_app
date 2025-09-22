@@ -47,8 +47,8 @@ class AttendanceRepository {
           return AttendanceModel(
             date: DateFormat('dd').format(clockIn),
             day: DateFormat('EEE').format(clockIn),
-            checkIn: DateFormat('HH:mm').format(clockIn.toLocal()),
-            checkOut: clockOut != null ? DateFormat('HH:mm').format(clockOut.toLocal()) : '--:--',
+            checkIn: DateFormat('hh:mm a').format(clockIn.toLocal()),
+            checkOut: clockOut != null ? DateFormat('hh:mm a').format(clockOut.toLocal()) : '--:--',
             totalHours: '${(minutesWorked / 60).floor().toString().padLeft(2, '0')}:${(minutesWorked % 60).toString().padLeft(2, '0')}',
             location: item['note'] ?? 'Office, Bandung, Indonesia',
           );

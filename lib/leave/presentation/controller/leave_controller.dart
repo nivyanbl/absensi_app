@@ -21,7 +21,7 @@ class LeaveController extends GetxController {
       isLoading.value = true;
       var results = await _leaveRepository.listLeaves(
         from: from,
-        to: to,
+        to: to,        
       );
       leaveHistory.assignAll(results);
     } catch (e) {

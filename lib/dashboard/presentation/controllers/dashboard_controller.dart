@@ -1,15 +1,72 @@
 import 'dart:async';
+import 'package:employment_attendance/attendance/data/repositories/attendance_repository.dart';
+import 'package:employment_attendance/leave/data/repositories/leave_repository.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:intl/intl.dart';
 
 class DashboardController extends GetxController {
-  var location = 'Mencari lokasi...'.obs;
+  final AttendanceRepository _attendanceRepository = AttendanceRepository();
+  final LeaveRepository _leaveRepository = LeaveRepository();
+  
+  var location = 'Search location...'.obs;
+  var checkInTime = 'N/A'.obs;
+  var checkOutTime = 'N/A'.obs;
+  var totalAttended = '0 Days'.obs;
+  var totalAbsence = '0 Days'.obs;
 
   @override
   void onInit() {
     super.onInit();
-    _getCurrentLocation(); 
+    _loadDashboardData();
+  }
+
+  Future<void> _loadDashboardData() async {
+    _getCurrentLocation();
+    await _fetchAttendanceOverview();
+    await _fetchLeaveOverview();
+  }
+
+  Future<void> _fetchAttendanceOverview() async {
+    try {
+      final now = DateTime.now();
+      final monthName = DateFormat('MMMM').format(now);
+      final year = now.year.toString();
+      
+      final attendanceHistory = await _attendanceRepository.getAttendanceHistory(
+        month: monthName,
+        year: year,
+        status: 'Present',
+      );
+      
+      final todayAttendance = attendanceHistory.firstWhereOrNull(
+        (att) => att.date == DateFormat('dd').format(now),
+      );
+
+      if (todayAttendance != null) {
+        checkInTime.value = todayAttendance.checkIn;
+        checkOutTime.value = todayAttendance.checkOut;
+      }
+      
+      totalAttended.value = '${attendanceHistory.length} Days';
+      
+    } catch (e) {
+      print("Error fetching attendance overview: $e");
+    }
+  }
+
+  Future<void> _fetchLeaveOverview() async {
+    try {
+      final leaveHistory = await _leaveRepository.listLeaves(
+        month : DateFormat('MMMM').format(DateTime.now()),
+        year : DateTime.now().year.toString(),
+        status: "APPROVED"
+      );
+      totalAbsence.value = '${leaveHistory.length} Days';
+    } catch (e) {
+      print("Error fetching leave overview: $e");
+    }
   }
 
   Future<void> _getCurrentLocation() async {

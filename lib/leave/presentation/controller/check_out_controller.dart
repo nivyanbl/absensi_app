@@ -32,7 +32,7 @@ class CheckOutController extends GetxController {
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      currentTime.value = DateFormat('HH:mm:ss').format(DateTime.now());
+       currentTime.value = DateFormat('hh:mm a').format(DateTime.now());
     });
   }
 
