@@ -133,7 +133,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                         TextStyle(fontWeight: FontWeight.bold)),
                               ],
                             ),
-                           const Column(
+                            const Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text('Employee ID',
@@ -163,16 +163,18 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(color: Colors.black12),
                                 ),
-                                child: const Column(
-                                  children: [
-                                    Text('12 Day',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                    Text('Available leave',
-                                        style: TextStyle(color: Colors.grey)),
-                                  ],
-                                ),
+                                child: Obx(() => Column(
+                                      children: [
+                                        Text(
+                                            '${controller.availableLeave.value} Day',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18)),
+                                        const Text('Available leave',
+                                            style:
+                                                TextStyle(color: Colors.grey)),
+                                      ],
+                                    )),
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -185,16 +187,16 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(color: Colors.black12),
                                 ),
-                                child: const Column(
+                                child: Obx(() => Column(
                                   children: [
-                                    Text('8 Day',
-                                        style: TextStyle(
+                                    Text('${controller.usedLeave.value} Day',
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18)),
-                                    Text('Used leave',
+                                    const Text('Used leave',
                                         style: TextStyle(color: Colors.grey)),
                                   ],
-                                ),
+                                )),
                               ),
                             ),
                           ],

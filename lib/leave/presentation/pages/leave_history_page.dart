@@ -16,6 +16,7 @@ class LeaveHistoryPage extends StatefulWidget {
 
 class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
   final LeaveController leaveController = Get.put(LeaveController());
+  final LeaveController controller = Get.put(LeaveController());
   final ProfileController profileController = Get.put(ProfileController());
   bool showAdditionalDuration = false;
   DateTime additionalStartDate = DateTime.now();
@@ -68,8 +69,9 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
                               children: [
                                 const Text('Employee name',
                                     style: TextStyle(color: Colors.grey)),
-                                Text(profile?.fullName ??'N/A',
-                                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                                Text(profile?.fullName ?? 'N/A',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 8),
                                 const Text('Job position',
                                     style: TextStyle(color: Colors.grey)),
@@ -78,18 +80,18 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
                                         TextStyle(fontWeight: FontWeight.bold)),
                               ],
                             ),
-                           const Column(
+                            const Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                 Text('Employee ID',
+                                Text('Employee ID',
                                     style: TextStyle(color: Colors.grey)),
-                                 Text('24738246',
+                                Text('24738246',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
-                                 SizedBox(height: 8),
-                                 Text('Status',
+                                SizedBox(height: 8),
+                                Text('Status',
                                     style: TextStyle(color: Colors.grey)),
-                                 Text('Full time',
+                                Text('Full time',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
                               ],
@@ -97,47 +99,53 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
                           ],
                         ),
                         const SizedBox(height: 16),
-                         Row(
+                        Row(
                           children: [
                             Expanded(
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(color: Colors.black12),
                                 ),
-                                child: const Column(
-                                  children: [
-                                    Text('12 Day',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                    Text('Available leave',
-                                        style: TextStyle(color: Colors.grey)),
-                                  ],
-                                ),
+                                child: Obx(() => Column(
+                                      children: [
+                                        Text(
+                                            '${controller.availableLeave.value} Day',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18)),
+                                        const Text('Available leave',
+                                            style:
+                                                TextStyle(color: Colors.grey)),
+                                      ],
+                                    )),
                               ),
                             ),
-                           const  SizedBox(width: 12),
+                            const SizedBox(width: 12),
                             Expanded(
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(color: Colors.black12),
                                 ),
-                                child: const Column(
-                                  children: [
-                                    Text('8 Day',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                    Text('Used leave',
-                                        style: TextStyle(color: Colors.grey)),
-                                  ],
-                                ),
+                                child: Obx(() => Column(
+                                      children: [
+                                        Text(
+                                            '${controller.usedLeave.value} Day',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18)),
+                                        const Text('Used leave',
+                                            style:
+                                                TextStyle(color: Colors.grey)),
+                                      ],
+                                    )),
                               ),
                             ),
                           ],

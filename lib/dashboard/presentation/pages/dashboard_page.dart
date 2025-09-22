@@ -66,11 +66,14 @@ class _DashboardPageState extends State<DashboardPage> {
   automaticallyImplyLeading: false, 
   title: Row(
     children: [
-      const Padding(
+       Padding(
         padding: EdgeInsets.only(left: 8.0, right: 16.0),
-        child: CircleAvatar(
+        child: GestureDetector(
+        onTap: () => Get.toNamed(AppRoutes.PROFILE), 
+        child:  CircleAvatar(
           radius: 22,
           backgroundImage: NetworkImage("https://i.pravatar.cc/150?img=3"),
+          ),
         ),
       ),
       Column(
