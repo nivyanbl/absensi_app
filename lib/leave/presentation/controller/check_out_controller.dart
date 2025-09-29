@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:employment_attendance/core/services/api_service.dart';
 import 'package:employment_attendance/profile/presentation/controller/profile_controller.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,7 @@ class CheckOutController extends GetxController {
 
   var userName = 'Loading...'.obs;
   var userPosition = '...'.obs;
-  var checkInTime = '--:--'.obs;
+  var checkInTime = 'N/A'.obs;
   var checkInLocation = '...'.obs;
   var currentTime = '--:--:--'.obs;
 
@@ -32,29 +33,58 @@ class CheckOutController extends GetxController {
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-       currentTime.value = DateFormat('hh:mm a').format(DateTime.now());
+      currentTime.value = DateFormat('hh:mm a').format(DateTime.now());
     });
   }
 
   Future<void> _loadInitialData() async {
     userName.value = _profileController.user.value?.fullName ?? 'Name Not Found';
-    userPosition.value = "UI UX Designer"; 
+    userPosition.value = "UI UX Designer";
 
     try {
       final response = await _apiService.get('/attendance/latest');
       if (response.statusCode == 200 && response.data['data'] != null) {
         final attendanceData = response.data['data'];
-        final clockInDateTime = DateTime.parse(attendanceData['clockInAt']).toLocal();
-        checkInTime.value = DateFormat('HH:mm a').format(clockInDateTime);
-        checkInLocation.value = attendanceData['note'] ?? 'Location not recorded';
+
+        if (attendanceData['clockOutAt'] != null) {
+          checkInTime.value = 'N/A';
+          checkInLocation.value = 'You have already checked out';
+          return;
+        }
+
+        final clockInDateTime =
+            DateTime.parse(attendanceData['clockInAt']).toLocal();
+
+        final now = DateTime.now();
+        final isToday = clockInDateTime.year == now.year &&
+            clockInDateTime.month == now.month &&
+            clockInDateTime.day == now.day;
+
+        if (isToday) {
+          checkInTime.value =DateFormat('hh:mm a').format(clockInDateTime);
+          checkInLocation.value =
+              attendanceData['note'] ?? 'Location not recorded';
+        } else {
+          checkInTime.value = 'N/A';
+          checkInLocation.value = 'No check-in today';
+        }
       } else {
         checkInTime.value = 'N/A';
         checkInLocation.value = 'No check-in today';
       }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        checkInTime.value = 'N/A';
+        checkInLocation.value = 'No check-in today';
+      } else {
+        checkInTime.value = 'Error';
+        checkInLocation.value = 'Failed to load data';
+        print("Error fetching latest attendance: $e");
+      }
     } catch (e) {
       checkInTime.value = 'Error';
       checkInLocation.value = 'Failed to load data';
-      print("Error fetching latest attendance: $e");
+      print("An unexpected error occurred: $e");
     }
   }
 
@@ -64,10 +94,11 @@ class CheckOutController extends GetxController {
       final response = await _apiService.post('/attendance/clock-out');
 
       if (response.statusCode == 200) {
-        Get.back(); 
+        Get.back();
         Get.snackbar('Succeed', 'You have successfully checked out.');
       } else {
-        final errorMessage = response.data['message'] ?? 'Failed to check out.';
+        final errorMessage =
+            response.data['message'] ?? 'Failed to check out.';
         Get.snackbar('Failed', errorMessage);
       }
     } catch (e) {
@@ -77,3 +108,4 @@ class CheckOutController extends GetxController {
     }
   }
 }
+

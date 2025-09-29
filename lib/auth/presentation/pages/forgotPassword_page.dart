@@ -95,8 +95,7 @@ class ForgotPasswordPage extends StatelessWidget {
                         style: TextStyle(color: Colors.white)),
                   ),
                   const SizedBox(height: 16),
-                  Container(
-                    child: TextButton(
+                    TextButton(
                       onPressed: () {
                         Get.to(() => LoginPage());
                       },
@@ -109,7 +108,7 @@ class ForgotPasswordPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
+                  
                 ],
               ),
             ),

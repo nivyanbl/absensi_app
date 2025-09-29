@@ -1,5 +1,6 @@
 import 'package:employment_attendance/auth/presentation/controllers/auth.controller.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
+import 'package:employment_attendance/task/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F7),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -56,64 +57,24 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 40),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Email',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
+                  CustomTextField(
+                    label: 'Email',
                     controller: authController.emailController,
-                    decoration: InputDecoration(
-                      hintText: 'siesta@gmail.com',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.black12),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 18),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
+                    hintText: 'Enter your email',
                   ),
                   const SizedBox(height: 24),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Password',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Obx(() => TextField(
+                  Obx(() => CustomTextField(
+                        label: 'Password',
                         controller: authController.passwordController,
+                        hintText: 'Enter your password',
                         obscureText: _obscurePassword.value,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your password',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.black12),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 18),
-                          filled: true,
-                          fillColor: Colors.white,
-                          suffixIcon: IconButton(
-                            icon: Icon(_obscurePassword.value
-                                ? Icons.visibility_off
-                                : Icons.visibility),
-                            onPressed: () {
-                              _obscurePassword.value = !_obscurePassword.value;
-                            },
-                          ),
+                        suffixIcon: IconButton(
+                          icon: Icon(_obscurePassword.value
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () {
+                            _obscurePassword.value = !_obscurePassword.value;
+                          },
                         ),
                       )),
                   const SizedBox(height: 8),
@@ -130,9 +91,9 @@ class LoginPage extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                       ),
                       child: const Text(
-                        'Forgot the password',
+                        'Forgot your password?',
                         style: TextStyle(
-                          color: Colors.grey,
+                          color: Colors.blue,
                           decoration: TextDecoration.underline,
                           fontSize: 16,
                         ),
@@ -143,13 +104,13 @@ class LoginPage extends StatelessWidget {
                   Obx(() {
                     return SizedBox(
                       width: double.infinity,
-                      height: 60,
+                      height: 50,
                       child: ElevatedButton(
-                        onPressed:  authController.isLoading.value
+                        onPressed: authController.isLoading.value
                             ? null
                             : () => authController.loginUser(),
                         style: ElevatedButton.styleFrom(
-                           backgroundColor: const Color(0xFF6EA07A),
+                          backgroundColor: const Color(0xFF6EA07A),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -175,14 +136,13 @@ class LoginPage extends StatelessWidget {
                     onPressed: () {
                       Get.toNamed(AppRoutes.REGISTER);
                     },
-                    child: const Text(
-                      'Don\'t have an account? Register',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 16,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
+                    child:  RichText(text: const TextSpan(
+                      style:   TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w500 ),
+                      children: <TextSpan>[
+                        TextSpan(text: 'Don\'t have an account? '),
+                        TextSpan(text: " Register", style:  TextStyle(color: Colors.blueAccent))
+                      ]
+                    ))
                   ),
                 ],
               ),

@@ -298,6 +298,7 @@ class SlipPayPage extends StatelessWidget {
                                   label: const Text(
                                     "Send",
                                     style: TextStyle(
+                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16.5),
                                   ),
@@ -460,7 +461,7 @@ class _AnimatedCard extends StatelessWidget {
             ),
           ],
         ),
-        child: this.child,
+        child: child,
       ),
     );
   }

@@ -91,16 +91,16 @@ class LeaveHistoryCard extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              Icon(Icons.person, size: 16, color: Colors.grey),
-              SizedBox(width: 4),
+              const Icon(Icons.person, size: 16, color: Colors.grey),
+              const SizedBox(width: 4),
               Obx(() {
                 final userName = profileController.user.value?.fullName;
                 return Text(userName ?? "Loading...",
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.black));
               }),
-              SizedBox(width: 8),
-              Text('UI / UX Designer', style: TextStyle(color: Colors.grey)),
+              const SizedBox(width: 8),
+              const Text('UI / UX Designer', style: TextStyle(color: Colors.grey)),
             ],
           ),
           const SizedBox(height: 8),

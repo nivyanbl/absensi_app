@@ -1,3 +1,5 @@
+import 'package:employment_attendance/navigation/app_routes.dart';
+import 'package:employment_attendance/task/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:employment_attendance/auth/presentation/controllers/auth.controller.dart';
@@ -11,7 +13,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F7),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -54,45 +56,34 @@ class RegisterPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 24),
-                  TextField(
+                  CustomTextField(
+                    label: '',
                     controller: authController.fullNameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Full Name',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                    keyboardType: TextInputType.name,
+                    hintText: 'Full Name',
+                    prefixIcon: const Icon(Icons.person),
                   ),
-                  const SizedBox(height: 16),
-                  TextField(
+                  CustomTextField(
+                    label: '',
                     controller: authController.registerEmailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.email),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
+                    hintText: 'Email',
+                    prefixIcon: const Icon(Icons.email),
                   ),
-                  const SizedBox(height: 16),
-                  Obx(() => TextField(
+                  Obx(() => CustomTextField(
+                    label: '',
                         controller: authController.registerPasswordController,
                         obscureText: _obscurePassword.value,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          border: const OutlineInputBorder(),
-                          prefixIcon: const Icon(Icons.lock),
-                          suffixIcon: IconButton(
-                            icon: Icon(_obscurePassword.value
-                                ? Icons.visibility
-                                : Icons.visibility_off),
-                            onPressed: () {
-                              _obscurePassword.value = !_obscurePassword.value;
-                            },
-                          ),
+                        hintText: 'Password',
+                        prefixIcon: const Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(_obscurePassword.value
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
+                            _obscurePassword.value = !_obscurePassword.value;
+                          },
                         ),
                       )),
                   const SizedBox(height: 16),
-                 
                   const SizedBox(height: 24),
                   Obx(() {
                     return ElevatedButton(
@@ -104,7 +95,7 @@ class RegisterPage extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        textStyle: const TextStyle(fontSize: 18),
+                        textStyle: const TextStyle(fontSize: 22, fontWeight:  FontWeight.bold),
                         backgroundColor: const Color(0xFF6EA07A),
                       ),
                       child: authController.isLoading.value
@@ -114,18 +105,17 @@ class RegisterPage extends StatelessWidget {
                     );
                   }),
                   const SizedBox(height: 16),
-                  TextButton(
+                   TextButton(
                     onPressed: () {
-                      Get.back();
+                      Get.toNamed(AppRoutes.LOGIN);
                     },
-                    child: const Text(
-                      'Already have an account? Login',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 16,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
+                    child:  RichText(text: const TextSpan(
+                      style:   TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w500 ),
+                      children: <TextSpan>[
+                        TextSpan(text: 'Already have account? '),
+                        TextSpan(text: " Sign In", style:  TextStyle(color: Colors.blueAccent))
+                      ]
+                    ))
                   ),
                 ],
               ),
@@ -136,3 +126,4 @@ class RegisterPage extends StatelessWidget {
     );
   }
 }
+

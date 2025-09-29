@@ -93,18 +93,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         child:  Stack(
                           alignment: Alignment.bottomRight,
                           children: [
-                             CircleAvatar(
+                             const CircleAvatar(
                               radius: 40,
                               backgroundColor: Color(0xFFBDBDBD),
                               child: Icon(Icons.person, size: 50, color: Colors.grey),
                             ),
                               Container(
-                              padding: EdgeInsets.all(4),
-                              decoration: BoxDecoration(
+                              padding: const EdgeInsets.all(4),
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              child: Icon(Icons.image, color: Colors.black, size: 12),
+                              child: const Icon(Icons.image, color: Colors.black, size: 12),
                             ),
                           ],
                         ),

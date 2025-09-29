@@ -21,6 +21,13 @@ class ProfilePage extends StatelessWidget {
           'Profile',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
+         actions: [
+    IconButton(
+      onPressed: () => Get.toNamed(AppRoutes.SETTINGS),
+      icon: const Icon(Icons.settings, color: Colors.black),
+    ),
+    const SizedBox(width: 10),
+  ],
         centerTitle: true,
       ),
       body: SingleChildScrollView(

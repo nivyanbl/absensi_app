@@ -1,5 +1,6 @@
 import 'package:employment_attendance/attendance/presentation/controllers/attendance_controller.dart';
 import 'package:employment_attendance/attendance/presentation/widgets/attendance_card.dart';
+import 'package:employment_attendance/attendance/presentation/widgets/leave_request_button.dart';
 import 'package:employment_attendance/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class AttendanceHistoryPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
+            const LeaveRequestButton(),
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value) {
@@ -122,4 +124,4 @@ class AttendanceHistoryPage extends StatelessWidget {
       ),
     );
   }
-}
+} 

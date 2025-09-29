@@ -9,7 +9,7 @@ class OverviewGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DashboardController controller = Get.find<DashboardController>();
-    final Color primaryColor = const Color(0xFF6EA07A);
+    const  Color primaryColor =  Color(0xFF6EA07A);
 
     return Obx(() {
       final overviewData = [

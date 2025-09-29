@@ -33,6 +33,20 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          'Leave History',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -40,16 +54,6 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 8),
-                const Center(
-                  child: Text(
-                    'Leave History',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                  ),
-                ),
                 const SizedBox(height: 24),
                 Obx(() {
                   final profile = profileController.user.value;

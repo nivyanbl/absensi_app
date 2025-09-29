@@ -84,12 +84,12 @@ class CheckInController extends GetxController {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          throw PermissionDeniedException("Location permission denied by user.");
+          throw const PermissionDeniedException("Location permission denied by user.");
         }
       }
 
       if (permission == LocationPermission.deniedForever) {
-        throw PermissionDeniedException(
+        throw const PermissionDeniedException(
             "Location permission is permanently denied. Please enable it manually in settings.");
       }
 
