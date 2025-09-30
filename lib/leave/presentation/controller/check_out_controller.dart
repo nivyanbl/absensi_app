@@ -42,51 +42,43 @@ class CheckOutController extends GetxController {
     userPosition.value = "UI UX Designer";
 
     try {
-      final response = await _apiService.get('/attendance/latest');
+      final now = DateTime.now();
+      final fromDate = DateFormat('yyyy-MM-dd').format(now);
+
+      final response = await _apiService.get(
+        '/attendance',
+        queryParameters: {
+          'from': fromDate,
+          'to': fromDate,
+          'status': 'open',
+        },
+      );
+
       if (response.statusCode == 200 && response.data['data'] != null) {
-        final attendanceData = response.data['data'];
-
-        if (attendanceData['clockOutAt'] != null) {
-          checkInTime.value = 'N/A';
-          checkInLocation.value = 'You have already checked out';
-          return;
-        }
-
-        final clockInDateTime =
-            DateTime.parse(attendanceData['clockInAt']).toLocal();
-
-        final now = DateTime.now();
-        final isToday = clockInDateTime.year == now.year &&
-            clockInDateTime.month == now.month &&
-            clockInDateTime.day == now.day;
-
-        if (isToday) {
-          checkInTime.value =DateFormat('hh:mm a').format(clockInDateTime);
-          checkInLocation.value =
-              attendanceData['note'] ?? 'Location not recorded';
+        final List<dynamic> attendanceList = response.data['data'];
+        if (attendanceList.isNotEmpty) {
+          final latestAttendance = attendanceList.first;
+          final clockInDateTime = DateTime.parse(latestAttendance['clockInAt']).toLocal();
+          checkInTime.value = DateFormat('hh:mm a').format(clockInDateTime);
+          checkInLocation.value = latestAttendance['note'] ?? 'Location not recorded';
         } else {
           checkInTime.value = 'N/A';
-          checkInLocation.value = 'No check-in today';
+          checkInLocation.value = 'No active check-in today';
         }
       } else {
         checkInTime.value = 'N/A';
         checkInLocation.value = 'No check-in today';
       }
     } on DioException catch (e) {
-      if (e.response?.statusCode == 404) {
-        checkInTime.value = 'N/A';
-        checkInLocation.value = 'No check-in today';
-      } else {
-        checkInTime.value = 'Error';
-        checkInLocation.value = 'Failed to load data';
-        print("Error fetching latest attendance: $e");
-      }
-    } catch (e) {
       checkInTime.value = 'Error';
       checkInLocation.value = 'Failed to load data';
+      print("Error fetching latest attendance: $e");
+    } catch (e) {
+      checkInTime.value = 'Error';
+      checkInLocation.value = 'An unexpected error occurred';
       print("An unexpected error occurred: $e");
     }
-  }
+}
 
   void checkOutNow() async {
     try {
