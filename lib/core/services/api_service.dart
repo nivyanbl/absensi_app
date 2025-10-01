@@ -69,4 +69,14 @@ class ApiService {
   Future<Response> delete(String path) async {
     return _dio.delete(path);
   }
+
+  /// Delete but do not throw on non-2xx — returns the Response so caller can inspect status/data.
+  Future<Response> deleteWithOptions(String path, {Map<String, dynamic>? queryParameters, dynamic data}) async {
+    return _dio.delete(
+      path,
+      queryParameters: queryParameters,
+      data: data,
+      options: Options(validateStatus: (_) => true),
+    );
+  }
 }

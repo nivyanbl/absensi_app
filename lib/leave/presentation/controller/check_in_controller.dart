@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -24,11 +25,13 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
   RxBool isPanelVisible = true.obs;
   // whether the user has already checked in today (used to disable UI)
   RxBool hasCheckedInToday = false.obs;
+  final _storage = GetStorage();
 
   CameraController? cameraController;
   late List<CameraDescription> cameras;
 
   Timer? timer;
+  Timer? _midnightTimer;
 
   @override
   void onInit() {
@@ -44,6 +47,7 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
       cameraController?.dispose();
     } catch (_) {}
     timer?.cancel();
+  _midnightTimer?.cancel();
     super.onClose();
   }
 
@@ -68,6 +72,7 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
     isLoading(true);
     await _initializeCamera();
     await _getCurrentLocation();
+  _maybeResetDailyFlags();
     // check if dashboard already has check-in info
     try {
       if (Get.isRegistered<DashboardController>()) {
@@ -79,6 +84,16 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
     } catch (_) {}
     _startTimer();
     isLoading(false);
+  }
+
+  void _maybeResetDailyFlags() {
+    final todayKey = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final lastDate = _storage.read('lastCheckDate') as String?;
+    if (lastDate == null || lastDate != todayKey) {
+      // new day: clear local check-in flag so user can check in again
+      hasCheckedInToday.value = false;
+      _storage.write('lastCheckDate', todayKey);
+    }
   }
 
   Future<void> _initializeCamera() async {
@@ -181,6 +196,20 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
       currentTime.value = DateFormat('hh:mm a').format(DateTime.now());
       currentDate.value = DateFormat('dd MMMM yyyy').format(DateTime.now());
     });
+    _scheduleMidnightReset();
+  }
+
+  void _scheduleMidnightReset() {
+    _midnightTimer?.cancel();
+    final now = DateTime.now();
+    final tomorrow = DateTime(now.year, now.month, now.day).add(const Duration(days: 1));
+    final untilMidnight = tomorrow.difference(now);
+    _midnightTimer = Timer(untilMidnight, () {
+      hasCheckedInToday.value = false;
+      _storage.write('lastCheckDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      // reschedule for next midnight
+      _scheduleMidnightReset();
+    });
   }
 
   void checkIn() async {
@@ -225,7 +254,9 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
             final dash = Get.find<DashboardController>();
             dash.checkInTime.value = currentTime.value;
             dash.location.value = currentLocation.value;
-      hasCheckedInToday.value = true;
+    hasCheckedInToday.value = true;
+    // persist last check date so app knows user has checked in today
+    _storage.write('lastCheckDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
           }
         } catch (_) {}
 

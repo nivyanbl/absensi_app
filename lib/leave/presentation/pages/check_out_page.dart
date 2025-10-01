@@ -78,15 +78,15 @@ class CheckOutPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               height: 56,
-              child: Obx(() => ElevatedButton(
-                    onPressed: controller.isCheckingOut.value ? null : controller.checkOutNow,
+        child: Obx(() => ElevatedButton(
+          onPressed: (controller.isCheckingOut.value || !controller.canCheckOut.value) ? null : controller.checkOutNow,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF6EA07A),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
-                    child: controller.isCheckingOut.value
+          child: controller.isCheckingOut.value
                         ? const SizedBox(
                             height: 24,
                             width: 24,
@@ -95,13 +95,13 @@ class CheckOutPage extends StatelessWidget {
                               strokeWidth: 3,
                             ),
                           )
-                        : const Text(
-                            "Check Out Now",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),                 
-                          ),
+            : Obx(() => Text(
+              controller.canCheckOut.value ? 'Check Out Now' : 'Already Checked Out',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold),                 
+              )),
                   )),
             ),
             const SizedBox(height: 16),

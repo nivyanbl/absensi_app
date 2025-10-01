@@ -15,8 +15,14 @@ class AuthRepository {
       
       if (response.statusCode == 200) {
         final accessToken = response.data['data']['tokens']['accessToken'];
+        final refreshToken = response.data['data']['tokens']['refreshToken'] as String?;
         
         await _storage.write('authToken', accessToken);
+        // persist issued timestamp so we can force re-login after a day
+        await _storage.write('authIssuedAt', DateTime.now().toIso8601String());
+        if (refreshToken != null && refreshToken.isNotEmpty) {
+          await _storage.write('refreshToken', refreshToken);
+        }
         print('Login successful. Token saved.');
         return accessToken;
       }
@@ -59,7 +65,9 @@ class AuthRepository {
   }
 
   Future<void> logout() async {
-    await _storage.remove('authToken');
-    print('Token deleted, logout successful.');
+  await _storage.remove('authToken');
+  await _storage.remove('authIssuedAt');
+  await _storage.remove('refreshToken');
+  print('Token and auth metadata deleted, logout successful.');
   }
 }
