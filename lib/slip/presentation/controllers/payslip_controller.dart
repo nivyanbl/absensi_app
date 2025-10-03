@@ -145,7 +145,15 @@ class _SuccessDialog extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: onClose,
+                    onPressed: () {
+                      // Dismiss the dialog first, then run the caller's onClose
+                      try {
+                        Get.back();
+                      } catch (_) {}
+                      try {
+                        onClose();
+                      } catch (_) {}
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryColor,
                       shape: RoundedRectangleBorder(

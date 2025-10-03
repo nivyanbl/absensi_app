@@ -20,7 +20,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final DashboardController controller = Get.put(DashboardController());
+  final DashboardController controller = Get.put(DashboardController(), permanent: true);
   final ProfileController profileController = Get.put(ProfileController());
 
   late Timer _timer;
@@ -66,29 +66,38 @@ class _DashboardPageState extends State<DashboardPage> {
   automaticallyImplyLeading: false, 
   title: Row(
     children: [
-       Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 16.0),
+      Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 12.0),
         child: GestureDetector(
-        onTap: () => Get.toNamed(AppRoutes.PROFILE), 
-        child: const CircleAvatar(
-          radius: 22,
-          backgroundImage: NetworkImage("https://i.pravatar.cc/150?img=3"),
+          onTap: () => Get.toNamed(AppRoutes.PROFILE),
+          child: const CircleAvatar(
+            radius: 22,
+            backgroundImage: NetworkImage("https://i.pravatar.cc/150?img=3"),
           ),
         ),
       ),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(_getGreeting(), style: const TextStyle(fontSize: 14, color: Colors.white)),
-          Obx(() {
-            final userName = profileController.user.value?.fullName;
-            return Text(userName ?? "Loading...",
+      // Make the text column flexible so a long name won't overflow the appbar
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(_getGreeting(), style: const TextStyle(fontSize: 14, color: Colors.white)),
+            Obx(() {
+              final userName = profileController.user.value?.fullName;
+              return Text(
+                userName ?? "Loading...",
                 style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white));
-          }),
-        ],
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              );
+            }),
+          ],
+        ),
       ),
     ],
   ),
@@ -111,24 +120,29 @@ class _DashboardPageState extends State<DashboardPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        formattedDate,
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                    ],
+                  // Make the date text flexible so it won't overflow when location label is long
+                  Expanded(
+                    child: Text(
+                      formattedDate,
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
                   ),
+                  const SizedBox(width: 12),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Obx(() => Text( 
-                          controller.location.value, 
-                          style: const TextStyle(color: Colors.white, fontSize: 13),
+                    child: Obx(() => ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 140),
+                          child: Text(
+                            controller.location.value,
+                            style: const TextStyle(color: Colors.white, fontSize: 13),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         )),
                   ),
                 ],

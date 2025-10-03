@@ -11,8 +11,9 @@ class DashboardController extends GetxController {
   final LeaveRepository _leaveRepository = LeaveRepository();
   
   var location = 'Search location...'.obs;
-  var checkInTime = 'N/A'.obs;
-  var checkOutTime = 'N/A'.obs;
+  // Use empty string to indicate no data; OverviewCard will render a placeholder
+  var checkInTime = ''.obs;
+  var checkOutTime = ''.obs;
   var totalAttended = '0 Days'.obs;
   var totalAbsence = '0 Days'.obs;
 
@@ -20,6 +21,27 @@ class DashboardController extends GetxController {
   void onInit() {
     super.onInit();
     _loadDashboardData();
+    // start a lightweight periodic refresh so overview stays up-to-date
+    _startAutoRefresh();
+  }
+
+  Timer? _pollTimer;
+  static const Duration _pollInterval = Duration(seconds: 60);
+
+  void _startAutoRefresh() {
+    _pollTimer?.cancel();
+    _pollTimer = Timer.periodic(_pollInterval, (_) async {
+      try {
+        await _fetchAttendanceOverview();
+        await _fetchLeaveOverview();
+      } catch (_) {}
+    });
+  }
+
+  /// Public helper to refresh dashboard data from other pages/controllers.
+  /// Calls the same loading logic used during init.
+  Future<void> refresh() async {
+    await _loadDashboardData();
   }
 
   Future<void> _loadDashboardData() async {
@@ -47,6 +69,9 @@ class DashboardController extends GetxController {
       if (todayAttendance != null) {
         checkInTime.value = todayAttendance.checkIn;
         checkOutTime.value = todayAttendance.checkOut;
+      } else {
+        checkInTime.value = '';
+        checkOutTime.value = '';
       }
       
       totalAttended.value = '${attendanceHistory.length} Days';
@@ -109,6 +134,11 @@ class DashboardController extends GetxController {
     } catch (e) {
       location.value = "Failed to get address";
     }
+  }
+  @override
+  void onClose() {
+    _pollTimer?.cancel();
+    super.onClose();
   }
   
 }

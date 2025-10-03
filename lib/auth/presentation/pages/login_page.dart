@@ -39,8 +39,11 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  // Use Wrap so text+emoji don't overflow on small widths
+                  const Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
                     children: [
                       Text(
                         'Welcome back',
@@ -49,7 +52,6 @@ class LoginPage extends StatelessWidget {
                           fontSize: 32,
                         ),
                       ),
-                      SizedBox(width: 8),
                       Text(
                         '\u{1F44B}',
                         style: TextStyle(fontSize: 32),

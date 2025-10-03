@@ -51,85 +51,111 @@ class CheckInPage extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.cover,
                   child: SizedBox(
-                    width:
-                        controller.cameraController!.value.previewSize!.height,
-                    height:
-                        controller.cameraController!.value.previewSize!.width,
+                    width: controller.cameraController!.value.previewSize!.height,
+                    height: controller.cameraController!.value.previewSize!.width,
                     child: CameraPreview(controller.cameraController!),
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        width: 150,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      _buildInfoRow(
-                        Icons.location_on,
-                        'Location',
-                        controller.currentLocation.value,
-                      ),
-                      const SizedBox(height: 4),
-                      _buildInfoRow(Icons.calendar_today, 'Date',
-                          controller.currentDate.value),
-                      const SizedBox(height: 24),
-                      Text(
-                        controller.currentTime.value,
-                        style: const TextStyle(
-                          fontSize: 38,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
 
-                      Obx(() {
-                        return ElevatedButton(
-                          onPressed: controller.isLocationReady.value
-                              ? controller.checkIn
-                              : null,
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(double.infinity, 50),
-                            backgroundColor: controller.isLocationReady.value
-                                ? const Color(0xFF6EA07A) 
-                                : Colors.grey,            
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
+              // Top plain location text (no background)
+              Positioned(
+                top: MediaQuery.of(context).padding.top + kToolbarHeight - 8,
+                left: 16,
+                right: 16,
+                child: Obx(() {
+                  final location = controller.currentLocation.value;
+                  return Text(
+                    location.isNotEmpty ? location : 'Location not available',
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      shadows: [
+                        Shadow(color: Colors.black45, blurRadius: 4, offset: Offset(0, 1)),
+                      ],
+                    ),
+                  );
+                }),
+              ),
+
+              // Floating circular shutter button (no background panel)
+              Positioned(
+                bottom: 36,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Obx(() {
+                    final enabled = controller.isLocationReady.value;
+                    final checking = controller.isCheckingIn.value;
+
+                    // if user already checked in today, show a disabled checked state
+                    if (controller.hasCheckedInToday.value) {
+                      return Container(
+                        width: 140,
+                        height: 56,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(28),
+                          border: Border.all(color: Colors.white24),
+                        ),
+                        child: const Text(
+                          'Checked In',
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      );
+                    }
+
+                    return Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(40),
+                        onTap: () {
+                          if (enabled && !checking) {
+                            controller.checkIn();
+                          } else if (!enabled) {
+                            Get.snackbar('Info', 'Waiting for location...', snackPosition: SnackPosition.BOTTOM);
+                          }
+                        },
+                        child: Container(
+                          width: 76,
+                          height: 76,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: enabled ? const Color(0xFF6EA07A) : Colors.grey.shade400,
+                            boxShadow: (enabled && !checking)
+                                ? [
+                                    BoxShadow(
+                                      color: const Color(0xFF6EA07A).withOpacity(0.28),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 6),
+                                    )
+                                  ]
+                                : [],
                           ),
-                          child: Text(
-                            controller.isLocationReady.value
-                                ? 'Check In'
-                                : 'Waiting for Location...',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        );
-                      }),
-                    ],
-                  ),
+                          child: checking
+                              ? const SizedBox(
+                                  width: 28,
+                                  height: 28,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.5,
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  ),
+                                )
+                              : const Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                        ),
+                      ),
+                    );
+                  }),
                 ),
               ),
             ],
@@ -139,27 +165,5 @@ class CheckInPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(IconData icon, String label, String value) {
-    return Row(
-      children: [
-        Icon(icon, color: const Color(0xFF6EA07A), size: 25),
-        const SizedBox(width: 8),
-        Text(
-          '$label   :',
-          style: const TextStyle(
-              fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            value,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // helper removed — UI simplified to a plain top location text and a circular shutter button
 }

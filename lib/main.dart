@@ -6,6 +6,9 @@ import 'package:get/get.dart';
 import 'package:employment_attendance/navigation/app_pages.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:employment_attendance/core/services/api_service.dart';
+import 'package:flutter/widgets.dart';
+import 'package:employment_attendance/core/widgets/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,8 +26,82 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.LOGIN,
+      home: const _StartupRouter(),
       getPages: AppPages.pages,
     );
+  }
+}
+
+class _StartupRouter extends StatefulWidget {
+  const _StartupRouter({Key? key}) : super(key: key);
+
+  @override
+  State<_StartupRouter> createState() => _StartupRouterState();
+}
+
+class _StartupRouterState extends State<_StartupRouter> {
+  final ApiService _api = ApiService();
+  final box = GetStorage();
+
+  @override
+  void initState() {
+    super.initState();
+    _validateToken();
+  }
+
+  Future<void> _validateToken() async {
+    final token = box.read('authToken') as String?;
+    final issuedAt = box.read('authIssuedAt') as String?;
+
+    if (token == null || token.isEmpty) {
+      _navigateTo(AppRoutes.LOGIN);
+      return;
+    }
+
+    // If issuedAt exists and older than 24 hours, force logout
+    if (issuedAt != null) {
+      try {
+        final issued = DateTime.parse(issuedAt);
+        final diff = DateTime.now().difference(issued);
+        if (diff.inHours >= 24) {
+          box.remove('authToken');
+          box.remove('authIssuedAt');
+          box.remove('refreshToken');
+          _navigateTo(AppRoutes.LOGIN);
+          return;
+        }
+      } catch (_) {}
+    }
+
+    try {
+      final resp = await _api.get('/auth/me');
+      if (resp.statusCode == 200) {
+        _navigateTo(AppRoutes.DASHBOARD);
+      } else {
+        box.remove('authToken');
+        box.remove('authIssuedAt');
+        box.remove('refreshToken');
+        _navigateTo(AppRoutes.LOGIN);
+      }
+    } catch (_) {
+      // If network error, fallback to login to be safe
+      box.remove('authToken');
+      box.remove('authIssuedAt');
+      box.remove('refreshToken');
+      _navigateTo(AppRoutes.LOGIN);
+    }
+  }
+
+  void _navigateTo(String route) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      try {
+        Get.offAllNamed(route);
+      } catch (_) {}
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const SplashScreen();
   }
 }

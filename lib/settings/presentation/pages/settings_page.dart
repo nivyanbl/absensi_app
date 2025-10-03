@@ -1,4 +1,5 @@
 import 'package:employment_attendance/navigation/app_routes.dart';
+import 'package:employment_attendance/auth/data/repositories/auth_repository.dart';
 import 'package:employment_attendance/settings/presentation/controllers/settings_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -145,8 +146,10 @@ class SettingsPage extends StatelessWidget {
                   SettingsTile(
                     icon: Icons.exit_to_app,
                     title: 'Log Out',
-                    onTap: () {
-                      Get.toNamed(AppRoutes.LOGIN);
+                    onTap: () async {
+                      final authRepo = AuthRepository();
+                      await authRepo.logout();
+                      Get.offAllNamed(AppRoutes.LOGIN);
                     },
                   ),
                 ],

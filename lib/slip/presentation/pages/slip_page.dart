@@ -287,29 +287,36 @@ class SlipPayPage extends StatelessWidget {
                                     ),
                                   ),
                                 )
-                              : ElevatedButton.icon(
-                                  key: const ValueKey('send'),
-                                  onPressed: () => controller.sendPayment(() {
-                                    controller.showSuccess.value = false;
-                                    Get.back();
-                                  }),
-                                  icon: const Icon(Icons.send,
-                                      color: Colors.white),
-                                  label: const Text(
-                                    "Send",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.5),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: primaryColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(13),
-                                    ),
-                                    elevation: 0,
-                                  ),
-                                ),
+                                          : ElevatedButton(
+                                              key: const ValueKey('send'),
+                                              onPressed: () => controller.sendPayment(() {
+                                                controller.showSuccess.value = false;
+                                                Get.back();
+                                              }),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: primaryColor,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(30),
+                                                ),
+                                                elevation: 0,
+                                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: const [
+                                                  Icon(Icons.send, color: Colors.white, size: 20),
+                                                  SizedBox(width: 10),
+                                                  Text(
+                                                    "Send",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: 17),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                         ),
                       )),
                 ],

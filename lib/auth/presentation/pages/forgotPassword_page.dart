@@ -35,8 +35,10 @@ class ForgotPasswordPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  const Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
                     children: [
                       Text(
                         'Forgot Password',
@@ -45,7 +47,6 @@ class ForgotPasswordPage extends StatelessWidget {
                           fontSize: 32,
                         ),
                       ),
-                      SizedBox(width: 8),
                       Text(
                         '\u{1F512}',
                         style: TextStyle(fontSize: 32),
