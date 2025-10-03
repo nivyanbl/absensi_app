@@ -9,21 +9,21 @@ class SlipPayPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SlipPayController controller = Get.put(SlipPayController());
-    const Color primaryColor = Color(0xFF6EA07A);
+  final SlipPayController controller = Get.put(SlipPayController());
+  final Color primaryColor = Theme.of(context).primaryColor;
 
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
           onPressed: () => Get.back(),
         ),
-        title: const Text(
+        title: Text(
           "Complete SlipPay",
           style: TextStyle(
-            color: Colors.black,
+            color: Theme.of(context).textTheme.titleLarge?.color,
             fontWeight: FontWeight.w700,
             fontSize: 21,
             letterSpacing: 0.2,
@@ -31,7 +31,7 @@ class SlipPayPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Obx(() => AnimatedOpacity(
             opacity: controller.showSuccess.value ? 0.2 : 1,
             duration: const Duration(milliseconds: 400),
@@ -70,11 +70,13 @@ class SlipPayPage extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Get.snackbar("Details",
-                                      "Show transaction details here.",
-                                      backgroundColor: Colors.white,
-                                      colorText: Colors.black,
-                                      snackPosition: SnackPosition.BOTTOM);
+                                  Get.snackbar(
+                                    "Details",
+                                    "Show transaction details here.",
+                                    backgroundColor: Theme.of(context).cardColor,
+                                    colorText: Theme.of(context).textTheme.bodyLarge?.color,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  );
                                 },
                                 style: TextButton.styleFrom(
                                   padding: EdgeInsets.zero,
@@ -82,18 +84,18 @@ class SlipPayPage extends StatelessWidget {
                                   tapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
                                 ),
-                                child: const Row(
+                                child: Row(
                                   children: [
                                     Text(
                                       "View Details",
                                       style: TextStyle(
-                                        color: Colors.black87,
+                                        color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black87,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 13.5,
                                       ),
                                     ),
                                     Icon(Icons.chevron_right,
-                                        color: Colors.black54, size: 20),
+                                        color: Theme.of(context).iconTheme.color?.withOpacity(0.7) ?? Colors.black54, size: 20),
                                   ],
                                 ),
                               ),
@@ -119,9 +121,9 @@ class SlipPayPage extends StatelessWidget {
                                     child: child,
                                   ),
                                 ),
-                                child: Text(
+                                  child: Text(
                                   "${slip.currency} ${slip.net}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: primaryColor,
                                     fontWeight: FontWeight.w800,
                                     fontSize: 21,
@@ -203,10 +205,10 @@ class SlipPayPage extends StatelessWidget {
                                   opacity: value,
                                   child: child,
                                 ),
-                                child: const Text(
+                                  child: Text(
                                   "Awaiting Confirmation",
                                   style: TextStyle(
-                                    color: Colors.redAccent,
+                                    color: Theme.of(context).colorScheme.error,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14.5,
                                   ),
@@ -224,12 +226,13 @@ class SlipPayPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "Choose Payment Method",
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 17,
                             letterSpacing: 0.1,
+                            color: Theme.of(context).textTheme.titleLarge?.color,
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -278,7 +281,7 @@ class SlipPayPage extends StatelessWidget {
                                     ),
                                     elevation: 0,
                                   ),
-                                  child: const SizedBox(
+                                                  child: const SizedBox(
                                     width: 24,
                                     height: 24,
                                     child: CircularProgressIndicator(
@@ -301,21 +304,21 @@ class SlipPayPage extends StatelessWidget {
                                                 elevation: 0,
                                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                                               ),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: const [
-                                                  Icon(Icons.send, color: Colors.white, size: 20),
-                                                  SizedBox(width: 10),
-                                                  Text(
-                                                    "Send",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 17),
-                                                  ),
-                                                ],
-                                              ),
+                                               child: Row(
+                                                 mainAxisAlignment: MainAxisAlignment.center,
+                                                 mainAxisSize: MainAxisSize.max,
+                                                 children: const [
+                                                   Icon(Icons.send, color: Colors.white, size: 20),
+                                                   SizedBox(width: 10),
+                                                   Text(
+                                                     "Send",
+                                                     style: TextStyle(
+                                                         color: Colors.white,
+                                                         fontWeight: FontWeight.bold,
+                                                         fontSize: 17),
+                                                   ),
+                                                 ],
+                                               ),
                                             ),
                         ),
                       )),

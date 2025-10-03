@@ -55,11 +55,11 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color primaryColor = const Color(0xFF6EA07A);
+    final Color primaryColor = Theme.of(context).primaryColor;
     final String formattedDate = DateFormat('EEEE, dd MMMM yyyy').format(_currentTime);
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
   backgroundColor: primaryColor,
   elevation: 0,
@@ -82,15 +82,15 @@ class _DashboardPageState extends State<DashboardPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(_getGreeting(), style: const TextStyle(fontSize: 14, color: Colors.white)),
+            Text(_getGreeting(), style: TextStyle(fontSize: 14, color: Theme.of(context).appBarTheme.foregroundColor ?? Colors.white)),
             Obx(() {
               final userName = profileController.user.value?.fullName;
               return Text(
                 userName ?? "Loading...",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Theme.of(context).appBarTheme.foregroundColor ?? Colors.white,
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -130,21 +130,21 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Obx(() => ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 140),
-                          child: Text(
-                            controller.location.value,
-                            style: const TextStyle(color: Colors.white, fontSize: 13),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )),
-                  ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Obx(() => ConstrainedBox(
+                                        constraints: const BoxConstraints(maxWidth: 140),
+                                        child: Text(
+                                          controller.location.value,
+                                          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 13),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      )),
+                                ),
                 ],
               ),
               const SizedBox(height: 20),

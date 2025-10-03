@@ -11,15 +11,17 @@ class CheckInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final CheckInController controller = Get.put(CheckInController());
 
+    final primary = Theme.of(context).primaryColor;
+    final onPrimary = Theme.of(context).colorScheme.onPrimary;
+
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Get.toNamed( AppRoutes.DASHBOARD),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
+          onPressed: () => Get.toNamed(AppRoutes.DASHBOARD),
         ),
-        title: const Text('Absence',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: Text('Absence', style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -99,13 +101,13 @@ class CheckInPage extends StatelessWidget {
                         height: 56,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.12),
+                          color: Theme.of(context).cardColor.withOpacity(0.12),
                           borderRadius: BorderRadius.circular(28),
-                          border: Border.all(color: Colors.white24),
+                          border: Border.all(color: Theme.of(context).dividerColor),
                         ),
-                        child: const Text(
+                        child: Text(
                           'Checked In',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                          style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color, fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                       );
                     }
@@ -127,11 +129,11 @@ class CheckInPage extends StatelessWidget {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: enabled ? const Color(0xFF6EA07A) : Colors.grey.shade400,
+                            color: enabled ? primary : Colors.grey.shade400,
                             boxShadow: (enabled && !checking)
                                 ? [
                                     BoxShadow(
-                                      color: const Color(0xFF6EA07A).withOpacity(0.28),
+                                      color: primary.withOpacity(0.28),
                                       blurRadius: 12,
                                       offset: const Offset(0, 6),
                                     )
@@ -139,17 +141,17 @@ class CheckInPage extends StatelessWidget {
                                 : [],
                           ),
                           child: checking
-                              ? const SizedBox(
+                              ? SizedBox(
                                   width: 28,
                                   height: 28,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2.5,
-                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                    valueColor: AlwaysStoppedAnimation<Color>(onPrimary),
                                   ),
                                 )
-                              : const Icon(
+                              : Icon(
                                   Icons.camera_alt,
-                                  color: Colors.white,
+                                  color: onPrimary,
                                   size: 32,
                                 ),
                         ),

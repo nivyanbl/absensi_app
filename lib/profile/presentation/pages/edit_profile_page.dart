@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
 import 'package:employment_attendance/profile/presentation/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +19,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   
   final ProfileController controller = Get.find();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  File? _pickedImageFile;
 
   @override
   void initState() {
@@ -23,7 +27,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final user = controller.user.value;
     _nameController = TextEditingController(text: user?.fullName ?? '');
     _emailController = TextEditingController(text: user?.email ?? '');
-    _phoneController = TextEditingController(); 
+  _phoneController = TextEditingController(text: user?.phone ?? ''); 
   }
 
   @override
@@ -35,13 +39,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
   
   void _pickImage() {
-    print('Fungsi pickImage dipanggil! Logika akan ditambahkan nanti.');
+    ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 800, imageQuality: 80).then((xfile) async {
+      if (xfile == null) return;
+      setState(() {
+        _pickedImageFile = File(xfile.path);
+      });
+      // Optionally upload to server if backend supports
+      // final url = await controller.uploadProfileImage(xfile.path);
+      // if (url != null) { /* update user avatar url */ }
+    });
   }
 
   void _saveProfile() {
     if (_formKey.currentState!.validate()) {
-       print('Fungsi saveProfile dipanggil! Data siap disimpan.');
-       Get.back();
+  // Reverted: actual profile update disabled — show not implemented message
+  Get.snackbar('Notice', 'Profile update is not enabled in this restore.', snackPosition: SnackPosition.BOTTOM);
     }
   }
 
@@ -93,6 +105,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         child:  Stack(
                           alignment: Alignment.bottomRight,
                           children: [
+                             if (_pickedImageFile != null)
+                              CircleAvatar(radius: 40, backgroundImage: FileImage(_pickedImageFile!))
+                            else
                              const CircleAvatar(
                               radius: 40,
                               backgroundColor: Color(0xFFBDBDBD),
@@ -164,8 +179,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       },
                   ),
                   const SizedBox(height: 48),
-                  ElevatedButton(
-                    onPressed: _saveProfile,
+                  Obx(() => ElevatedButton(
+                    onPressed: controller.isSaving.value ? null : _saveProfile,
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 48),
                       backgroundColor: const Color(0xFF6EA07A),
@@ -173,11 +188,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    child: const Text(
+                    child: controller.isSaving.value ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Text(
                       'Save',
                       style: TextStyle(color: Colors.white),
                     ),
-                  ),
+                  )),
                 ],
               ),
             ),

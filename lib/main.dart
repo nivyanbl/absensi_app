@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:employment_attendance/navigation/app_pages.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:get_storage/get_storage.dart';
+// ...existing imports
 import 'package:employment_attendance/core/services/api_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:employment_attendance/core/widgets/splash_screen.dart';
@@ -24,8 +25,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  // Note: dark mode wiring reverted to original behavior (always light)
+  final lightTheme = ThemeData(
+      brightness: Brightness.light,
+      primaryColor: const Color(0xFF6EA07A),
+      scaffoldBackgroundColor: Colors.grey[100],
+      cardColor: Colors.white,
+      appBarTheme: const AppBarTheme(backgroundColor: Colors.white, foregroundColor: Colors.black),
+    );
+
+    final darkTheme = ThemeData(
+      brightness: Brightness.dark,
+      primaryColor: const Color(0xFF6EA07A),
+      scaffoldBackgroundColor: Colors.black,
+      cardColor: const Color(0xFF121212),
+      appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF1F1F1F), foregroundColor: Colors.white),
+    );
+
+    // Reverted: always use light theme by default (dark-mode toggle not wired here)
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.light,
       home: const _StartupRouter(),
       getPages: AppPages.pages,
     );

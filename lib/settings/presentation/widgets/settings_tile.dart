@@ -25,9 +25,9 @@ class SettingsTile extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Icon(icon, color: Colors.black),
+        child: Icon(icon, color: Theme.of(context).iconTheme.color),
       ),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+      title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodyLarge?.color)),
       trailing: trailing ?? const Icon(Icons.arrow_forward_ios, size: 16),
     );
   }

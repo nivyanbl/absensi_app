@@ -22,4 +22,19 @@ class ProfileRepository {
       return null;
     }
   }
+
+  Future<bool> updateUserProfile({String? fullName, String? email, String? phone}) async {
+    try {
+      final data = <String, dynamic>{};
+      if (fullName != null) data['fullName'] = fullName;
+      if (email != null) data['email'] = email;
+      if (phone != null) data['phone'] = phone;
+
+      final response = await _apiService.put('/auth/me', data: data);
+      return response.statusCode == 200 || response.statusCode == 204;
+    } catch (e) {
+      print('Error updating profile: $e');
+      return false;
+    }
+  }
 }

@@ -13,6 +13,7 @@ import 'package:employment_attendance/profile/presentation/pages/profile_page.da
 import 'package:employment_attendance/auth/presentation/pages/register_page.dart';
 import 'package:employment_attendance/auth/presentation/pages/forgotPassword_page.dart';
 import 'package:employment_attendance/settings/presentation/pages/settings_page.dart';
+import 'package:employment_attendance/settings/presentation/pages/privacy_policy_page.dart';
 import 'package:employment_attendance/slip/presentation/pages/slip_page.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:employment_attendance/task/presentation/pages/create_task_page.dart';
@@ -36,6 +37,7 @@ class AppPages {
     GetPage(name: AppRoutes.FORGOT_PASSWORD, page: () => ForgotPasswordPage()),
     GetPage(name: AppRoutes.ATTENDANCE_HISTORY, page: ()=> const AttendanceHistoryPage()),
     GetPage(name: AppRoutes.SETTINGS, page:()=> const SettingsPage()),
+  GetPage(name: '/privacy', page: () => const PrivacyPolicyPage()),
     GetPage(name: AppRoutes.TASK, page: ()=> const TaskPage()),
     GetPage(name: AppRoutes.ADDTASK, page:()=> const CreateTaskPage()),
     GetPage(name: AppRoutes.CHECK_OUT, page: ()=> const CheckOutPage()),
