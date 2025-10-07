@@ -34,19 +34,12 @@ class MyApp extends StatelessWidget {
       appBarTheme: const AppBarTheme(backgroundColor: Colors.white, foregroundColor: Colors.black),
     );
 
-    final darkTheme = ThemeData(
-      brightness: Brightness.dark,
-      primaryColor: const Color(0xFF6EA07A),
-      scaffoldBackgroundColor: Colors.black,
-      cardColor: const Color(0xFF121212),
-      appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF1F1F1F), foregroundColor: Colors.white),
-    );
+    
 
     // Reverted: always use light theme by default (dark-mode toggle not wired here)
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
-      darkTheme: darkTheme,
       themeMode: ThemeMode.light,
       home: const _StartupRouter(),
       getPages: AppPages.pages,
