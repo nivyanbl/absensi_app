@@ -28,13 +28,12 @@ class CompanyNewsList extends StatelessWidget {
         const Text("Company News",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 12),
-        
         SizedBox(
-          height: 150, 
+          height: 150,
           child: ListView.builder(
-            scrollDirection: Axis.horizontal, 
+            scrollDirection: Axis.horizontal,
             shrinkWrap: true,
-            physics: const BouncingScrollPhysics(), 
+            physics: const BouncingScrollPhysics(),
             itemCount: newsList.length,
             itemBuilder: (context, index) {
               final news = newsList[index];

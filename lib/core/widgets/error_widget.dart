@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:employment_attendance/core/constants/app_colors.dart';
-import 'package:employment_attendance/core/constants/app_strings.dart';
 
 class ErrorDisplayWidget extends StatelessWidget {
   final String message;
   final VoidCallback? onRetry;
-  
+
   const ErrorDisplayWidget({
     super.key,
     required this.message,

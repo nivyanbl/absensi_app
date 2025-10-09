@@ -1,6 +1,6 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:employment_attendance/features/attendance/domain/models/attendance_model.dart';
 import 'package:flutter/material.dart';
-
 
 class AttendanceCard extends StatelessWidget {
   final AttendanceModel attendance;
@@ -8,8 +8,6 @@ class AttendanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryGreen = Color(0xFF6EA07A);
-
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -18,7 +16,7 @@ class AttendanceCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             spreadRadius: 1,
             blurRadius: 10,
           ),
@@ -29,7 +27,7 @@ class AttendanceCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             decoration: BoxDecoration(
-              color: primaryGreen,
+              color: AppColors.primary,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
@@ -53,7 +51,6 @@ class AttendanceCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +72,7 @@ class AttendanceCard extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.location_on,
-                      color: primaryGreen,
+                      color: AppColors.primary,
                       size: 20,
                     ),
                     const SizedBox(width: 8),
@@ -98,6 +95,7 @@ class AttendanceCard extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildDetailColumn(String time, String label) {
     return Expanded(
       child: Column(

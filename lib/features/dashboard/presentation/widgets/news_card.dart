@@ -1,4 +1,4 @@
-
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class NewsCard extends StatelessWidget {
@@ -14,9 +14,9 @@ class NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 350, 
+      width: 350,
       child: Padding(
-        padding: const EdgeInsets.only(right: 16), 
+        padding: const EdgeInsets.only(right: 16),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(14),
           child: Stack(
@@ -42,19 +42,12 @@ class NewsCard extends StatelessWidget {
                 right: 0,
                 bottom: 0,
                 child: Container(
-                  // decoration: BoxDecoration(
-                  //   color: Colors.black.withOpacity(0.45),
-                  //   borderRadius: const BorderRadius.only(
-                  //     bottomLeft: Radius.circular(14),
-                  //     bottomRight: Radius.circular(14),
-                  //   ),
-                  // ),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   child: Text(
                     title,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textWhite,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       letterSpacing: 0.2,

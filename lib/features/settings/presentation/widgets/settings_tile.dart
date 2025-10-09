@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 
 class SettingsTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final VoidCallback onTap;
-  final Widget? trailing; 
+  final Widget? trailing;
 
   const SettingsTile({
     super.key,
@@ -27,7 +26,10 @@ class SettingsTile extends StatelessWidget {
         ),
         child: Icon(icon, color: Theme.of(context).iconTheme.color),
       ),
-      title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodyLarge?.color)),
+      title: Text(title,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).textTheme.bodyLarge?.color)),
       trailing: trailing ?? const Icon(Icons.arrow_forward_ios, size: 16),
     );
   }

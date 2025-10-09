@@ -1,3 +1,6 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
+import 'package:employment_attendance/core/constants/app_strings.dart';
+import 'package:employment_attendance/core/widgets/custom.button.dart';
 import 'package:employment_attendance/features/auth/presentation/controllers/auth.controller.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:employment_attendance/core/widgets/custom_text_field.dart';
@@ -14,7 +17,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -31,7 +34,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   const Text(
-                    'SIESTACLICK',
+                    AppStrings.appName,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -60,15 +63,15 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 40),
                   CustomTextField(
-                    label: 'Email',
+                    label: AppStrings.email,
                     controller: authController.emailController,
-                    hintText: 'Enter your email',
+                    hintText: AppStrings.enterEmail,
                   ),
                   const SizedBox(height: 24),
                   Obx(() => CustomTextField(
-                        label: 'Password',
+                        label: AppStrings.password,
                         controller: authController.passwordController,
-                        hintText: 'Enter your password',
+                        hintText: AppStrings.enterPassword,
                         obscureText: _obscurePassword.value,
                         suffixIcon: IconButton(
                           icon: Icon(_obscurePassword.value
@@ -84,7 +87,7 @@ class LoginPage extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: TextButton(
                       onPressed: () {
-                        Get.toNamed(AppRoutes.FORGOT_PASSWORD);
+                        Get.toNamed(AppRoutes.forgotPassword);
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -93,7 +96,7 @@ class LoginPage extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                       ),
                       child: const Text(
-                        'Forgot your password?',
+                        AppStrings.forgotPassword,
                         style: TextStyle(
                           color: Colors.blue,
                           decoration: TextDecoration.underline,
@@ -107,45 +110,32 @@ class LoginPage extends StatelessWidget {
                     return SizedBox(
                       width: double.infinity,
                       height: 50,
-                      child: ElevatedButton(
+                      child: CustomButton(
+                        text: AppStrings.signIn,
                         onPressed: authController.isLoading.value
                             ? null
                             : () => authController.loginUser(),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6EA07A),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: authController.isLoading.value
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : const Text(
-                                'Sign In',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
-                                  color: Colors.white,
-                                ),
-                              ),
+                        isLoading: authController.isLoading.value,
                       ),
                     );
                   }),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: () {
-                      Get.toNamed(AppRoutes.REGISTER);
-                    },
-                    child:  RichText(text: const TextSpan(
-                      style:   TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w500 ),
-                      children: <TextSpan>[
-                        TextSpan(text: 'Don\'t have an account? '),
-                        TextSpan(text: " Register", style:  TextStyle(color: Colors.blueAccent))
-                      ]
-                    ))
-                  ),
+                      onPressed: () {
+                        Get.toNamed(AppRoutes.register);
+                      },
+                      child: RichText(
+                          text: const TextSpan(
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500),
+                              children: <TextSpan>[
+                            TextSpan(text: AppStrings.noAccount),
+                            TextSpan(
+                                text: AppStrings.register,
+                                style: TextStyle(color: Colors.blueAccent))
+                          ]))),
                 ],
               ),
             ),

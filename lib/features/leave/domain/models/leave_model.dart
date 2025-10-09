@@ -25,7 +25,6 @@ class LeaveModel {
     this.updatedAt,
   });
 
-
   factory LeaveModel.fromJson(Map<String, dynamic> json) {
     return LeaveModel(
       id: json['id'],

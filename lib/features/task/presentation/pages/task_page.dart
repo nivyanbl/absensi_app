@@ -1,3 +1,4 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:employment_attendance/features/task/presentation/controllers/task_controller.dart';
 import 'package:employment_attendance/features/task/presentation/widgets/create_task_button.dart';
 import 'package:employment_attendance/features/task/presentation/widgets/task_card.dart';
@@ -11,7 +12,7 @@ class TaskPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final TaskController controller = Get.put(TaskController());
     return Scaffold(
-      backgroundColor: const Color(0xFF6EA07A),
+      backgroundColor: AppColors.primary,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

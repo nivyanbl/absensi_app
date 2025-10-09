@@ -1,3 +1,4 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:employment_attendance/features/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +85,7 @@ class _LmsPageState extends State<LmsPage> {
                         ),
                       ),
                       selected: selectedTab == index,
-                      selectedColor: const Color(0xFF6EA07A),
+                      selectedColor: AppColors.primary,
                       backgroundColor: const Color(0xFFF3F3F3),
                       onSelected: (val) {
                         setState(() {
@@ -118,7 +119,7 @@ class _LmsPageState extends State<LmsPage> {
                           Row(
                             children: [
                               Icon(course['icon'],
-                                  size: 28, color: const Color(0xFF6EA07A)),
+                                  size: 28, color: AppColors.primary),
                               const SizedBox(width: 12),
                               Expanded(
                                 child: Text(
@@ -137,8 +138,8 @@ class _LmsPageState extends State<LmsPage> {
                               value: course['progress'],
                               minHeight: 6,
                               backgroundColor: Colors.grey[200],
-                              valueColor:
-                                  const AlwaysStoppedAnimation<Color>(Colors.green),
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                  Colors.green),
                             ),
                             const SizedBox(height: 8),
                             Row(
@@ -170,7 +171,7 @@ class _LmsPageState extends State<LmsPage> {
                                   label: const Text('Continue',
                                       style: TextStyle(color: Colors.white)),
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF6EA07A),
+                                    backgroundColor: AppColors.primary,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -196,7 +197,7 @@ class _LmsPageState extends State<LmsPage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF6EA07A),
+                                    color: AppColors.primary,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: const Row(
@@ -240,15 +241,15 @@ class _LmsPageState extends State<LmsPage> {
           ),
         ),
       ),
-       bottomNavigationBar: CustomBottomNav(
-        currentIndex: 3, 
+      bottomNavigationBar: CustomBottomNav(
+        currentIndex: 3,
         // primary: primaryColor,
         onTap: (index) {
-          if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
-          if (index == 1) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
-          if (index == 2) Get.offAllNamed(AppRoutes.CHECK_IN);
-          if (index == 3) Get.offAllNamed(AppRoutes.LMS);
-          if (index == 4) Get.offAllNamed(AppRoutes.SLIP);
+          if (index == 0) Get.offAllNamed(AppRoutes.dashboard);
+          if (index == 1) Get.offAllNamed(AppRoutes.attendanceHistory);
+          if (index == 2) Get.offAllNamed(AppRoutes.checkIn);
+          if (index == 3) Get.offAllNamed(AppRoutes.lms);
+          if (index == 4) Get.offAllNamed(AppRoutes.slip);
         },
       ),
     );

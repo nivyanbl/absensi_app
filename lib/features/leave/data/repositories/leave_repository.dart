@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:employment_attendance/core/services/api_service.dart';
 import 'package:employment_attendance/features/leave/domain/models/leave_model.dart';
+import 'package:flutter/material.dart';
 
 class LeaveRepository {
   final ApiService _apiService = ApiService();
@@ -27,7 +28,7 @@ class LeaveRepository {
       }
       return null;
     } on DioException catch (e) {
-      print('Error creating leave: ${e.response?.data}');
+      debugPrint('Error creating leave: ${e.response?.data}');
       return null;
     }
   }
@@ -36,14 +37,15 @@ class LeaveRepository {
     required String leaveId,
   }) async {
     try {
-      final response = await _apiService.post('/leaves/$leaveId/cancel',
+      final response = await _apiService.post(
+        '/leaves/$leaveId/cancel',
       );
-      if (response.statusCode == 200 ) {
+      if (response.statusCode == 200) {
         return LeaveModel.fromJson(response.data['data']);
       }
       return null;
     } on DioException catch (e) {
-      print('Error cancelling leave: ${e.response?.data}');
+      debugPrint('Error cancelling leave: ${e.response?.data}');
       return null;
     }
   }
@@ -78,18 +80,29 @@ class LeaveRepository {
         } else if (RegExp(r'[A-Za-z]').hasMatch(mNonNull) && year != null) {
           // Convert month name to month number
           final monthNames = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
           ];
-          final idx = monthNames.indexWhere((m) => m.toLowerCase() == mNonNull.toLowerCase());
+          final idx = monthNames
+              .indexWhere((m) => m.toLowerCase() == mNonNull.toLowerCase());
           if (idx >= 0) {
             final mNum = (idx + 1).toString().padLeft(2, '0');
-            monthParam = '${year}-${mNum}';
+            monthParam = '$year-$mNum';
           } else {
             // fallback: try to parse numeric month
             final asNum = int.tryParse(month);
             if (asNum != null) {
-              monthParam = '${year}-${asNum.toString().padLeft(2, '0')}';
+              monthParam = '$year-${asNum.toString().padLeft(2, '0')}';
             } else {
               monthParam = month; // pass through and let server validate
             }
@@ -97,7 +110,7 @@ class LeaveRepository {
         } else if (year != null && int.tryParse(month) != null) {
           // numeric month like '9' -> convert
           final asNum = int.parse(month);
-          monthParam = '${year}-${asNum.toString().padLeft(2, '0')}';
+          monthParam = '$year-${asNum.toString().padLeft(2, '0')}';
         } else {
           monthParam = month;
         }
@@ -114,14 +127,15 @@ class LeaveRepository {
         if (pageSize != null) 'pageSize': pageSize,
       };
 
-      final response = await _apiService.get('/leaves',queryParameters: queryParameters);
+      final response =
+          await _apiService.get('/leaves', queryParameters: queryParameters);
       if (response.statusCode == 200) {
-        final List<dynamic> data = response.data ['data'];
-        return data.map((json)=> LeaveModel.fromJson(json)).toList(); 
+        final List<dynamic> data = response.data['data'];
+        return data.map((json) => LeaveModel.fromJson(json)).toList();
       }
       return [];
     } on DioException catch (e) {
-  print('Error fetching leaves: ${e.response?.data}');
+      debugPrint('Error fetching leaves: ${e.response?.data}');
       return [];
     }
   }

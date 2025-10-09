@@ -20,7 +20,8 @@ class UserModel {
     );
   }
 
-  UserModel copyWith({String? id, String? fullName, String? email, String? phone}) {
+  UserModel copyWith(
+      {String? id, String? fullName, String? email, String? phone}) {
     return UserModel(
       id: id ?? this.id,
       fullName: fullName ?? this.fullName,

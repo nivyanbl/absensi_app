@@ -1,6 +1,7 @@
-import 'package:dio/dio.dart'; 
+import 'package:dio/dio.dart';
 import 'package:employment_attendance/core/services/api_service.dart';
 import 'package:employment_attendance/features/profile/domain/models/user_model.dart';
+import 'package:flutter/material.dart';
 
 class ProfileRepository {
   final ApiService _apiService = ApiService();
@@ -15,15 +16,16 @@ class ProfileRepository {
         return null;
       }
     } on DioException catch (e) {
-      print('Error while retrieving profile: ${e.response?.data}');
+      debugPrint('Error while retrieving profile: ${e.response?.data}');
       return null;
     } catch (e) {
-      print('An unexpected error occurred: $e');
+      debugPrint('An unexpected error occurred: $e');
       return null;
     }
   }
 
-  Future<bool> updateUserProfile({String? fullName, String? email, String? phone}) async {
+  Future<bool> updateUserProfile(
+      {String? fullName, String? email, String? phone}) async {
     try {
       final data = <String, dynamic>{};
       if (fullName != null) data['fullName'] = fullName;
@@ -33,7 +35,7 @@ class ProfileRepository {
       final response = await _apiService.put('/auth/me', data: data);
       return response.statusCode == 200 || response.statusCode == 204;
     } catch (e) {
-      print('Error updating profile: $e');
+      debugPrint('Error updating profile: $e');
       return false;
     }
   }

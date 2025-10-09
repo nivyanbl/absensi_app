@@ -9,7 +9,7 @@ class CheckOutCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(AppRoutes.CHECK_OUT);
+        Get.toNamed(AppRoutes.checkOut);
       },
       child: Card(
         color: Colors.white,
@@ -54,9 +54,10 @@ class CheckOutCard extends StatelessWidget {
                   ),
                 ],
               )),
-              const Icon(Icons.arrow_forward_ios,
-              color:  Colors.grey,
-              size: 18,
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.grey,
+                size: 18,
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class NavItem {
@@ -15,7 +16,7 @@ class CustomBottomNav extends StatelessWidget {
     super.key,
     required this.currentIndex,
     required this.onTap,
-    this.primary = const Color(0xFF6EA07A),
+    this.primary = AppColors.primary,
   });
 
   @override
@@ -37,8 +38,8 @@ class CustomBottomNav extends StatelessWidget {
         Expanded(
           child: InkWell(
             onTap: () => onTap(i),
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
+            splashColor: AppColors.transparent,
+            highlightColor: AppColors.transparent,
             child: _buildNavItem(items[i], isActive),
           ),
         ),
@@ -51,7 +52,7 @@ class CustomBottomNav extends StatelessWidget {
             thickness: 1,
             color: Colors.black12,
             indent: 18,
-            endIndent: 18, 
+            endIndent: 18,
           ),
         );
       }
@@ -67,7 +68,7 @@ class CustomBottomNav extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.stretch, 
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: navItems,
         ),
       ),
@@ -78,7 +79,7 @@ class CustomBottomNav extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 180),
       curve: Curves.easeInOut,
-      alignment: Alignment.center, 
+      alignment: Alignment.center,
       padding: EdgeInsets.symmetric(
         horizontal: isActive ? 18 : 12,
         vertical: isActive ? 10 : 8,
@@ -90,7 +91,7 @@ class CustomBottomNav extends StatelessWidget {
                 top: Radius.circular(28),
               ),
             )
-          : const BoxDecoration(color: Colors.transparent),
+          : const BoxDecoration(color: AppColors.transparent),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -98,7 +99,7 @@ class CustomBottomNav extends StatelessWidget {
           Icon(
             item.icon,
             size: 22,
-            color: isActive ? Colors.white : Colors.black87,
+            color: isActive ? AppColors.textWhite : Colors.black87,
           ),
           const SizedBox(height: 6),
           Text(
@@ -106,7 +107,7 @@ class CustomBottomNav extends StatelessWidget {
             style: TextStyle(
               fontSize: 12.5,
               fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-              color: isActive ? Colors.white : Colors.black54,
+              color: isActive ? AppColors.textWhite : Colors.black54,
             ),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,

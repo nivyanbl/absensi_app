@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:employment_attendance/features/task/domain/models/task_model.dart';
 import 'package:employment_attendance/features/task/presentation/controllers/task_controller.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +28,8 @@ class TaskCard extends StatelessWidget {
       imageWidget = Image.file(File(task.image),
           height: 60,
           width: 60,
-          fit: BoxFit.cover, errorBuilder: (context, error, StackTrace) {
-        print("Error loading image: $error");
+          fit: BoxFit.cover, errorBuilder: (context, error, StackTrace? stackTrace) {
+        debugPrint("Error loading image: $error");
         return Container(
           height: 60,
           width: 60,
@@ -85,7 +86,7 @@ class TaskCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),
@@ -99,7 +100,7 @@ class TaskCard extends StatelessWidget {
                 const Icon(
                   Icons.calendar_month,
                   size: 16,
-                  color: Color(0xFF6EA07A),
+                  color: AppColors.primary,
                 ),
                 const SizedBox(
                   width: 8,
@@ -107,7 +108,7 @@ class TaskCard extends StatelessWidget {
                 Text(
                   task.date,
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: AppColors.textPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -155,7 +156,8 @@ class TaskCard extends StatelessWidget {
                       Text(
                         task.description,
                         style: const TextStyle(
-                            color: Colors.grey, fontWeight: FontWeight.bold),
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

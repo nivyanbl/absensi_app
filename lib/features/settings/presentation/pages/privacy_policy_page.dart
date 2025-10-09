@@ -14,15 +14,17 @@ class PrivacyPolicyPage extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text('Privacy Policy', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            children: [
+              Text('Privacy Policy',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               SizedBox(height: 12),
-              Text('This is a placeholder privacy policy. Replace with the real policy text.'),
+              Text(
+                  'This is a placeholder privacy policy. Replace with the real policy text.'),
             ],
           ),
         ),

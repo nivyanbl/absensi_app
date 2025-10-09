@@ -9,7 +9,20 @@ class AttendanceController extends GetxController {
   var attendanceList = <AttendanceModel>[].obs;
   var isLoading = true.obs;
 
-  final List<String> months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  final List<String> months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
   final List<String> years = ['2025', '2024', '2023'];
   final List<String> statuses = ['All Status', 'Present', 'Late', 'Absent'];
 

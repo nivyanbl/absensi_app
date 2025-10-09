@@ -1,3 +1,4 @@
+import 'package:employment_attendance/core/constants/app_strings.dart';
 import 'package:employment_attendance/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:employment_attendance/features/dashboard/presentation/widgets/check_out_card.dart';
 import 'package:employment_attendance/features/dashboard/presentation/widgets/company_new_list.dart';
@@ -10,8 +11,6 @@ import 'package:get/get.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 
-
-
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
@@ -20,7 +19,8 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final DashboardController controller = Get.put(DashboardController(), permanent: true);
+  final DashboardController controller =
+      Get.put(DashboardController(), permanent: true);
   final ProfileController profileController = Get.put(ProfileController());
 
   late Timer _timer;
@@ -56,61 +56,67 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;
-    final String formattedDate = DateFormat('EEEE, dd MMMM yyyy').format(_currentTime);
+    final String formattedDate =
+        DateFormat('EEEE, dd MMMM yyyy').format(_currentTime);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-  backgroundColor: primaryColor,
-  elevation: 0,
-  automaticallyImplyLeading: false, 
-  title: Row(
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 12.0),
-        child: GestureDetector(
-          onTap: () => Get.toNamed(AppRoutes.PROFILE),
-          child: const CircleAvatar(
-            radius: 22,
-            backgroundImage: NetworkImage("https://i.pravatar.cc/150?img=3"),
-          ),
-        ),
-      ),
-      // Make the text column flexible so a long name won't overflow the appbar
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+        backgroundColor: primaryColor,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: Row(
           children: [
-            Text(_getGreeting(), style: TextStyle(fontSize: 14, color: Theme.of(context).appBarTheme.foregroundColor ?? Colors.white)),
-            Obx(() {
-              final userName = profileController.user.value?.fullName;
-              return Text(
-                userName ?? "Loading...",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).appBarTheme.foregroundColor ?? Colors.white,
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 12.0),
+              child: GestureDetector(
+                onTap: () => Get.toNamed(AppRoutes.profile),
+                child: const CircleAvatar(
+                  radius: 22,
+                  backgroundImage:
+                      NetworkImage("https://i.pravatar.cc/150?img=3"),
                 ),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              );
-            }),
+              ),
+            ),
+            // Make the text column flexible so a long name won't overflow the appbar
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(_getGreeting(),
+                      style: TextStyle(
+                          fontSize: 14,
+                          color:
+                              Theme.of(context).appBarTheme.foregroundColor ??
+                                  Colors.white)),
+                  Obx(() {
+                    final userName = profileController.user.value?.fullName;
+                    return Text(
+                      userName ?? AppStrings.loading,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).appBarTheme.foregroundColor ??
+                            Colors.white,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    );
+                  }),
+                ],
+              ),
+            ),
           ],
         ),
+        actions: [
+          IconButton(
+            onPressed: () => Get.toNamed(AppRoutes.notification),
+            icon: const Icon(Icons.notifications, color: Colors.white),
+          ),
+          const SizedBox(width: 10),
+        ],
       ),
-    ],
-  ),
-  actions: [
-    IconButton(
-      onPressed: () => Get.toNamed(AppRoutes.NOTIFICATION),
-      icon: const Icon(Icons.notifications, color: Colors.white),
-    ),
-    const SizedBox(width: 10),
-  ],
-),
-
-      
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -124,31 +130,34 @@ class _DashboardPageState extends State<DashboardPage> {
                   Expanded(
                     child: Text(
                       formattedDate,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w500),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                   ),
                   const SizedBox(width: 12),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    color: primaryColor,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Obx(() => ConstrainedBox(
-                                        constraints: const BoxConstraints(maxWidth: 140),
-                                        child: Text(
-                                          controller.location.value,
-                                          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 13),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      )),
-                                ),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Obx(() => ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 140),
+                          child: Text(
+                            controller.location.value,
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontSize: 13),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )),
+                  ),
                 ],
               ),
               const SizedBox(height: 20),
-
               const OverviewGrid(),
               const SizedBox(height: 24),
               const CheckOutCard(),
@@ -162,11 +171,11 @@ class _DashboardPageState extends State<DashboardPage> {
       bottomNavigationBar: CustomBottomNav(
         currentIndex: 0,
         onTap: (index) {
-          if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
-          if (index == 1) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
-          if (index == 2) Get.offAllNamed(AppRoutes.CHECK_IN);
-          if (index == 3) Get.offAllNamed(AppRoutes.LMS);
-          if (index == 4) Get.offAllNamed(AppRoutes.SLIP);
+          if (index == 0) Get.offAllNamed(AppRoutes.dashboard);
+          if (index == 1) Get.offAllNamed(AppRoutes.attendanceHistory);
+          if (index == 2) Get.offAllNamed(AppRoutes.checkIn);
+          if (index == 3) Get.offAllNamed(AppRoutes.lms);
+          if (index == 4) Get.offAllNamed(AppRoutes.slip);
         },
       ),
     );

@@ -13,19 +13,20 @@ class OverviewCard extends StatelessWidget {
     required this.label,
     required this.value,
     required this.primaryColor,
-  this.onTap,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-  return LayoutBuilder(
+    return LayoutBuilder(
       builder: (context, constraints) {
         double cardWidth = constraints.maxWidth;
         double valueFontSize = cardWidth * 0.18;
         double labelFontSize = cardWidth * 0.1;
 
-  final displayValue = (value.trim().isEmpty || value == 'N/A') ? '-' : value;
-  final valueParts = displayValue.split(' ');
+        final displayValue =
+            (value.trim().isEmpty || value == 'N/A') ? '-' : value;
+        final valueParts = displayValue.split(' ');
 
         return Card(
           color: Colors.white,

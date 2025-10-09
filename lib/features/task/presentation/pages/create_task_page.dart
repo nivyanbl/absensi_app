@@ -1,8 +1,9 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:employment_attendance/features/task/presentation/controllers/task_controller.dart';
 import 'package:employment_attendance/core/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart'; 
+import 'package:intl/intl.dart';
 
 class CreateTaskPage extends StatelessWidget {
   const CreateTaskPage({super.key});
@@ -26,13 +27,14 @@ class CreateTaskPage extends StatelessWidget {
         ),
         title: const Text(
           'Create task',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: AppColors.textPrimary, fontWeight: FontWeight.bold),
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: ElevatedButton(
-              onPressed: () {          
+              onPressed: () {
                 taskController.addTask(
                   title: titleController.text,
                   description: descriptionController.text,
@@ -43,14 +45,14 @@ class CreateTaskPage extends StatelessWidget {
                 Get.back();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF6EA07A),
+                backgroundColor: AppColors.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
               child: const Text(
                 'Add Task',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: TextStyle(color: AppColors.textWhite, fontSize: 16),
               ),
             ),
           )
@@ -83,7 +85,7 @@ class CreateTaskPage extends StatelessWidget {
                 controller: dateController,
                 hintText: 'Select Date',
                 readOnly: true,
-                prefixIcon:const Icon(Icons.calendar_month),
+                prefixIcon: const Icon(Icons.calendar_month),
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(
                     context: context,
@@ -94,13 +96,13 @@ class CreateTaskPage extends StatelessWidget {
                       return Theme(
                         data: Theme.of(context).copyWith(
                           colorScheme: const ColorScheme.light(
-                            primary: Color(0xFF6EA07A),
+                            primary: AppColors.primary,
                             onPrimary: Colors.white,
                             onSurface: Colors.black,
                           ),
                           textButtonTheme: TextButtonThemeData(
                             style: TextButton.styleFrom(
-                              foregroundColor: const Color(0xFF6EA07A),
+                              foregroundColor: AppColors.primary,
                             ),
                           ),
                         ),
@@ -114,7 +116,7 @@ class CreateTaskPage extends StatelessWidget {
                     dateController.text = formattedDate;
                   }
                 },
-              ),           
+              ),
               const SizedBox(height: 24),
               //status
               const Text('Status',
@@ -153,7 +155,7 @@ class CreateTaskPage extends StatelessWidget {
                           horizontal: 12, vertical: 16),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: const Color(0xFFE0E0E0)),
+                        border: Border.all(color: AppColors.lightGrey),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,13 +208,6 @@ class CreateTaskPage extends StatelessWidget {
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16),
                               ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF6EA07A),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 100, vertical: 12),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12)),
-                              ),
                             ),
                           ],
                         )
@@ -238,7 +233,7 @@ class CreateTaskPage extends StatelessWidget {
                                 style: TextStyle(color: Colors.white),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:const  Color(0xFF6EA07A),
+                                backgroundColor: AppColors.primary,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 100, vertical: 12),
                                 shape: RoundedRectangleBorder(

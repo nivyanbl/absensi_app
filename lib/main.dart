@@ -1,5 +1,6 @@
 // lib/main.dart
 
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -8,7 +9,6 @@ import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:get_storage/get_storage.dart';
 // ...existing imports
 import 'package:employment_attendance/core/services/api_service.dart';
-import 'package:flutter/widgets.dart';
 import 'package:employment_attendance/core/widgets/splash_screen.dart';
 
 Future<void> main() async {
@@ -25,16 +25,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  // Note: dark mode wiring reverted to original behavior (always light)
-  final lightTheme = ThemeData(
+    // Note: dark mode wiring reverted to original behavior (always light)
+    final lightTheme = ThemeData(
       brightness: Brightness.light,
-      primaryColor: const Color(0xFF6EA07A),
+      primaryColor: AppColors.primary,
       scaffoldBackgroundColor: Colors.grey[100],
       cardColor: Colors.white,
-      appBarTheme: const AppBarTheme(backgroundColor: Colors.white, foregroundColor: Colors.black),
+      appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white, foregroundColor: Colors.black),
     );
-
-    
 
     // Reverted: always use light theme by default (dark-mode toggle not wired here)
     return GetMaterialApp(
@@ -48,7 +47,7 @@ class MyApp extends StatelessWidget {
 }
 
 class _StartupRouter extends StatefulWidget {
-  const _StartupRouter({Key? key}) : super(key: key);
+  const _StartupRouter();
 
   @override
   State<_StartupRouter> createState() => _StartupRouterState();
@@ -69,7 +68,7 @@ class _StartupRouterState extends State<_StartupRouter> {
     final issuedAt = box.read('authIssuedAt') as String?;
 
     if (token == null || token.isEmpty) {
-      _navigateTo(AppRoutes.LOGIN);
+      _navigateTo(AppRoutes.login);
       return;
     }
 
@@ -82,7 +81,7 @@ class _StartupRouterState extends State<_StartupRouter> {
           box.remove('authToken');
           box.remove('authIssuedAt');
           box.remove('refreshToken');
-          _navigateTo(AppRoutes.LOGIN);
+          _navigateTo(AppRoutes.login);
           return;
         }
       } catch (_) {}
@@ -91,19 +90,19 @@ class _StartupRouterState extends State<_StartupRouter> {
     try {
       final resp = await _api.get('/auth/me');
       if (resp.statusCode == 200) {
-        _navigateTo(AppRoutes.DASHBOARD);
+        _navigateTo(AppRoutes.dashboard);
       } else {
         box.remove('authToken');
         box.remove('authIssuedAt');
         box.remove('refreshToken');
-        _navigateTo(AppRoutes.LOGIN);
+        _navigateTo(AppRoutes.login);
       }
     } catch (_) {
       // If network error, fallback to login to be safe
       box.remove('authToken');
       box.remove('authIssuedAt');
       box.remove('refreshToken');
-      _navigateTo(AppRoutes.LOGIN);
+      _navigateTo(AppRoutes.login);
     }
   }
 

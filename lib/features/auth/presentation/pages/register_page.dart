@@ -1,3 +1,6 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
+import 'package:employment_attendance/core/constants/app_strings.dart';
+import 'package:employment_attendance/core/widgets/custom.button.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:employment_attendance/core/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +16,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -30,7 +33,7 @@ class RegisterPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   const Text(
-                    'SIESTACLICK',
+                    AppStrings.appName,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -44,7 +47,7 @@ class RegisterPage extends StatelessWidget {
                     spacing: 8,
                     children: [
                       Text(
-                        'Create an account',
+                        AppStrings.createAccount,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 32,
@@ -60,20 +63,20 @@ class RegisterPage extends StatelessWidget {
                   CustomTextField(
                     label: '',
                     controller: authController.fullNameController,
-                    hintText: 'Full Name',
+                    hintText: AppStrings.fullName,
                     prefixIcon: const Icon(Icons.person),
                   ),
                   CustomTextField(
                     label: '',
                     controller: authController.registerEmailController,
-                    hintText: 'Email',
+                    hintText: AppStrings.email,
                     prefixIcon: const Icon(Icons.email),
                   ),
                   Obx(() => CustomTextField(
-                    label: '',
+                        label: '',
                         controller: authController.registerPasswordController,
                         obscureText: _obscurePassword.value,
-                        hintText: 'Password',
+                        hintText: AppStrings.password,
                         prefixIcon: const Icon(Icons.lock),
                         suffixIcon: IconButton(
                           icon: Icon(_obscurePassword.value
@@ -87,37 +90,31 @@ class RegisterPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   const SizedBox(height: 24),
                   Obx(() {
-                    return ElevatedButton(
+                    return CustomButton(
+                      text: AppStrings.register,
                       onPressed: authController.isLoading.value
                           ? null
                           : () => authController.registerUser(),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        textStyle: const TextStyle(fontSize: 22, fontWeight:  FontWeight.bold),
-                        backgroundColor: const Color(0xFF6EA07A),
-                      ),
-                      child: authController.isLoading.value
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text('Register',
-                              style: TextStyle(color: Colors.white)),
+                      isLoading: authController.isLoading.value,
                     );
                   }),
                   const SizedBox(height: 16),
-                   TextButton(
-                    onPressed: () {
-                      Get.toNamed(AppRoutes.LOGIN);
-                    },
-                    child:  RichText(text: const TextSpan(
-                      style:   TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w500 ),
-                      children: <TextSpan>[
-                        TextSpan(text: 'Already have account? '),
-                        TextSpan(text: " Sign In", style:  TextStyle(color: Colors.blueAccent))
-                      ]
-                    ))
-                  ),
+                  TextButton(
+                      onPressed: () {
+                        Get.toNamed(AppRoutes.login);
+                      },
+                      child: RichText(
+                          text: const TextSpan(
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.textSecondary,
+                                  fontWeight: FontWeight.w500),
+                              children: <TextSpan>[
+                            TextSpan(text: AppStrings.haveAccount),
+                            TextSpan(
+                                text: AppStrings.signIn,
+                                style: TextStyle(color: Colors.blueAccent))
+                          ]))),
                 ],
               ),
             ),

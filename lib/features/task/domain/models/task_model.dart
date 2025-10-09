@@ -1,4 +1,4 @@
-class Task{
+class Task {
   final String id;
   final String title;
   final String description;

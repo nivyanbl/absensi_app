@@ -1,3 +1,4 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:employment_attendance/features/attendance/presentation/controllers/attendance_controller.dart';
 import 'package:employment_attendance/features/attendance/presentation/widgets/attendance_card.dart';
 import 'package:employment_attendance/features/attendance/presentation/widgets/leave_request_button.dart';
@@ -31,11 +32,17 @@ class AttendanceHistoryPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                Expanded(child: _buildDropdown(controller.months, controller.selectedMonth, controller)),
+                Expanded(
+                    child: _buildDropdown(controller.months,
+                        controller.selectedMonth, controller)),
                 const SizedBox(width: 8),
-                Expanded(child: _buildDropdown(controller.years, controller.selectedYear, controller)),
+                Expanded(
+                    child: _buildDropdown(
+                        controller.years, controller.selectedYear, controller)),
                 const SizedBox(width: 8),
-                Expanded(child: _buildDropdown(controller.statuses, controller.selectedStatus, controller)),
+                Expanded(
+                    child: _buildDropdown(controller.statuses,
+                        controller.selectedStatus, controller)),
               ],
             ),
             const SizedBox(height: 24),
@@ -71,25 +78,24 @@ class AttendanceHistoryPage extends StatelessWidget {
       bottomNavigationBar: CustomBottomNav(
         currentIndex: 1,
         onTap: (index) {
-          if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
-          if (index == 1) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
-          if (index == 2) Get.offAllNamed(AppRoutes.CHECK_IN);
-          if (index == 3) Get.offAllNamed(AppRoutes.LMS);
-          if (index == 4) Get.offAllNamed(AppRoutes.SLIP);
+          if (index == 0) Get.offAllNamed(AppRoutes.dashboard);
+          if (index == 1) Get.offAllNamed(AppRoutes.attendanceHistory);
+          if (index == 2) Get.offAllNamed(AppRoutes.checkIn);
+          if (index == 3) Get.offAllNamed(AppRoutes.lms);
+          if (index == 4) Get.offAllNamed(AppRoutes.slip);
         },
       ),
     );
   }
 
-  Widget _buildDropdown(List<String> items, RxString selectedValue, AttendanceController controller) {
-    const Color primaryGreen = Color(0xFF6EA07A);
-
+  Widget _buildDropdown(List<String> items, RxString selectedValue,
+      AttendanceController controller) {
     return Container(
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: primaryGreen, width: 1.5),
+        border: Border.all(color: AppColors.primary, width: 1.5),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Obx(
@@ -97,9 +103,10 @@ class AttendanceHistoryPage extends StatelessWidget {
           child: DropdownButton<String>(
             isExpanded: true,
             value: selectedValue.value,
-            icon: const Icon(Icons.keyboard_arrow_down, color: primaryGreen, size: 20),
+            icon: const Icon(Icons.keyboard_arrow_down,
+                color: AppColors.primary, size: 20),
             style: const TextStyle(
-              color: primaryGreen,
+              color: AppColors.primary,
               fontWeight: FontWeight.w600,
               fontSize: 14,
             ),
@@ -116,7 +123,7 @@ class AttendanceHistoryPage extends StatelessWidget {
             onChanged: (newValue) {
               if (newValue != null) {
                 selectedValue.value = newValue;
-                controller.fetchAttendanceHistory(); 
+                controller.fetchAttendanceHistory();
               }
             },
           ),
@@ -124,4 +131,4 @@ class AttendanceHistoryPage extends StatelessWidget {
       ),
     );
   }
-} 
+}

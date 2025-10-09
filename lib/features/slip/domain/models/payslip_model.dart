@@ -23,16 +23,18 @@ class PayslipModel {
     required this.updatedAt,
   });
 
-   factory PayslipModel.fromJson(Map<String, dynamic> json) => PayslipModel(
-    id: json['id'],
-    userId: json['userId'],
-    year: json['year'],
-    month: json['month'],
-    currency: json['currency'],
-    gross: json['gross'],
-    net: json['net'],
-    items: json['items'] == null ? null : Map<String, dynamic>.from(json['items']),
-    createdAt: DateTime.parse(json['createdAt']),
-    updatedAt: DateTime.parse(json['updatedAt']),
-  );
+  factory PayslipModel.fromJson(Map<String, dynamic> json) => PayslipModel(
+        id: json['id'],
+        userId: json['userId'],
+        year: json['year'],
+        month: json['month'],
+        currency: json['currency'],
+        gross: json['gross'],
+        net: json['net'],
+        items: json['items'] == null
+            ? null
+            : Map<String, dynamic>.from(json['items']),
+        createdAt: DateTime.parse(json['createdAt']),
+        updatedAt: DateTime.parse(json['updatedAt']),
+      );
 }

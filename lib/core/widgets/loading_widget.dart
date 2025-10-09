@@ -3,7 +3,7 @@ import 'package:employment_attendance/core/constants/app_colors.dart';
 
 class LoadingWidget extends StatelessWidget {
   final String? message;
-  
+
   const LoadingWidget({super.key, this.message});
 
   @override

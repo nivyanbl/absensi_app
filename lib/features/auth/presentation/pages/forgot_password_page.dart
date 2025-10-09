@@ -1,3 +1,4 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'login_page.dart';
@@ -10,7 +11,7 @@ class ForgotPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F7),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -75,7 +76,7 @@ class ForgotPasswordPage extends StatelessWidget {
                         margin: const EdgeInsets.all(16),
                         borderRadius: 16,
                         icon: const Icon(Icons.check_circle,
-                            color: Color(0xFF6EA07A), size: 32),
+                            color: AppColors.primary, size: 32),
                         duration: const Duration(seconds: 2),
                         isDismissible: true,
                         overlayBlur: 0.0,
@@ -90,26 +91,25 @@ class ForgotPasswordPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       textStyle: const TextStyle(fontSize: 18),
-                      backgroundColor: const Color(0xFF6EA07A),
+                      backgroundColor: AppColors.primary,
                     ),
                     child: const Text('Send Reset Link',
                         style: TextStyle(color: Colors.white)),
                   ),
                   const SizedBox(height: 16),
-                    TextButton(
-                      onPressed: () {
-                        Get.to(() => LoginPage());
-                      },
-                      child: const Text(
-                        'Back to Login',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16,
-                          decoration: TextDecoration.underline,
-                        ),
+                  TextButton(
+                    onPressed: () {
+                      Get.to(() => LoginPage());
+                    },
+                    child: const Text(
+                      'Back to Login',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 16,
+                        decoration: TextDecoration.underline,
                       ),
                     ),
-                  
+                  ),
                 ],
               ),
             ),

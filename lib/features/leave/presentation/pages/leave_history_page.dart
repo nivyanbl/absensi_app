@@ -1,3 +1,5 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
+import 'package:employment_attendance/core/constants/app_strings.dart';
 import 'package:employment_attendance/features/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/features/leave/presentation/controller/leave_controller.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
@@ -32,14 +34,14 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F7),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          'Leave History',
+          AppStrings.leaveHistory,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
@@ -167,13 +169,13 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
                           Get.to(() => const LeaveRequestPage());
                         },
                         style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Color(0xFF6EA07A)),
+                          side: const BorderSide(color: AppColors.primary),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
                         child: const Text('Leave Request',
-                            style: TextStyle(color: Color(0xFF6EA07A))),
+                            style: TextStyle(color: AppColors.primary)),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -181,7 +183,7 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6EA07A),
+                          backgroundColor: AppColors.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -226,11 +228,11 @@ class _LeaveHistoryPageState extends State<LeaveHistoryPage> {
       bottomNavigationBar: CustomBottomNav(
         currentIndex: 1,
         onTap: (index) {
-          if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
-          if (index == 1) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
-          if (index == 2) Get.offAllNamed(AppRoutes.CHECK_IN);
-          if (index == 3) Get.offAllNamed(AppRoutes.LMS);
-          if (index == 4) Get.offAllNamed(AppRoutes.SLIP);
+          if (index == 0) Get.offAllNamed(AppRoutes.dashboard);
+          if (index == 1) Get.offAllNamed(AppRoutes.attendanceHistory);
+          if (index == 2) Get.offAllNamed(AppRoutes.checkIn);
+          if (index == 3) Get.offAllNamed(AppRoutes.lms);
+          if (index == 4) Get.offAllNamed(AppRoutes.slip);
         },
       ),
     );

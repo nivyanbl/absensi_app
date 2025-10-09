@@ -1,3 +1,5 @@
+import 'package:employment_attendance/core/constants/app_strings.dart';
+import 'package:employment_attendance/core/widgets/custom.button.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:employment_attendance/features/profile/presentation/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +21,14 @@ class ProfilePage extends StatelessWidget {
             onPressed: () => Get.back(),
           ),
           title: const Text(
-            'Profile',
+            AppStrings.profile,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           actions: [
-            IconButton(onPressed: () => Get.toNamed(AppRoutes.SETTINGS), icon: Icon(Icons.settings, color: Theme.of(context).iconTheme.color)),
+            IconButton(
+                onPressed: () => Get.toNamed(AppRoutes.settings),
+                icon: Icon(Icons.settings,
+                    color: Theme.of(context).iconTheme.color)),
             const SizedBox(width: 10),
           ],
           centerTitle: true,
@@ -32,7 +37,8 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Obx(() {
             if (controller.isLoading.value) {
-              return const Center(heightFactor: 10, child: CircularProgressIndicator());
+              return const Center(
+                  heightFactor: 10, child: CircularProgressIndicator());
             }
 
             if (controller.user.value == null) {
@@ -46,9 +52,9 @@ class ProfilePage extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 40,
-                      backgroundImage: const AssetImage('assets/image/profile.png'),
+                      backgroundImage: AssetImage('assets/image/profile.png'),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
@@ -68,7 +74,11 @@ class ProfilePage extends StatelessWidget {
                           Text(
                             user.email,
                             style: TextStyle(
-                                color: Theme.of(context).textTheme.bodySmall?.color ?? Colors.grey,
+                                color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.color ??
+                                    Colors.grey,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold),
                             overflow: TextOverflow.ellipsis,
@@ -90,32 +100,22 @@ class ProfilePage extends StatelessWidget {
                 const SizedBox(height: 8),
                 Column(
                   children: [
-                    _buildInfoItem(Icons.person_outline, 'ID Employee', '1234567 '),
+                    _buildInfoItem(
+                        Icons.person_outline, 'ID Employee', '1234567 '),
                     _buildInfoItem(Icons.email_outlined, 'Email', user.email),
-                    _buildInfoItem(Icons.phone_iphone, 'Phone Number', user.phone ?? 'Not set'),
-                    _buildInfoItem(Icons.calendar_today, 'Join Date', '7 July 2025 '),
+                    _buildInfoItem(Icons.phone_iphone, 'Phone Number',
+                        user.phone ?? 'Not set'),
+                    _buildInfoItem(
+                        Icons.calendar_today, 'Join Date', '7 July 2025 '),
                   ],
                 ),
                 const SizedBox(height: 15),
-                ElevatedButton.icon(
+                CustomButton(
+                  text: 'Edit Profile',
                   onPressed: () {
-                    Get.toNamed(AppRoutes.EDIT_PROFILE);
+                    Get.toNamed(AppRoutes.editProfile);
                   },
-                  icon: const Icon(
-                    Icons.edit_outlined,
-                    color: Colors.white,
-                  ),
-                  label: const Text(
-                    'Edit profile',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 48),
-                    backgroundColor: const Color(0xFF6EA07A),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
+                  icon: Icons.edit_outlined,
                 )
               ],
             );
@@ -138,7 +138,8 @@ class ProfilePage extends StatelessWidget {
           fontSize: 15,
         ),
       ),
-      subtitle: Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+      subtitle: Text(value,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
     );
   }
 }

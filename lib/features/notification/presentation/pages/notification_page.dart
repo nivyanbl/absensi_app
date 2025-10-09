@@ -1,3 +1,4 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:employment_attendance/features/dashboard/presentation/pages/dashboard_page.dart';
@@ -8,7 +9,7 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F7),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -40,7 +41,7 @@ class NotificationPage extends StatelessWidget {
               const SizedBox(height: 24),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:  [
+                children: [
                   Text(
                     'Previously',
                     style: TextStyle(
@@ -73,9 +74,9 @@ class NotificationPage extends StatelessWidget {
                       child: const Row(
                         children: [
                           CircleAvatar(
-                            backgroundColor:  Color(0xFF6EA07A),
+                            backgroundColor: AppColors.primary,
                             radius: 24,
-                            child:  Text(
+                            child: Text(
                               'S.',
                               style: TextStyle(
                                 color: Colors.black,
@@ -84,11 +85,11 @@ class NotificationPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                         SizedBox(width: 16),
+                          SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children:  [
+                              children: [
                                 Text(
                                   'Siesta absent..',
                                   style: TextStyle(
@@ -107,8 +108,8 @@ class NotificationPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                           SizedBox(width: 8),
-                           Text(
+                          SizedBox(width: 8),
+                          Text(
                             'July 16, 2025',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -129,14 +130,15 @@ class NotificationPage extends StatelessWidget {
                     Get.offAll(() => const DashboardPage());
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF6EA07A),
+                    backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                   ),
-                  child: const Text('kembali', style: TextStyle(fontSize: 16, color: Colors.white)),
+                  child: const Text('kembali',
+                      style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
               ),
               const SizedBox(height: 16),

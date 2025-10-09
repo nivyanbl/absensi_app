@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:employment_attendance/features/attendance/data/repositories/attendance_repository.dart';
 import 'package:employment_attendance/features/leave/data/repositories/leave_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -9,7 +10,7 @@ import 'package:intl/intl.dart';
 class DashboardController extends GetxController {
   final AttendanceRepository _attendanceRepository = AttendanceRepository();
   final LeaveRepository _leaveRepository = LeaveRepository();
-  
+
   var location = 'Search location...'.obs;
   // Use empty string to indicate no data; OverviewCard will render a placeholder
   var checkInTime = ''.obs;
@@ -40,6 +41,7 @@ class DashboardController extends GetxController {
 
   /// Public helper to refresh dashboard data from other pages/controllers.
   /// Calls the same loading logic used during init.
+  @override
   Future<void> refresh() async {
     await _loadDashboardData();
   }
@@ -55,13 +57,14 @@ class DashboardController extends GetxController {
       final now = DateTime.now();
       final monthName = DateFormat('MMMM').format(now);
       final year = now.year.toString();
-      
-      final attendanceHistory = await _attendanceRepository.getAttendanceHistory(
+
+      final attendanceHistory =
+          await _attendanceRepository.getAttendanceHistory(
         month: monthName,
         year: year,
         status: 'Present',
       );
-      
+
       final todayAttendance = attendanceHistory.firstWhereOrNull(
         (att) => att.date == DateFormat('dd').format(now),
       );
@@ -73,24 +76,22 @@ class DashboardController extends GetxController {
         checkInTime.value = '';
         checkOutTime.value = '';
       }
-      
+
       totalAttended.value = '${attendanceHistory.length} Days';
-      
     } catch (e) {
-      print("Error fetching attendance overview: $e");
+      debugPrint("Error fetching attendance overview: $e");
     }
   }
 
   Future<void> _fetchLeaveOverview() async {
     try {
       final leaveHistory = await _leaveRepository.listLeaves(
-        month : DateFormat('MMMM').format(DateTime.now()),
-        year : DateTime.now().year.toString(),
-        status: "APPROVED"
-      );
+          month: DateFormat('MMMM').format(DateTime.now()),
+          year: DateTime.now().year.toString(),
+          status: "APPROVED");
       totalAbsence.value = '${leaveHistory.length} Days';
     } catch (e) {
-      print("Error fetching leave overview: $e");
+      debugPrint("Error fetching leave overview: $e");
     }
   }
 
@@ -119,14 +120,19 @@ class DashboardController extends GetxController {
     }
 
     try {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
       Placemark place = placemarks[0];
-      
+
       String? city = place.subAdministrativeArea;
       String? country = place.country;
 
-      if (city != null && city.isNotEmpty && country != null && country.isNotEmpty) {
+      if (city != null &&
+          city.isNotEmpty &&
+          country != null &&
+          country.isNotEmpty) {
         location.value = "$city, $country";
       } else {
         location.value = "Failed to get address";
@@ -135,10 +141,10 @@ class DashboardController extends GetxController {
       location.value = "Failed to get address";
     }
   }
+
   @override
   void onClose() {
     _pollTimer?.cancel();
     super.onClose();
   }
-  
 }

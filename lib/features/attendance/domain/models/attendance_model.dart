@@ -1,4 +1,3 @@
-
 class AttendanceModel {
   final String date;
   final String day;

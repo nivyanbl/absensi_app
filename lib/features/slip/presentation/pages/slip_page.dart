@@ -1,3 +1,4 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:employment_attendance/features/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:employment_attendance/features/slip/presentation/controllers/payslip_controller.dart';
@@ -9,15 +10,17 @@ class SlipPayPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final SlipPayController controller = Get.put(SlipPayController());
-  final Color primaryColor = Theme.of(context).primaryColor;
+    final SlipPayController controller = Get.put(SlipPayController());
+    final Color primaryColor = Theme.of(context).primaryColor;
 
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor ??
+            Theme.of(context).scaffoldBackgroundColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
+          icon:
+              Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
           onPressed: () => Get.back(),
         ),
         title: Text(
@@ -73,8 +76,12 @@ class SlipPayPage extends StatelessWidget {
                                   Get.snackbar(
                                     "Details",
                                     "Show transaction details here.",
-                                    backgroundColor: Theme.of(context).cardColor,
-                                    colorText: Theme.of(context).textTheme.bodyLarge?.color,
+                                    backgroundColor:
+                                        Theme.of(context).cardColor,
+                                    colorText: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.color,
                                     snackPosition: SnackPosition.BOTTOM,
                                   );
                                 },
@@ -89,13 +96,22 @@ class SlipPayPage extends StatelessWidget {
                                     Text(
                                       "View Details",
                                       style: TextStyle(
-                                        color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black87,
+                                        color: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge
+                                                ?.color ??
+                                            Colors.black87,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 13.5,
                                       ),
                                     ),
                                     Icon(Icons.chevron_right,
-                                        color: Theme.of(context).iconTheme.color?.withOpacity(0.7) ?? Colors.black54, size: 20),
+                                        color: Theme.of(context)
+                                                .iconTheme
+                                                .color
+                                                ?.withValues(alpha: 0.7) ??
+                                            Colors.black54,
+                                        size: 20),
                                   ],
                                 ),
                               ),
@@ -121,7 +137,7 @@ class SlipPayPage extends StatelessWidget {
                                     child: child,
                                   ),
                                 ),
-                                  child: Text(
+                                child: Text(
                                   "${slip.currency} ${slip.net}",
                                   style: TextStyle(
                                     color: primaryColor,
@@ -205,7 +221,7 @@ class SlipPayPage extends StatelessWidget {
                                   opacity: value,
                                   child: child,
                                 ),
-                                  child: Text(
+                                child: Text(
                                   "Awaiting Confirmation",
                                   style: TextStyle(
                                     color: Theme.of(context).colorScheme.error,
@@ -232,7 +248,8 @@ class SlipPayPage extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                             fontSize: 17,
                             letterSpacing: 0.1,
-                            color: Theme.of(context).textTheme.titleLarge?.color,
+                            color:
+                                Theme.of(context).textTheme.titleLarge?.color,
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -281,7 +298,7 @@ class SlipPayPage extends StatelessWidget {
                                     ),
                                     elevation: 0,
                                   ),
-                                                  child: const SizedBox(
+                                  child: const SizedBox(
                                     width: 24,
                                     height: 24,
                                     child: CircularProgressIndicator(
@@ -290,36 +307,38 @@ class SlipPayPage extends StatelessWidget {
                                     ),
                                   ),
                                 )
-                                          : ElevatedButton(
-                                              key: const ValueKey('send'),
-                                              onPressed: () => controller.sendPayment(() {
-                                                controller.showSuccess.value = false;
-                                                Get.back();
-                                              }),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: primaryColor,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(30),
-                                                ),
-                                                elevation: 0,
-                                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                                              ),
-                                               child: Row(
-                                                 mainAxisAlignment: MainAxisAlignment.center,
-                                                 mainAxisSize: MainAxisSize.max,
-                                                 children: const [
-                                                   Icon(Icons.send, color: Colors.white, size: 20),
-                                                   SizedBox(width: 10),
-                                                   Text(
-                                                     "Send",
-                                                     style: TextStyle(
-                                                         color: Colors.white,
-                                                         fontWeight: FontWeight.bold,
-                                                         fontSize: 17),
-                                                   ),
-                                                 ],
-                                               ),
-                                            ),
+                              : ElevatedButton(
+                                  key: const ValueKey('send'),
+                                  onPressed: () => controller.sendPayment(() {
+                                    controller.showSuccess.value = false;
+                                    Get.back();
+                                  }),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    elevation: 0,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 14),
+                                  ),
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Icon(Icons.send,
+                                          color: Colors.white, size: 20),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        "Send",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                         ),
                       )),
                 ],
@@ -330,11 +349,11 @@ class SlipPayPage extends StatelessWidget {
         currentIndex: 4,
         // primary: primaryColor,
         onTap: (index) {
-          if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
-          if (index == 1) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
-          if (index == 2) Get.offAllNamed(AppRoutes.CHECK_IN);
-          if (index == 3) Get.offAllNamed(AppRoutes.LMS);
-          if (index == 4) Get.offAllNamed(AppRoutes.SLIP);
+          if (index == 0) Get.offAllNamed(AppRoutes.dashboard);
+          if (index == 1) Get.offAllNamed(AppRoutes.attendanceHistory);
+          if (index == 2) Get.offAllNamed(AppRoutes.checkIn);
+          if (index == 3) Get.offAllNamed(AppRoutes.lms);
+          if (index == 4) Get.offAllNamed(AppRoutes.slip);
         },
       ),
     );
@@ -358,7 +377,6 @@ class _PaymentOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF6EA07A);
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeInOut,
@@ -369,7 +387,7 @@ class _PaymentOption extends StatelessWidget {
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
             border: Border.all(
-              color: selected ? primaryColor : Colors.grey.shade300,
+              color: selected ? AppColors.primary : Colors.grey.shade300,
               width: 1.5,
             ),
             borderRadius: BorderRadius.circular(12),
@@ -377,7 +395,7 @@ class _PaymentOption extends StatelessWidget {
             boxShadow: selected
                 ? [
                     BoxShadow(
-                      color: primaryColor.withOpacity(0.07),
+                      color: AppColors.primary.withValues(alpha: 0.07),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -390,7 +408,8 @@ class _PaymentOption extends StatelessWidget {
                 scale: selected ? 1.15 : 1.0,
                 duration: const Duration(milliseconds: 250),
                 child: Icon(icon,
-                    color: selected ? primaryColor : Colors.black54, size: 32),
+                    color: selected ? AppColors.primary : Colors.black54,
+                    size: 32),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -402,7 +421,7 @@ class _PaymentOption extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 15.5,
-                        color: selected ? primaryColor : Colors.black,
+                        color: selected ? AppColors.primary : Colors.black,
                         letterSpacing: 0.1,
                       ),
                     ),
@@ -425,7 +444,7 @@ class _PaymentOption extends StatelessWidget {
                   selected
                       ? Icons.radio_button_checked
                       : Icons.radio_button_off,
-                  color: selected ? primaryColor : Colors.grey,
+                  color: selected ? AppColors.primary : Colors.grey,
                   key: ValueKey(selected),
                 ),
               ),
@@ -465,7 +484,7 @@ class _AnimatedCard extends StatelessWidget {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.07),
+              color: Colors.grey.withValues(alpha: 0.07),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),

@@ -47,7 +47,7 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
       cameraController?.dispose();
     } catch (_) {}
     timer?.cancel();
-  _midnightTimer?.cancel();
+    _midnightTimer?.cancel();
     super.onClose();
   }
 
@@ -55,7 +55,8 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // Stop camera when app goes to background or becomes inactive to avoid
     // receiving ImageReader callbacks after Flutter engine detaches.
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
       try {
         cameraController?.dispose();
       } catch (_) {}
@@ -72,12 +73,12 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
     isLoading(true);
     await _initializeCamera();
     await _getCurrentLocation();
-  _maybeResetDailyFlags();
+    _maybeResetDailyFlags();
     // check if dashboard already has check-in info
     try {
       if (Get.isRegistered<DashboardController>()) {
         final dash = Get.find<DashboardController>();
-  if (dash.checkInTime.value.trim().isNotEmpty) {
+        if (dash.checkInTime.value.trim().isNotEmpty) {
           hasCheckedInToday.value = true;
         }
       }
@@ -99,16 +100,19 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
   Future<void> _initializeCamera() async {
     try {
       cameras = await availableCameras();
-        if (cameras.isEmpty) {
-          Get.snackbar('Camera Error', 'Camera not found', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red.withOpacity(0.9), colorText: Colors.white);
-          return;
-        }
+      if (cameras.isEmpty) {
+        Get.snackbar('Camera Error', 'Camera not found',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red.withValues(alpha: 0.9),
+            colorText: Colors.white);
+        return;
+      }
 
       final frontCamera = cameras.firstWhere(
         (camera) => camera.lensDirection == CameraLensDirection.front,
         orElse: () => cameras.first,
       );
-      
+
       // Use a lower resolution and explicit image format to reduce memory
       // and buffer pressure on some Android devices which can cause
       // "Unable to acquire a buffer item" runtime warnings.
@@ -122,7 +126,11 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
       await cameraController!.initialize();
     } catch (e) {
       cameraController = null;
-      Get.snackbar('Camera Error', 'Failed to initialize camera. Ensure permission has been granted.', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red.withOpacity(0.9), colorText: Colors.white);
+      Get.snackbar('Camera Error',
+          'Failed to initialize camera. Ensure permission has been granted.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.withValues(alpha: 0.9),
+          colorText: Colors.white);
     }
   }
 
@@ -134,7 +142,8 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          throw const PermissionDeniedException("Location permission denied by user.");
+          throw const PermissionDeniedException(
+              "Location permission denied by user.");
         }
       }
 
@@ -146,25 +155,41 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium,
       ).timeout(const Duration(seconds: 15));
-      
-      await _updateLocationFromPosition(position);
 
+      await _updateLocationFromPosition(position);
     } on TimeoutException {
       currentLocation('Failed to get location');
       isLocationReady(false);
-      Get.snackbar('Timeout', 'Request Timed Out: GPS signal is weak. Try again in an open area.', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.orange.withOpacity(0.9), colorText: Colors.white);
+      Get.snackbar('Timeout',
+          'Request Timed Out: GPS signal is weak. Try again in an open area.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.orange.withValues(alpha: 0.9),
+          colorText: Colors.white);
     } on PermissionDeniedException catch (e) {
       currentLocation('Location permission denied');
       isLocationReady(false);
-      Get.snackbar('Permission denied', e.message ?? "Permission denied. Please enable it in the app settings.", snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red.withOpacity(0.9), colorText: Colors.white);
+      Get.snackbar(
+          'Permission denied',
+          e.message ??
+              "Permission denied. Please enable it in the app settings.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.withValues(alpha: 0.9),
+          colorText: Colors.white);
     } on LocationServiceDisabledException {
       currentLocation('Location service is off');
       isLocationReady(false);
-      Get.snackbar('GPS Off', 'GPS is not Active. Please enable location services.', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red.withOpacity(0.9), colorText: Colors.white);
+      Get.snackbar(
+          'GPS Off', 'GPS is not Active. Please enable location services.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.withValues(alpha: 0.9),
+          colorText: Colors.white);
     } catch (e) {
       currentLocation('An error occurred');
       isLocationReady(false);
-      Get.snackbar('Error', 'An unknown error occurred: $e', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red.withOpacity(0.9), colorText: Colors.white);
+      Get.snackbar('Error', 'An unknown error occurred: $e',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.withValues(alpha: 0.9),
+          colorText: Colors.white);
       debugPrint("Unknown error: $e");
     }
   }
@@ -178,7 +203,8 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
 
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
-        String address = "${place.street}, ${place.subLocality}, ${place.locality}";
+        String address =
+            "${place.street}, ${place.subLocality}, ${place.locality}";
         currentLocation(address);
         isLocationReady(true);
       } else {
@@ -202,11 +228,13 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
   void _scheduleMidnightReset() {
     _midnightTimer?.cancel();
     final now = DateTime.now();
-    final tomorrow = DateTime(now.year, now.month, now.day).add(const Duration(days: 1));
+    final tomorrow =
+        DateTime(now.year, now.month, now.day).add(const Duration(days: 1));
     final untilMidnight = tomorrow.difference(now);
     _midnightTimer = Timer(untilMidnight, () {
       hasCheckedInToday.value = false;
-      _storage.write('lastCheckDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      _storage.write(
+          'lastCheckDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
       // reschedule for next midnight
       _scheduleMidnightReset();
     });
@@ -214,7 +242,9 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
 
   void checkIn() async {
     if (!isLocationReady.value) {
-      Get.snackbar('Info', 'Cannot check in. Please wait until your location is found.', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+          'Info', 'Cannot check in. Please wait until your location is found.',
+          snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
@@ -223,10 +253,7 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
 
       final response = await _apiService.post(
         '/attendance/clock-in',
-        data: {
-          'note': currentLocation.value,
-          'method': 'MOBILE'
-        },
+        data: {'note': currentLocation.value, 'method': 'MOBILE'},
       );
 
       if (response.statusCode == 201) {
@@ -240,7 +267,8 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
           HapticFeedback.lightImpact();
         } catch (_) {}
 
-        Get.snackbar('Success', 'Check-in successful', snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar('Success', 'Check-in successful',
+            snackPosition: SnackPosition.BOTTOM);
 
         try {
           await cameraController?.dispose();
@@ -248,19 +276,20 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
         timer?.cancel();
         cameraController = null;
 
-    // Optimistically update dashboard UI immediately if registered
+        // Optimistically update dashboard UI immediately if registered
         try {
           if (Get.isRegistered<DashboardController>()) {
             final dash = Get.find<DashboardController>();
             dash.checkInTime.value = currentTime.value;
             dash.location.value = currentLocation.value;
-    hasCheckedInToday.value = true;
-    // persist last check date so app knows user has checked in today
-    _storage.write('lastCheckDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+            hasCheckedInToday.value = true;
+            // persist last check date so app knows user has checked in today
+            _storage.write('lastCheckDate',
+                DateFormat('yyyy-MM-dd').format(DateTime.now()));
           }
         } catch (_) {}
 
-        Get.offNamed(AppRoutes.CHECK_IN_SUCCESS, arguments: arguments);
+        Get.offNamed(AppRoutes.checkInSuccess, arguments: arguments);
         // attempt to refresh dashboard if present so overview reflects new check-in
         try {
           if (Get.isRegistered<DashboardController>()) {
@@ -268,7 +297,11 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
           }
         } catch (_) {}
       } else {
-        Get.snackbar('Error', 'Failed to clock in. Server returned status: ${response.statusCode}', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red.withOpacity(0.9), colorText: Colors.white);
+        Get.snackbar('Error',
+            'Failed to clock in. Server returned status: ${response.statusCode}',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red.withValues(alpha: 0.9),
+            colorText: Colors.white);
       }
     } catch (error) {
       if (error is DioException && error.response != null) {
@@ -286,7 +319,8 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
             errorCode = null;
           }
 
-          if (errorCode == 'SESSION_OPEN' || (data is String && data.contains('Session already open'))) {
+          if (errorCode == 'SESSION_OPEN' ||
+              (data is String && data.contains('Session already open'))) {
             final Map<String, String> arguments = {
               'time': currentTime.value,
               'location': currentLocation.value,
@@ -296,7 +330,9 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
               HapticFeedback.lightImpact();
             } catch (_) {}
 
-            Get.snackbar('Info', 'Session already open. Showing current session.', snackPosition: SnackPosition.BOTTOM);
+            Get.snackbar(
+                'Info', 'Session already open. Showing current session.',
+                snackPosition: SnackPosition.BOTTOM);
 
             try {
               await cameraController?.dispose();
@@ -304,17 +340,17 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
             timer?.cancel();
             cameraController = null;
 
-      // Optimistically update dashboard UI to show current session time/location
+            // Optimistically update dashboard UI to show current session time/location
             try {
               if (Get.isRegistered<DashboardController>()) {
                 final dash = Get.find<DashboardController>();
                 dash.checkInTime.value = currentTime.value;
                 dash.location.value = currentLocation.value;
-        hasCheckedInToday.value = true;
+                hasCheckedInToday.value = true;
               }
             } catch (_) {}
 
-            Get.offNamed(AppRoutes.CHECK_IN_SUCCESS, arguments: arguments);
+            Get.offNamed(AppRoutes.checkInSuccess, arguments: arguments);
             try {
               if (Get.isRegistered<DashboardController>()) {
                 await Get.find<DashboardController>().refresh();
@@ -332,10 +368,16 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
         } else if (data is String) {
           message = data;
         }
-        Get.snackbar('Error ($status)', message, snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red.withOpacity(0.9), colorText: Colors.white);
+        Get.snackbar('Error ($status)', message,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red.withValues(alpha: 0.9),
+            colorText: Colors.white);
         debugPrint('Clock-in failed: status=$status data=$data');
       } else {
-        Get.snackbar('Error', 'An error occurred during clock in.', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red.withOpacity(0.9), colorText: Colors.white);
+        Get.snackbar('Error', 'An error occurred during clock in.',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red.withValues(alpha: 0.9),
+            colorText: Colors.white);
         debugPrint('Clock-in error: $error');
       }
     } finally {

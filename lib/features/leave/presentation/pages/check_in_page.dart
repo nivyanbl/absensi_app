@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:employment_attendance/features/leave/presentation/controller/check_in_controller.dart';
-import 'package:employment_attendance/navigation/app_routes.dart'; 
+import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,10 +18,14 @@ class CheckInPage extends StatelessWidget {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
-          onPressed: () => Get.toNamed(AppRoutes.DASHBOARD),
+          icon:
+              Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
+          onPressed: () => Get.toNamed(AppRoutes.dashboard),
         ),
-        title: Text('Absence', style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
+        title: Text('Absence',
+            style: TextStyle(
+                color: Theme.of(context).appBarTheme.foregroundColor,
+                fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -53,8 +57,10 @@ class CheckInPage extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.cover,
                   child: SizedBox(
-                    width: controller.cameraController!.value.previewSize!.height,
-                    height: controller.cameraController!.value.previewSize!.width,
+                    width:
+                        controller.cameraController!.value.previewSize!.height,
+                    height:
+                        controller.cameraController!.value.previewSize!.width,
                     child: CameraPreview(controller.cameraController!),
                   ),
                 ),
@@ -77,7 +83,10 @@ class CheckInPage extends StatelessWidget {
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       shadows: [
-                        Shadow(color: Colors.black45, blurRadius: 4, offset: Offset(0, 1)),
+                        Shadow(
+                            color: Colors.black45,
+                            blurRadius: 4,
+                            offset: Offset(0, 1)),
                       ],
                     ),
                   );
@@ -101,13 +110,20 @@ class CheckInPage extends StatelessWidget {
                         height: 56,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor.withOpacity(0.12),
+                          color: Theme.of(context)
+                              .cardColor
+                              .withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(28),
-                          border: Border.all(color: Theme.of(context).dividerColor),
+                          border:
+                              Border.all(color: Theme.of(context).dividerColor),
                         ),
                         child: Text(
                           'Checked In',
-                          style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color, fontWeight: FontWeight.bold, fontSize: 16),
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodyLarge?.color,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
                         ),
                       );
                     }
@@ -120,7 +136,8 @@ class CheckInPage extends StatelessWidget {
                           if (enabled && !checking) {
                             controller.checkIn();
                           } else if (!enabled) {
-                            Get.snackbar('Info', 'Waiting for location...', snackPosition: SnackPosition.BOTTOM);
+                            Get.snackbar('Info', 'Waiting for location...',
+                                snackPosition: SnackPosition.BOTTOM);
                           }
                         },
                         child: Container(
@@ -133,7 +150,7 @@ class CheckInPage extends StatelessWidget {
                             boxShadow: (enabled && !checking)
                                 ? [
                                     BoxShadow(
-                                      color: primary.withOpacity(0.28),
+                                      color: primary.withValues(alpha: 0.28),
                                       blurRadius: 12,
                                       offset: const Offset(0, 6),
                                     )
@@ -146,7 +163,8 @@ class CheckInPage extends StatelessWidget {
                                   height: 28,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2.5,
-                                    valueColor: AlwaysStoppedAnimation<Color>(onPrimary),
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        onPrimary),
                                   ),
                                 )
                               : Icon(

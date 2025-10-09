@@ -1,22 +1,22 @@
 class AppRoutes {
-   static const LOGIN = '/login';
-  static const REGISTER = '/register';
-  static const DASHBOARD = '/dashboard';
-  static const NOTIFICATION = '/notification';
-  static const LMS = '/lms';
-  static const LEAVE_REQUEST = '/leave-request';
-  static const LEAVE_HISTORY = '/leave-history';
-  static const PROFILE = '/profile';
-  static const EDIT_PROFILE = '/edit-profile';
-  static const CHECK_IN = '/check-in';
-  static const CHECK_IN_SUCCESS = '/check-in-success';
-  static const ABSENCE = '/absence';
-  static const SLIP = '/slip';
-  static const FORGOT_PASSWORD = '/forgot-password';
-  static const ATTENDANCE_HISTORY = '/attendance-history';
-  static const SETTINGS = '/settings';
-  static const TASK =   '/task';
-  static const ADDTASK = '/add-task';
-  static const CHECK_OUT = '/check-out';
-  
+  static const login = '/login';
+  static const register = '/register';
+  static const dashboard = '/dashboard';
+  static const notification = '/notification';
+  static const lms = '/lms';
+  static const leaveRequest = '/leave-request';
+  static const leaveHistory = '/leave-history';
+  static const profile = '/profile';
+  static const editProfile = '/edit-profile';
+  static const checkIn = '/check-in';
+  static const checkInSuccess = '/check-in-success';
+  static const absence = '/absence';
+  static const slip = '/slip';
+  static const forgotPassword = '/forgot-password';
+  static const attendanceHistory = '/attendance-history';
+  static const settings = '/settings';
+  static const task = '/task';
+  static const addTask = '/add-task';
+  static const checkOut = '/check-out';
+
 }

@@ -26,9 +26,10 @@ class AuthController extends GetxController {
       isLoading.value = true;
       final token = await _authRepository.login(email, password);
       if (token != null) {
-        Get.offAllNamed(AppRoutes.DASHBOARD);
+        Get.offAllNamed(AppRoutes.dashboard);
       } else {
-        Get.snackbar('Failed', 'The email or password you entered is incorrect.');
+        Get.snackbar(
+            'Failed', 'The email or password you entered is incorrect.');
       }
     } finally {
       isLoading.value = false;
@@ -45,17 +46,16 @@ class AuthController extends GetxController {
       return;
     }
 
- 
-
     try {
       isLoading.value = true;
       final token = await _authRepository.register(fullName, email, password);
 
       if (token != null) {
         Get.snackbar('Success', 'Account created successfully!');
-        Get.offAllNamed(AppRoutes.LOGIN);
+        Get.offAllNamed(AppRoutes.login);
       } else {
-        Get.snackbar('Failed', 'Registration failed. Maybe the email is already registered.');
+        Get.snackbar('Failed',
+            'Registration failed. Maybe the email is already registered.');
       }
     } finally {
       isLoading.value = false;

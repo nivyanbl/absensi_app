@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:employment_attendance/core/constants/app_colors.dart';
+import 'package:employment_attendance/core/constants/app_strings.dart';
+import 'package:employment_attendance/core/widgets/custom.button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:employment_attendance/features/profile/presentation/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +19,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
-  
+
   final ProfileController controller = Get.find();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   File? _pickedImageFile;
@@ -27,7 +30,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final user = controller.user.value;
     _nameController = TextEditingController(text: user?.fullName ?? '');
     _emailController = TextEditingController(text: user?.email ?? '');
-  _phoneController = TextEditingController(text: user?.phone ?? ''); 
+    _phoneController = TextEditingController(text: user?.phone ?? '');
   }
 
   @override
@@ -37,9 +40,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _phoneController.dispose();
     super.dispose();
   }
-  
+
   void _pickImage() {
-    ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 800, imageQuality: 80).then((xfile) async {
+    ImagePicker()
+        .pickImage(source: ImageSource.gallery, maxWidth: 800, imageQuality: 80)
+        .then((xfile) async {
       if (xfile == null) return;
       setState(() {
         _pickedImageFile = File(xfile.path);
@@ -52,8 +57,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void _saveProfile() {
     if (_formKey.currentState!.validate()) {
-  // Reverted: actual profile update disabled — show not implemented message
-  Get.snackbar('Notice', 'Profile update is not enabled in this restore.', snackPosition: SnackPosition.BOTTOM);
+      // Reverted: actual profile update disabled — show not implemented message
+      Get.snackbar('Notice', 'Profile update is not enabled in this restore.',
+          snackPosition: SnackPosition.BOTTOM);
     }
   }
 
@@ -66,7 +72,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          "Edit Profile",
+          AppStrings.editProfile,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -76,15 +82,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
           child: Theme(
             data: Theme.of(context).copyWith(
                 textSelectionTheme: const TextSelectionThemeData(
-                  cursorColor: Color(0xFF6EA07A),
-                  selectionColor: Color(0xFF6EA07A),
-                  selectionHandleColor: Color(0xFF6EA07A),),
-                  inputDecorationTheme: const InputDecorationTheme(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF6EA07A), width: 2)
-                    ),
-                  )
+                  cursorColor: AppColors.primary,
+                  selectionColor: AppColors.primary,
+                  selectionHandleColor: AppColors.primary,
                 ),
+                inputDecorationTheme: const InputDecorationTheme(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.primary, width: 2)),
+                )),
             child: Form(
               key: _formKey,
               child: Column(
@@ -102,50 +108,54 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     children: [
                       GestureDetector(
                         onTap: _pickImage,
-                        child:  Stack(
+                        child: Stack(
                           alignment: Alignment.bottomRight,
                           children: [
-                             if (_pickedImageFile != null)
-                              CircleAvatar(radius: 40, backgroundImage: FileImage(_pickedImageFile!))
+                            if (_pickedImageFile != null)
+                              CircleAvatar(
+                                  radius: 40,
+                                  backgroundImage: FileImage(_pickedImageFile!))
                             else
-                             const CircleAvatar(
-                              radius: 40,
-                              backgroundColor: Color(0xFFBDBDBD),
-                              child: Icon(Icons.person, size: 50, color: Colors.grey),
-                            ),
-                              Container(
+                              const CircleAvatar(
+                                radius: 40,
+                                backgroundColor: Color(0xFFBDBDBD),
+                                child: Icon(Icons.person,
+                                    size: 50, color: Colors.grey),
+                              ),
+                            Container(
                               padding: const EdgeInsets.all(4),
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              child: const Icon(Icons.image, color: Colors.black, size: 12),
+                              child: const Icon(Icons.image,
+                                  color: Colors.black, size: 12),
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 30),
                       OutlinedButton(
-                        onPressed: _pickImage,
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 4),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                          onPressed: _pickImage,
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 4),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
-                        ),
-                        child: const Text(
-                          "Choose Your Photo",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 16),
-                        )),
+                          child: const Text(
+                            "Choose Your Photo",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 16),
+                          )),
                     ],
                   ),
                   const SizedBox(height: 32),
                   _buildTextField(
-                      label: 'Name',
+                      label: AppStrings.name,
                       hint: 'Enter your name',
                       controller: _nameController,
                       validator: (value) {
@@ -156,11 +166,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       }),
                   const SizedBox(height: 24),
                   _buildTextField(
-                      label: 'Email',
-                      hint: 'Enter your email',
+                      label: AppStrings.email,
+                      hint: AppStrings.enterEmail,
                       controller: _emailController,
                       validator: (value) {
-                         if (value == null || value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return 'Please enter your email';
                         }
                         return null;
@@ -171,28 +181,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     hint: 'Enter your phone number',
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
-                     validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your phone number';
-                        }
-                        return null;
-                      },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your phone number';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 48),
-                  Obx(() => ElevatedButton(
-                    onPressed: controller.isSaving.value ? null : _saveProfile,
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 48),
-                      backgroundColor: const Color(0xFF6EA07A),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                    child: controller.isSaving.value ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Text(
-                      'Save',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  )),
+                  Obx(() => CustomButton(
+                        text: AppStrings.save,
+                        onPressed:
+                            controller.isSaving.value ? null : _saveProfile,
+                      )),
                 ],
               ),
             ),

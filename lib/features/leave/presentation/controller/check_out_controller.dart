@@ -26,8 +26,8 @@ class CheckOutController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-  _maybeResetDailyFlags();
-  _loadInitialData();
+    _maybeResetDailyFlags();
+    _loadInitialData();
     _startTimer();
   }
 
@@ -42,8 +42,8 @@ class CheckOutController extends GetxController {
 
   @override
   void onClose() {
-  _timer?.cancel();
-  _midnightTimer?.cancel();
+    _timer?.cancel();
+    _midnightTimer?.cancel();
     super.onClose();
   }
 
@@ -57,17 +57,20 @@ class CheckOutController extends GetxController {
   void _scheduleMidnightReset() {
     _midnightTimer?.cancel();
     final now = DateTime.now();
-    final tomorrow = DateTime(now.year, now.month, now.day).add(const Duration(days: 1));
+    final tomorrow =
+        DateTime(now.year, now.month, now.day).add(const Duration(days: 1));
     final untilMidnight = tomorrow.difference(now);
     _midnightTimer = Timer(untilMidnight, () {
       canCheckOut.value = false;
-      _storage.write('lastCheckDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      _storage.write(
+          'lastCheckDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
       _scheduleMidnightReset();
     });
   }
 
   Future<void> _loadInitialData() async {
-    userName.value = _profileController.user.value?.fullName ?? 'Name Not Found';
+    userName.value =
+        _profileController.user.value?.fullName ?? 'Name Not Found';
     userPosition.value = "UI UX Designer";
 
     try {
@@ -87,12 +90,15 @@ class CheckOutController extends GetxController {
         final List<dynamic> attendanceList = response.data['data'];
         if (attendanceList.isNotEmpty) {
           final latestAttendance = attendanceList.first;
-          final clockInDateTime = DateTime.parse(latestAttendance['clockInAt']).toLocal();
+          final clockInDateTime =
+              DateTime.parse(latestAttendance['clockInAt']).toLocal();
           checkInTime.value = DateFormat('hh:mm a').format(clockInDateTime);
-          checkInLocation.value = latestAttendance['note'] ?? 'Location not recorded';
+          checkInLocation.value =
+              latestAttendance['note'] ?? 'Location not recorded';
           canCheckOut.value = true;
           // persist last check date to indicate there's activity today
-          _storage.write('lastCheckDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+          _storage.write(
+              'lastCheckDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
         } else {
           checkInTime.value = 'N/A';
           checkInLocation.value = 'No active check-in today';
@@ -106,13 +112,13 @@ class CheckOutController extends GetxController {
     } on DioException catch (e) {
       checkInTime.value = 'Error';
       checkInLocation.value = 'Failed to load data';
-      print("Error fetching latest attendance: $e");
+      debugPrint("Error fetching latest attendance: $e");
     } catch (e) {
       checkInTime.value = 'Error';
       checkInLocation.value = 'An unexpected error occurred';
-      print("An unexpected error occurred: $e");
+      debugPrint("An unexpected error occurred: $e");
     }
-}
+  }
 
   void checkOutNow() async {
     try {
@@ -122,21 +128,30 @@ class CheckOutController extends GetxController {
       if (response.statusCode == 200) {
         Get.back();
         Get.snackbar('Succeed', 'You have successfully checked out.');
-  canCheckOut.value = false;
-  // persist lastCheckDate so next day logic knows checkout happened today
-  _storage.write('lastCheckDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+        canCheckOut.value = false;
+        // persist lastCheckDate so next day logic knows checkout happened today
+        _storage.write(
+            'lastCheckDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
       } else {
-    final errorMessage = response.data is Map
-      ? (response.data['message'] ?? response.data['error'] ?? 'Failed to check out.')
-      : (response.data?.toString() ?? 'Failed to check out.');
-    final title = 'Failed (${response.statusCode})';
-    Get.snackbar(title, errorMessage, snackPosition: SnackPosition.BOTTOM, backgroundColor: const Color(0xFFB00020).withOpacity(0.9), colorText: const Color(0xFFFFFFFF));
+        final errorMessage = response.data is Map
+            ? (response.data['message'] ??
+                response.data['error'] ??
+                'Failed to check out.')
+            : (response.data?.toString() ?? 'Failed to check out.');
+        final title = 'Failed (${response.statusCode})';
+        Get.snackbar(title, errorMessage,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: const Color(0xFFB00020).withValues(alpha: 0.9),
+            colorText: const Color(0xFFFFFFFF));
       }
     } catch (e) {
-    final msg = e is DioException && e.response != null
-      ? (e.response?.data?.toString() ?? 'Server error')
-      : e.toString();
-    Get.snackbar('Error', msg, snackPosition: SnackPosition.BOTTOM, backgroundColor: const Color(0xFFB00020).withOpacity(0.9), colorText: const Color(0xFFFFFFFF));
+      final msg = e is DioException && e.response != null
+          ? (e.response?.data?.toString() ?? 'Server error')
+          : e.toString();
+      Get.snackbar('Error', msg,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: const Color(0xFFB00020).withValues(alpha: 0.9),
+          colorText: const Color(0xFFFFFFFF));
     } finally {
       isCheckingOut(false);
     }

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:employment_attendance/features/slip/data/repositories/payslip_repository.dart';
@@ -13,7 +14,6 @@ class SlipPayController extends GetxController {
   var isSending = false.obs;
   var showSuccess = false.obs;
   var errorMessage = RxnString();
-  
 
   @override
   void onInit() {
@@ -96,7 +96,7 @@ class _SuccessDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF6EA07A);
+    const Color primaryColor = AppColors.primary;
     return Center(
       child: TweenAnimationBuilder<double>(
         tween: Tween(begin: 0.7, end: 1),
@@ -116,7 +116,7 @@ class _SuccessDialog extends StatelessWidget {
               borderRadius: BorderRadius.circular(22),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
+                  color: Colors.black.withValues(alpha: 0.08),
                   blurRadius: 18,
                   offset: const Offset(0, 8),
                 ),
@@ -125,7 +125,8 @@ class _SuccessDialog extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.check_circle_rounded, color: primaryColor, size: 64),
+                const Icon(Icons.check_circle_rounded,
+                    color: primaryColor, size: 64),
                 const SizedBox(height: 18),
                 const Text(
                   "Payment Sent!",

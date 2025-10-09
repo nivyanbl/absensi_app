@@ -1,3 +1,5 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
+import 'package:employment_attendance/core/constants/app_strings.dart';
 import 'package:employment_attendance/features/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/features/leave/presentation/controller/leave_controller.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
@@ -59,7 +61,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
             snackPosition: SnackPosition.TOP,
             backgroundColor: Colors.white,
             colorText: Colors.black,
-            icon: const Icon(Icons.check_circle, color: Color(0xFF6EA07A)));
+            icon: const Icon(Icons.check_circle, color: AppColors.primary));
       }
       setState(() {
         isUploading = false;
@@ -85,14 +87,14 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F7),
-       appBar: AppBar(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          'Leave History',
+          AppStrings.leaveRequest,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
@@ -192,15 +194,17 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                   border: Border.all(color: Colors.black12),
                                 ),
                                 child: Obx(() => Column(
-                                  children: [
-                                    Text('${controller.usedLeave.value} Day',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                    const Text('Used leave',
-                                        style: TextStyle(color: Colors.grey)),
-                                  ],
-                                )),
+                                      children: [
+                                        Text(
+                                            '${controller.usedLeave.value} Day',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18)),
+                                        const Text('Used leave',
+                                            style:
+                                                TextStyle(color: Colors.grey)),
+                                      ],
+                                    )),
                               ),
                             ),
                           ],
@@ -216,7 +220,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6EA07A),
+                          backgroundColor: AppColors.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -232,13 +236,13 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                           Get.to(() => const LeaveHistoryPage());
                         },
                         style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Color(0xFF6EA07A)),
+                          side: const BorderSide(color: AppColors.primary),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
                         child: const Text('History',
-                            style: TextStyle(color: Color(0xFF6EA07A))),
+                            style: TextStyle(color: AppColors.primary)),
                       ),
                     ),
                   ],
@@ -369,7 +373,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                     : Icons.upload_file,
                                 size: 32,
                                 color: uploadedFileName != null
-                                    ? const Color(0xFF6EA07A)
+                                    ? AppColors.primary
                                     : Colors.grey,
                               ),
                               const SizedBox(height: 8),
@@ -400,7 +404,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                       );
                                     },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF6EA07A),
+                                backgroundColor: AppColors.primary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -428,11 +432,11 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
         currentIndex: 1,
         // primary: primaryColor,
         onTap: (index) {
-          if (index == 0) Get.offAllNamed(AppRoutes.DASHBOARD);
-          if (index == 1) Get.offAllNamed(AppRoutes.ATTENDANCE_HISTORY);
-          if (index == 2) Get.offAllNamed(AppRoutes.CHECK_IN);
-          if (index == 3) Get.offAllNamed(AppRoutes.LMS);
-          if (index == 4) Get.offAllNamed(AppRoutes.SLIP);
+          if (index == 0) Get.offAllNamed(AppRoutes.dashboard);
+          if (index == 1) Get.offAllNamed(AppRoutes.attendanceHistory);
+          if (index == 2) Get.offAllNamed(AppRoutes.checkIn);
+          if (index == 3) Get.offAllNamed(AppRoutes.lms);
+          if (index == 4) Get.offAllNamed(AppRoutes.slip);
         },
       ),
     );

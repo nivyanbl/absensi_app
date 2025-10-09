@@ -4,7 +4,7 @@ import 'package:employment_attendance/core/constants/app_colors.dart';
 class EmptyWidget extends StatelessWidget {
   final String message;
   final IconData? icon;
-  
+
   const EmptyWidget({
     super.key,
     required this.message,

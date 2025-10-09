@@ -24,22 +24,21 @@ class LeaveController extends GetxController {
       isLoading.value = true;
       var results = await _leaveRepository.listLeaves(
         from: from,
-        to: to,        
+        to: to,
       );
       leaveHistory.assignAll(results);
 
       int totalUsedDays = 0;
       for (var leave in results.where((l) => l.status == 'APPROVED')) {
-          if (leave.totalDays != null) {
-              totalUsedDays += leave.totalDays!;
-          }
+        if (leave.totalDays != null) {
+          totalUsedDays += leave.totalDays!;
+        }
       }
       usedLeave.value = totalUsedDays;
-      print("Total leave days used: ${usedLeave.value}"); 
-
+      debugPrint("Total leave days used: ${usedLeave.value}");
     } catch (e) {
-      print('Error fetching leave history: $e');
-       Get.snackbar('Error', 'Failed to fetch leave history. Please try again.');
+      debugPrint('Error fetching leave history: $e');
+      Get.snackbar('Error', 'Failed to fetch leave history. Please try again.');
     } finally {
       isLoading.value = false;
     }
@@ -61,10 +60,9 @@ class LeaveController extends GetxController {
       );
       if (newLeave != null) {
         Get.snackbar('Success', 'Leave request created successfully');
-        fetchLeaveHistory(); 
+        fetchLeaveHistory();
       } else {
         Get.snackbar('Error', 'Failed to create leave request');
-        
       }
     } on DioException catch (e) {
       if (e.response?.data['error']['code'] == 'LEAVE_OVERLAP') {
@@ -75,7 +73,8 @@ class LeaveController extends GetxController {
           colorText: Colors.black,
         );
       } else {
-        Get.snackbar('Error', 'An unexpected error occurred: ${e.response?.data['error']['message']}');
+        Get.snackbar('Error',
+            'An unexpected error occurred: ${e.response?.data['error']['message']}');
       }
     } finally {
       isLoading.value = false;

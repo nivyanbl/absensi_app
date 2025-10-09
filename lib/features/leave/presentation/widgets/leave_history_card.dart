@@ -1,3 +1,4 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:employment_attendance/features/profile/presentation/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,7 +27,7 @@ class LeaveHistoryCard extends StatelessWidget {
 
     switch (status) {
       case 'APPROVED':
-        statusColor = const Color(0xFF6EA07A);
+        statusColor = AppColors.primary;
         statusBgColor = const Color(0xFFE9F5E9);
         statusIcon = Icons.check_circle;
         break;
@@ -100,7 +101,8 @@ class LeaveHistoryCard extends StatelessWidget {
                         fontWeight: FontWeight.bold, color: Colors.black));
               }),
               const SizedBox(width: 8),
-              const Text('UI / UX Designer', style: TextStyle(color: Colors.grey)),
+              const Text('UI / UX Designer',
+                  style: TextStyle(color: Colors.grey)),
             ],
           ),
           const SizedBox(height: 8),

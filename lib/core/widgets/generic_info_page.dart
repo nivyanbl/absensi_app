@@ -12,7 +12,8 @@ class GenericInfoPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Get.back()),
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back), onPressed: () => Get.back()),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

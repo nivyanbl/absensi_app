@@ -1,3 +1,5 @@
+import 'package:employment_attendance/core/constants/app_colors.dart';
+import 'package:employment_attendance/core/constants/app_strings.dart';
 import 'package:employment_attendance/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:employment_attendance/features/dashboard/presentation/widgets/overview_card.dart';
 import 'package:flutter/material.dart';
@@ -10,28 +12,27 @@ class OverviewGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DashboardController controller = Get.find<DashboardController>();
-    const  Color primaryColor =  Color(0xFF6EA07A);
 
     return Obx(() {
       final overviewData = [
         {
           "icon": Icons.login,
-          "label": "Check In",
+          "label": AppStrings.checkIn,
           "value": controller.checkInTime.value
         },
         {
           "icon": Icons.logout,
-          "label": "Check Out",
+          "label": AppStrings.checkOut,
           "value": controller.checkOutTime.value
         },
         {
           "icon": Icons.calendar_today,
-          "label": "Absence",
+          "label": AppStrings.absence,
           "value": controller.totalAbsence.value
         },
         {
           "icon": Icons.check_circle,
-          "label": "Total Attended",
+          "label": AppStrings.totalAttended,
           "value": controller.totalAttended.value
         },
       ];
@@ -69,7 +70,7 @@ class OverviewGrid extends StatelessWidget {
               // map label to route shortcuts
               VoidCallback? onTap;
               final label = data["label"] as String;
-              if (label == 'Check In') {
+              if (label == AppStrings.checkIn) {
                 onTap = () async {
                   await Get.toNamed('/check-in');
                   // refresh dashboard when returning
@@ -77,18 +78,18 @@ class OverviewGrid extends StatelessWidget {
                     await controller.refresh();
                   } catch (_) {}
                 };
-              } else if (label == 'Check Out') {
+              } else if (label == AppStrings.checkOut) {
                 onTap = () async {
                   await Get.toNamed('/check-out');
                   try {
                     await controller.refresh();
                   } catch (_) {}
                 };
-              } else if (label == 'Absence') {
+              } else if (label == AppStrings.absence) {
                 onTap = () async {
                   await Get.toNamed('/leave-history');
                 };
-              } else if (label == 'Total Attended') {
+              } else if (label == AppStrings.totalAttended) {
                 onTap = () async {
                   await Get.toNamed('/attendance-history');
                 };
@@ -98,7 +99,7 @@ class OverviewGrid extends StatelessWidget {
                 icon: data["icon"] as IconData,
                 label: data["label"] as String,
                 value: data["value"] as String,
-                primaryColor: primaryColor,
+                primaryColor: AppColors.primary,
                 onTap: onTap,
               );
             },

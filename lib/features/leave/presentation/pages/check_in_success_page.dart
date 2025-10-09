@@ -1,6 +1,8 @@
+import 'package:employment_attendance/core/widgets/custom.button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
+import '../../../../core/constants/app_colors.dart';
 
 class CheckInSuccessPage extends StatelessWidget {
   const CheckInSuccessPage({super.key});
@@ -29,12 +31,12 @@ class CheckInSuccessPage extends StatelessWidget {
                   color: Color.fromARGB(255, 7, 30, 122),
                 ),
               ),
-              
+
               const SizedBox(height: 24),
 
               const CircleAvatar(
                 radius: 70,
-                backgroundColor: Color(0xFF6EA07A),
+                backgroundColor: AppColors.primary,
                 child: Icon(
                   Icons.check,
                   size: 120,
@@ -42,56 +44,48 @@ class CheckInSuccessPage extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 16),              
-              
-                 RichText(
-                  text: TextSpan(
-                    style: const TextStyle(fontSize: 16, color: Colors.black87,), 
-                    children: <TextSpan>[
-                      const TextSpan(text: 'You check in at '),
-                      TextSpan(
-                        text: time,
-                        style: const TextStyle(fontWeight: FontWeight.bold), 
-                      ),
-                    ],
+              const SizedBox(height: 16),
+
+              RichText(
+                text: TextSpan(
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
                   ),
+                  children: <TextSpan>[
+                    const TextSpan(text: 'You check in at '),
+                    TextSpan(
+                      text: time,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                 RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: const TextStyle(fontSize: 16, color: Colors.black87,),
-                    children: <TextSpan>[
-                      const TextSpan(text: 'Location Verifed at '),
-                      TextSpan(
-                        text: location,
-                        style: const TextStyle(fontWeight: FontWeight.bold), 
-                      ),
-                    ],
+              ),
+              const SizedBox(height: 8),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
                   ),
+                  children: <TextSpan>[
+                    const TextSpan(text: 'Location Verifed at '),
+                    TextSpan(
+                      text: location,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
+              ),
               const SizedBox(height: 60),
 
               //button
-              ElevatedButton(
+              CustomButton(
+                text: 'Back to Home',
                 onPressed: () {
-                  Get.toNamed(AppRoutes.DASHBOARD);
+                  Get.toNamed(AppRoutes.dashboard);
                 },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                  backgroundColor: const Color(0xFF6EA07A),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                child: const Text(
-                  'Back to Home',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
               )
             ],
           ),
