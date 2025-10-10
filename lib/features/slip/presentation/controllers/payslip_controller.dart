@@ -165,7 +165,8 @@ class _SuccessDialog extends StatelessWidget {
                     child: const Text(
                       "OK",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16.5),
+                          fontWeight: FontWeight.bold, fontSize: 16.5,
+                          color: Colors.white),
                     ),
                   ),
                 ),

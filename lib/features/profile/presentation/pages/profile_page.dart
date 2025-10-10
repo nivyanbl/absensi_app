@@ -28,7 +28,8 @@ class ProfilePage extends StatelessWidget {
             IconButton(
                 onPressed: () => Get.toNamed(AppRoutes.settings),
                 icon: Icon(Icons.settings,
-                    color: Theme.of(context).iconTheme.color)),
+                    // color: Theme.of(context).iconTheme.color
+                    )),
             const SizedBox(width: 10),
           ],
           centerTitle: true,
@@ -111,6 +112,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
                 CustomButton(
+                  width: double.infinity,
                   text: 'Edit Profile',
                   onPressed: () {
                     Get.toNamed(AppRoutes.editProfile);

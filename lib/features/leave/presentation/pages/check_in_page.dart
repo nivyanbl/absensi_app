@@ -16,15 +16,14 @@ class CheckInPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         leading: IconButton(
           icon:
-              Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
+             const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.toNamed(AppRoutes.dashboard),
         ),
-        title: Text('Absence',
+        title: const Text('Absence',
             style: TextStyle(
-                color: Theme.of(context).appBarTheme.foregroundColor,
+                color: Colors.white,
                 fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,

@@ -190,6 +190,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                   const SizedBox(height: 48),
                   Obx(() => CustomButton(
+                        width: double.infinity,
                         text: AppStrings.save,
                         onPressed:
                             controller.isSaving.value ? null : _saveProfile,

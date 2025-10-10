@@ -19,8 +19,9 @@ class SettingsPage extends StatelessWidget {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back,
-                color: Theme.of(context).iconTheme.color),
+            icon: const Icon(Icons.arrow_back,
+                // color: Theme.of(context).iconTheme.color
+                ),
             onPressed: () => Get.back(),
           ),
           title: const Text('Settings',

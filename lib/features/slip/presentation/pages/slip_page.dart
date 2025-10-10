@@ -1,4 +1,5 @@
 import 'package:employment_attendance/core/constants/app_colors.dart';
+import 'package:employment_attendance/core/widgets/custom.button.dart';
 import 'package:employment_attendance/features/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:employment_attendance/features/slip/presentation/controllers/payslip_controller.dart';
@@ -282,65 +283,20 @@ class SlipPayPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 28),
-                  Obx(() => SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 250),
-                          child: controller.isSending.value
-                              ? ElevatedButton(
-                                  key: const ValueKey('loading'),
-                                  onPressed: null,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: primaryColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(13),
-                                    ),
-                                    elevation: 0,
-                                  ),
-                                  child: const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                      strokeWidth: 2.5,
-                                    ),
-                                  ),
-                                )
-                              : ElevatedButton(
-                                  key: const ValueKey('send'),
-                                  onPressed: () => controller.sendPayment(() {
-                                    controller.showSuccess.value = false;
-                                    Get.back();
-                                  }),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: primaryColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    elevation: 0,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 14),
-                                  ),
-                                  child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Icon(Icons.send,
-                                          color: Colors.white, size: 20),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        "Send",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 17),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                        ),
-                      )),
+                  Obx(
+                    () => CustomButton(
+                      width: double.infinity,
+                      isLoading: controller.isSending.value,
+                      text: 'Send',
+                      icon: Icons.send,
+                      backgroundColor: primaryColor,
+                      onPressed: () => controller.sendPayment(() {
+                        controller.showSuccess.value = false;
+                        Get.back();
+                      }),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                 ],
               ),
             ),

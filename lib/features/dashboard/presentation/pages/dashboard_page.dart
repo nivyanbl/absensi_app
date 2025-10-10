@@ -85,20 +85,18 @@ class _DashboardPageState extends State<DashboardPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(_getGreeting(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 14,
                           color:
-                              Theme.of(context).appBarTheme.foregroundColor ??
                                   Colors.white)),
                   Obx(() {
                     final userName = profileController.user.value?.fullName;
                     return Text(
                       userName ?? AppStrings.loading,
-                      style: TextStyle(
+                      style:const  TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).appBarTheme.foregroundColor ??
-                            Colors.white,
+                          color:   Colors.white,
                       ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,

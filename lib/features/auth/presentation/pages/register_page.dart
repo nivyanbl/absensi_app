@@ -91,6 +91,7 @@ class RegisterPage extends StatelessWidget {
                   const SizedBox(height: 24),
                   Obx(() {
                     return CustomButton(
+                      width: double.infinity,
                       text: AppStrings.register,
                       onPressed: authController.isLoading.value
                           ? null

@@ -17,8 +17,9 @@ class CheckOutPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         leading: IconButton(
-            icon: Icon(Icons.arrow_back,
-                color: Theme.of(context).iconTheme.color),
+            icon: const Icon(Icons.arrow_back,
+                // color: Theme.of(context).iconTheme.color
+                ),
             onPressed: () => Get.back()),
         title: Text("Check Out",
             style: TextStyle(
