@@ -27,21 +27,15 @@ class AppPages {
     GetPage(name: AppRoutes.dashboard, page: () => const DashboardPage()),
     GetPage(name: AppRoutes.notification, page: () => const NotificationPage()),
     GetPage(name: AppRoutes.lms, page: () => const LmsPage()),
-    GetPage(
-        name: AppRoutes.leaveRequest, page: () => const LeaveRequestPage()),
-    GetPage(
-        name: AppRoutes.leaveHistory, page: () => const LeaveHistoryPage()),
+    GetPage(name: AppRoutes.leaveRequest, page: () => const LeaveRequestPage()),
+    GetPage(name: AppRoutes.leaveHistory, page: () => const LeaveHistoryPage()),
     GetPage(name: AppRoutes.profile, page: () => ProfilePage()),
     GetPage(name: AppRoutes.editProfile, page: () => const EditProfilePage()),
     GetPage(name: AppRoutes.checkIn, page: () => const CheckInPage()),
-    GetPage(
-        name: AppRoutes.checkInSuccess,
-        page: () => const CheckInSuccessPage()),
+    GetPage(name: AppRoutes.checkInSuccess, page: () => const CheckInSuccessPage()),
     GetPage(name: AppRoutes.slip, page: () => const SlipPayPage()),
     GetPage(name: AppRoutes.forgotPassword, page: () => ForgotPasswordPage()),
-    GetPage(
-        name: AppRoutes.attendanceHistory,
-        page: () => const AttendanceHistoryPage()),
+    GetPage(name: AppRoutes.attendanceHistory,page: () => const AttendanceHistoryPage()),
     GetPage(name: AppRoutes.settings, page: () => const SettingsPage()),
     GetPage(name: '/privacy', page: () => const PrivacyPolicyPage()),
     GetPage(name: AppRoutes.task, page: () => const TaskPage()),

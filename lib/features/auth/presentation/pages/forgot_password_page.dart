@@ -1,4 +1,5 @@
 import 'package:employment_attendance/core/constants/app_colors.dart';
+import 'package:employment_attendance/core/widgets/custom.button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'login_page.dart';
@@ -65,7 +66,9 @@ class ForgotPasswordPage extends StatelessWidget {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 24),
-                  ElevatedButton(
+                  CustomButton(
+                    width: double.infinity,
+                    text: 'Send Reset Link',
                     onPressed: () {
                       Get.snackbar(
                         'Success',
@@ -85,16 +88,6 @@ class ForgotPasswordPage extends StatelessWidget {
                         Get.offAll(() => LoginPage());
                       });
                     },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      textStyle: const TextStyle(fontSize: 18),
-                      backgroundColor: AppColors.primary,
-                    ),
-                    child: const Text('Send Reset Link',
-                        style: TextStyle(color: Colors.white)),
                   ),
                   const SizedBox(height: 16),
                   TextButton(

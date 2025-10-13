@@ -1,4 +1,6 @@
 import 'package:employment_attendance/core/constants/app_colors.dart';
+import 'package:employment_attendance/core/constants/app_strings.dart';
+import 'package:employment_attendance/core/widgets/loading_widget.dart';
 import 'package:employment_attendance/features/attendance/presentation/controllers/attendance_controller.dart';
 import 'package:employment_attendance/features/attendance/presentation/widgets/attendance_card.dart';
 import 'package:employment_attendance/features/attendance/presentation/widgets/leave_request_button.dart';
@@ -50,7 +52,7 @@ class AttendanceHistoryPage extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const LoadingWidget(message: AppStrings.loading);
                 }
 
                 if (controller.attendanceList.isEmpty) {

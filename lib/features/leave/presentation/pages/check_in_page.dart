@@ -1,4 +1,6 @@
 import 'package:camera/camera.dart';
+import 'package:employment_attendance/core/constants/app_strings.dart';
+import 'package:employment_attendance/core/widgets/loading_widget.dart';
 import 'package:employment_attendance/features/leave/presentation/controller/check_in_controller.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +19,11 @@ class CheckInPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon:
-             const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.toNamed(AppRoutes.dashboard),
         ),
         title: const Text('Absence',
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -32,7 +31,7 @@ class CheckInPage extends StatelessWidget {
       body: Obx(
         () {
           if (controller.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
+            return const LoadingWidget(message: 'Initializing camera...');
           }
 
           if (controller.cameraController == null ||
@@ -40,10 +39,17 @@ class CheckInPage extends StatelessWidget {
             return const Center(
               child: Padding(
                 padding: EdgeInsets.all(24.0),
-                child: Text(
-                  'Failed to load camera.\nMake sure you have granted camera permission in the app settings.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Colors.red),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    LoadingWidget(message: AppStrings.loading),
+                    SizedBox(height: 16),
+                    Text(
+                      'Failed to load camera.\nMake sure you have granted camera permission in the app settings.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16, color: Colors.red),
+                    ),
+                  ],
                 ),
               ),
             );

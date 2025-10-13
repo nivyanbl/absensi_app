@@ -1,5 +1,6 @@
 import 'package:employment_attendance/core/constants/app_strings.dart';
 import 'package:employment_attendance/core/widgets/custom.button.dart';
+import 'package:employment_attendance/core/widgets/loading_widget.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:employment_attendance/features/profile/presentation/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +28,10 @@ class ProfilePage extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () => Get.toNamed(AppRoutes.settings),
-                icon: Icon(Icons.settings,
-                    // color: Theme.of(context).iconTheme.color
-                    )),
+                icon: const Icon(
+                  Icons.settings,
+                  // color: Theme.of(context).iconTheme.color
+                )),
             const SizedBox(width: 10),
           ],
           centerTitle: true,
@@ -38,8 +40,7 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Obx(() {
             if (controller.isLoading.value) {
-              return const Center(
-                  heightFactor: 10, child: CircularProgressIndicator());
+              return const LoadingWidget(message: 'Loading profile...');
             }
 
             if (controller.user.value == null) {

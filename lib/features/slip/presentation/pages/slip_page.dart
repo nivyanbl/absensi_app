@@ -1,5 +1,7 @@
 import 'package:employment_attendance/core/constants/app_colors.dart';
+import 'package:employment_attendance/core/constants/app_strings.dart';
 import 'package:employment_attendance/core/widgets/custom.button.dart';
+import 'package:employment_attendance/core/widgets/loading_widget.dart';
 import 'package:employment_attendance/features/dashboard/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:employment_attendance/features/slip/presentation/controllers/payslip_controller.dart';
@@ -49,7 +51,7 @@ class SlipPayPage extends StatelessWidget {
                     child: Obx(() {
                       final slip = controller.selectedPayslip.value;
                       if (controller.isLoading.value) {
-                        return const Center(child: CircularProgressIndicator());
+                        return const LoadingWidget(message: AppStrings.loading);
                       }
                       if (controller.errorMessage.value != null) {
                         return Text(controller.errorMessage.value!);

@@ -43,6 +43,7 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
+    _disposeCamera();
     try {
       cameraController?.dispose();
     } catch (_) {}
@@ -51,20 +52,31 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
     super.onClose();
   }
 
+  void _disposeCamera() {
+    try {
+      if (cameraController != null) {
+        cameraController?.dispose();
+        cameraController = null;
+      }
+    } catch (e) {
+      debugPrint('Error disposing camera: $e');
+    }
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // Stop camera when app goes to background or becomes inactive to avoid
-    // receiving ImageReader callbacks after Flutter engine detaches.
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive) {
-      try {
-        cameraController?.dispose();
-      } catch (_) {}
-      cameraController = null;
+      _disposeCamera();
     } else if (state == AppLifecycleState.resumed) {
-      // Re-initialize camera when app resumes if needed.
       if (cameraController == null) {
-        _initializeCamera();
+        isLoading(true);
+        _initializeCamera().then((_) {
+          isLoading(false);
+        }).catchError((e) {
+          isLoading(false);
+          debugPrint('Failed to re-initialize camera: $e');
+        });
       }
     }
   }
@@ -124,6 +136,10 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
       );
 
       await cameraController!.initialize();
+
+      if (cameraController!.value.isInitialized) {
+        update();
+      }
     } catch (e) {
       cameraController = null;
       Get.snackbar('Camera Error',
@@ -269,6 +285,8 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
 
         Get.snackbar('Success', 'Check-in successful',
             snackPosition: SnackPosition.BOTTOM);
+        _disposeCamera();
+        timer?.cancel();
 
         try {
           await cameraController?.dispose();
@@ -283,14 +301,13 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
             dash.checkInTime.value = currentTime.value;
             dash.location.value = currentLocation.value;
             hasCheckedInToday.value = true;
-            // persist last check date so app knows user has checked in today
             _storage.write('lastCheckDate',
                 DateFormat('yyyy-MM-dd').format(DateTime.now()));
           }
         } catch (_) {}
 
         Get.offNamed(AppRoutes.checkInSuccess, arguments: arguments);
-        // attempt to refresh dashboard if present so overview reflects new check-in
+
         try {
           if (Get.isRegistered<DashboardController>()) {
             await Get.find<DashboardController>().refresh();
@@ -333,6 +350,8 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
             Get.snackbar(
                 'Info', 'Session already open. Showing current session.',
                 snackPosition: SnackPosition.BOTTOM);
+            _disposeCamera(); 
+            timer?.cancel();
 
             try {
               await cameraController?.dispose();

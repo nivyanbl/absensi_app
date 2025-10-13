@@ -32,7 +32,10 @@ class NewsCard extends StatelessWidget {
                     height: 150,
                     color: Colors.grey[200],
                     child: const Center(
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: AppColors.primary,
+                      ),
                     ),
                   );
                 },
