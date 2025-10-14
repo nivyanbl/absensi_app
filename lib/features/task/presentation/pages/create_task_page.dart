@@ -5,15 +5,29 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class CreateTaskPage extends StatelessWidget {
+class CreateTaskPage extends StatefulWidget {
   const CreateTaskPage({super.key});
 
   @override
+  State<CreateTaskPage> createState() => _CreateTaskPageState();
+}
+
+class _CreateTaskPageState extends State<CreateTaskPage> {
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final dateController = TextEditingController();
+  final status = 'Pending'.obs;
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    dateController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final titleController = TextEditingController();
-    final descriptionController = TextEditingController();
-    final dateController = TextEditingController();
-    final status = 'Pending'.obs;
     final TaskController taskController = Get.find();
 
     return Scaffold(

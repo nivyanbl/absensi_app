@@ -25,6 +25,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   String _title = '';
   final String _fullTitle = 'siestaclick';
+  Timer? _typewriterTimer;
 
   @override
   void initState() {
@@ -34,18 +35,21 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _startTypewriter() {
     int i = 0;
-    Timer.periodic(const Duration(milliseconds: 120), (t) {
+    _typewriterTimer = Timer.periodic(const Duration(milliseconds: 120), (t) {
       if (i >= _fullTitle.length) {
         t.cancel();
         return;
       }
-      setState(() => _title += _fullTitle[i]);
+      if (mounted) {
+        setState(() => _title += _fullTitle[i]);
+      }
       i++;
     });
   }
 
   @override
   void dispose() {
+    _typewriterTimer?.cancel();
     _pulseController.dispose();
     _fadeController.dispose();
     super.dispose();

@@ -62,13 +62,6 @@ class AuthController extends GetxController {
     }
   }
 
-  @override
-  void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
-    fullNameController.dispose();
-    registerEmailController.dispose();
-    registerPasswordController.dispose();
-    super.onClose();
-  }
+  // onClose removed - let GetX fenix mode handle lifecycle
+  // Controllers will be disposed when app closes, not on navigation
 }

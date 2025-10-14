@@ -43,33 +43,20 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
-    _disposeCamera();
-    try {
-      cameraController?.dispose();
-    } catch (_) {}
+    cameraController?.dispose();
     timer?.cancel();
     _midnightTimer?.cancel();
     super.onClose();
-  }
-
-  void _disposeCamera() {
-    try {
-      if (cameraController != null) {
-        cameraController?.dispose();
-        cameraController = null;
-      }
-    } catch (e) {
-      debugPrint('Error disposing camera: $e');
-    }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive) {
-      _disposeCamera();
+      cameraController?.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      if (cameraController == null) {
+      // Only re-initialize if camera was disposed and controller is null
+      if (cameraController == null && !isLoading.value) {
         isLoading(true);
         _initializeCamera().then((_) {
           isLoading(false);
@@ -125,14 +112,10 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
         orElse: () => cameras.first,
       );
 
-      // Use a lower resolution and explicit image format to reduce memory
-      // and buffer pressure on some Android devices which can cause
-      // "Unable to acquire a buffer item" runtime warnings.
       cameraController = CameraController(
         frontCamera,
         ResolutionPreset.medium,
         enableAudio: false,
-        imageFormatGroup: ImageFormatGroup.yuv420,
       );
 
       await cameraController!.initialize();
@@ -325,13 +308,12 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
 
         Get.snackbar('Success', 'Check-in successful',
             snackPosition: SnackPosition.BOTTOM);
-        _disposeCamera();
+
         timer?.cancel();
 
         try {
           await cameraController?.dispose();
         } catch (_) {}
-        timer?.cancel();
         cameraController = null;
 
         // Optimistically update dashboard UI immediately if registered
@@ -390,16 +372,14 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
             Get.snackbar(
                 'Info', 'Session already open. Showing current session.',
                 snackPosition: SnackPosition.BOTTOM);
-            _disposeCamera();
+
             timer?.cancel();
 
             try {
               await cameraController?.dispose();
             } catch (_) {}
-            timer?.cancel();
-            cameraController = null;
-
-            // Optimistically update dashboard UI to show current session time/location
+            cameraController =
+                null; // Optimistically update dashboard UI to show current session time/location
             try {
               if (Get.isRegistered<DashboardController>()) {
                 final dash = Get.find<DashboardController>();

@@ -1,13 +1,25 @@
 import 'package:employment_attendance/core/constants/app_colors.dart';
 import 'package:employment_attendance/core/widgets/custom.button.dart';
+import 'package:employment_attendance/core/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'login_page.dart';
 
-class ForgotPasswordPage extends StatelessWidget {
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
+
+  @override
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+}
+
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final TextEditingController _emailController = TextEditingController();
 
-  ForgotPasswordPage({super.key});
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +68,11 @@ class ForgotPasswordPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 24),
-                  TextField(
+                  CustomTextField(
+                    label: 'Email',
                     controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.email),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
+                    hintText: 'Enter your email',
+                    prefixIcon: const Icon(Icons.email),
                   ),
                   const SizedBox(height: 24),
                   CustomButton(
@@ -85,14 +94,14 @@ class ForgotPasswordPage extends StatelessWidget {
                         overlayBlur: 0.0,
                       );
                       Future.delayed(const Duration(seconds: 2), () {
-                        Get.offAll(() => LoginPage());
+                        Get.offAll(() => const LoginPage());
                       });
                     },
                   ),
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () {
-                      Get.to(() => LoginPage());
+                      Get.to(() => const LoginPage());
                     },
                     child: const Text(
                       'Back to Login',

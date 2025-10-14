@@ -7,12 +7,26 @@ import 'package:employment_attendance/core/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final RxBool _obscurePassword = true.obs;
+  late final AuthController authController;
 
-  final AuthController authController = Get.put(AuthController());
-
-  LoginPage({super.key});
+  @override
+  void initState() {
+    super.initState();
+    // Use lazyPut with permanent to prevent disposal issues
+    if (!Get.isRegistered<AuthController>()) {
+      Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
+    }
+    authController = Get.find<AuthController>();
+  }
 
   @override
   Widget build(BuildContext context) {
