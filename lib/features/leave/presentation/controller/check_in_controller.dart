@@ -256,6 +256,43 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
     });
   }
 
+  /// Rollover: auto-close ANY open session from previous days before check-in
+  Future<void> _rolloverYesterdaySession() async {
+    try {
+      final now = DateTime.now();
+      final todayStr = DateFormat('yyyy-MM-dd').format(now);
+
+      // Check if there's any open session
+      final response = await _apiService.get(
+        '/attendance',
+        queryParameters: {
+          'status': 'open',
+        },
+      );
+
+      if (response.statusCode == 200 && response.data['data'] != null) {
+        final List<dynamic> openSessions = response.data['data'];
+
+        for (var session in openSessions) {
+          final clockInAt = DateTime.parse(session['clockInAt']).toLocal();
+          final sessionDate = DateFormat('yyyy-MM-dd').format(clockInAt);
+
+          // If open session is from a different day (not today), force close it
+          // This ensures daily session reset - old unclosed sessions stay in history as "no checkout"
+          if (sessionDate != todayStr) {
+            await _apiService.post('/attendance/clock-out');
+            debugPrint(
+                'Daily rollover: closed open session from $sessionDate (will show no checkout time in history)');
+            break; // Only close once since API closes the active session
+          }
+        }
+      }
+    } catch (e) {
+      // Non-blocking: if rollover fails, continue with check-in attempt
+      debugPrint('Rollover check skipped or failed: $e');
+    }
+  }
+
   void checkIn() async {
     if (!isLocationReady.value) {
       Get.snackbar(
@@ -266,6 +303,9 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
 
     try {
       isCheckingIn(true);
+
+      // Rollover daily session: auto-close yesterday's open session if exists
+      await _rolloverYesterdaySession();
 
       final response = await _apiService.post(
         '/attendance/clock-in',
@@ -350,7 +390,7 @@ class CheckInController extends GetxController with WidgetsBindingObserver {
             Get.snackbar(
                 'Info', 'Session already open. Showing current session.',
                 snackPosition: SnackPosition.BOTTOM);
-            _disposeCamera(); 
+            _disposeCamera();
             timer?.cancel();
 
             try {
