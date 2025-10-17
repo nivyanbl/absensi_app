@@ -70,45 +70,36 @@ class _StartupRouterState extends State<_StartupRouter> {
 
   Future<void> _validateToken() async {
     final token = box.read('authToken') as String?;
-    final issuedAt = box.read('authIssuedAt') as String?;
 
     if (token == null || token.isEmpty) {
       _navigateTo(AppRoutes.login);
       return;
     }
 
-    // If issuedAt exists and older than 24 hours, force logout
-    if (issuedAt != null) {
-      try {
-        final issued = DateTime.parse(issuedAt);
-        final diff = DateTime.now().difference(issued);
-        if (diff.inHours >= 24) {
-          box.remove('authToken');
-          box.remove('authIssuedAt');
-          box.remove('refreshToken');
-          _navigateTo(AppRoutes.login);
-          return;
-        }
-      } catch (_) {}
-    }
-
+    // Validate token with backend (no time-based expiry check)
+    // Token refresh will be handled automatically by ApiService interceptor
     try {
       final resp = await _api.get('/auth/me');
       if (resp.statusCode == 200) {
         _navigateTo(AppRoutes.dashboard);
       } else {
-        box.remove('authToken');
-        box.remove('authIssuedAt');
-        box.remove('refreshToken');
+        _clearAuthData();
         _navigateTo(AppRoutes.login);
       }
     } catch (_) {
-      // If network error, fallback to login to be safe
-      box.remove('authToken');
-      box.remove('authIssuedAt');
-      box.remove('refreshToken');
-      _navigateTo(AppRoutes.login);
+      // Network error - try to proceed to dashboard
+      // ApiService will handle token refresh on next API call
+      _navigateTo(AppRoutes.dashboard);
     }
+  }
+
+  void _clearAuthData() {
+    box.remove('authToken');
+    box.remove('authIssuedAt');
+    box.remove('refreshToken');
+    box.remove('expiresIn');
+    box.remove('lastCheckDate');
+    box.remove('user');
   }
 
   void _navigateTo(String route) {

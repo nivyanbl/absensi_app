@@ -15,18 +15,22 @@ class AuthRepository {
       );
 
       if (response.statusCode == 200) {
-        final accessToken = response.data['data']['tokens']['accessToken'];
-        final refreshToken =
-            response.data['data']['tokens']['refreshToken'] as String?;
+        final data = response.data['data'];
+        final tokens = data['tokens'];
+        final user = data['user'];
 
-        await _storage.write('authToken', accessToken);
-        // persist issued timestamp so we can force re-login after a day
+        // Store tokens
+        await _storage.write('authToken', tokens['accessToken']);
+        await _storage.write('refreshToken', tokens['refreshToken']);
         await _storage.write('authIssuedAt', DateTime.now().toIso8601String());
-        if (refreshToken != null && refreshToken.isNotEmpty) {
-          await _storage.write('refreshToken', refreshToken);
+
+        // Store user data
+        if (user != null) {
+          await _storage.write('user', user);
         }
-        debugPrint('Login successful. Token saved.');
-        return accessToken;
+
+        debugPrint('Login successful. Tokens and user data saved.');
+        return tokens['accessToken'];
       }
       return null;
     } on DioException catch (e) {
@@ -51,11 +55,22 @@ class AuthRepository {
       );
 
       if (response.statusCode == 201) {
-        final accessToken = response.data['data']['tokens']['accessToken'];
+        final data = response.data['data'];
+        final tokens = data['tokens'];
+        final user = data['user'];
 
-        await _storage.write('authToken', accessToken);
-        debugPrint('Registration successful. Token saved.');
-        return accessToken;
+        // Store tokens
+        await _storage.write('authToken', tokens['accessToken']);
+        await _storage.write('refreshToken', tokens['refreshToken']);
+        await _storage.write('authIssuedAt', DateTime.now().toIso8601String());
+
+        // Store user data
+        if (user != null) {
+          await _storage.write('user', user);
+        }
+
+        debugPrint('Registration successful. Tokens and user data saved.');
+        return tokens['accessToken'];
       }
       return null;
     } on DioException catch (e) {
@@ -68,9 +83,20 @@ class AuthRepository {
   }
 
   Future<void> logout() async {
+    // Call backend logout endpoint to revoke refresh token
+    try {
+      await _apiService.post('/auth/logout');
+    } catch (e) {
+      debugPrint('Logout API call failed: $e');
+    }
+
+    // Clear all local data
     await _storage.remove('authToken');
     await _storage.remove('authIssuedAt');
     await _storage.remove('refreshToken');
-    debugPrint('Token and auth metadata deleted, logout successful.');
+    await _storage.remove('lastCheckDate');
+    await _storage.remove('user');
+
+    debugPrint('All auth data cleared, logout successful.');
   }
 }
