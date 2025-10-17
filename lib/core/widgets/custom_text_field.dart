@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final bool obscureText;
   final Widget? suffixIcon;
+  final double labelFontSize;
 
   const CustomTextField({
     super.key,
@@ -23,6 +24,7 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.obscureText = false,
     this.suffixIcon,
+    this.labelFontSize = 20,
   });
 
   @override
@@ -54,7 +56,8 @@ class CustomTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: labelFontSize)),
         const SizedBox(height: 8),
         TextField(
           controller: controller,

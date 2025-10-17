@@ -22,8 +22,8 @@ import 'package:get/get.dart';
 
 class AppPages {
   static final pages = [
-    GetPage(name: AppRoutes.login, page: () => LoginPage()),
-    GetPage(name: AppRoutes.register, page: () => RegisterPage()),
+    GetPage(name: AppRoutes.login, page: () => const LoginPage()),
+    GetPage(name: AppRoutes.register, page: () => const RegisterPage()),
     GetPage(name: AppRoutes.dashboard, page: () => const DashboardPage()),
     GetPage(name: AppRoutes.notification, page: () => const NotificationPage()),
     GetPage(name: AppRoutes.lms, page: () => const LmsPage()),
@@ -34,7 +34,7 @@ class AppPages {
     GetPage(name: AppRoutes.checkIn, page: () => const CheckInPage()),
     GetPage(name: AppRoutes.checkInSuccess, page: () => const CheckInSuccessPage()),
     GetPage(name: AppRoutes.slip, page: () => const SlipPayPage()),
-    GetPage(name: AppRoutes.forgotPassword, page: () => ForgotPasswordPage()),
+    GetPage(name: AppRoutes.forgotPassword, page: () => const ForgotPasswordPage()),
     GetPage(name: AppRoutes.attendanceHistory,page: () => const AttendanceHistoryPage()),
     GetPage(name: AppRoutes.settings, page: () => const SettingsPage()),
     GetPage(name: '/privacy', page: () => const PrivacyPolicyPage()),

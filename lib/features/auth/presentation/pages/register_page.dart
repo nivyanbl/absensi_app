@@ -7,11 +7,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:employment_attendance/features/auth/presentation/controllers/auth.controller.dart';
 
-class RegisterPage extends StatelessWidget {
-  final RxBool _obscurePassword = true.obs;
-  final AuthController authController = Get.put(AuthController());
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
-  RegisterPage({super.key});
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final RxBool _obscurePassword = true.obs;
+  late final AuthController authController;
+
+  @override
+  void initState() {
+    super.initState();
+    // Use lazyPut with fenix to prevent disposal issues
+    if (!Get.isRegistered<AuthController>()) {
+      Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
+    }
+    authController = Get.find<AuthController>();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -12,7 +12,7 @@ class ApiService {
   ApiService()
       : _dio = Dio(BaseOptions(
           baseUrl:
-              dotenv.env['API_BASE_URL'] ?? 'https://api.workforces.ninja/api',
+              dotenv.env['API_BASE_URL'] ?? '',
           connectTimeout: const Duration(seconds: 30),
           receiveTimeout: const Duration(seconds: 30),
           sendTimeout: const Duration(seconds: 30),

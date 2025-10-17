@@ -4,6 +4,7 @@ import 'package:employment_attendance/features/dashboard/presentation/widgets/cu
 import 'package:employment_attendance/features/leave/presentation/controller/leave_controller.dart';
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:employment_attendance/features/profile/presentation/controller/profile_controller.dart';
+import 'package:employment_attendance/core/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:employment_attendance/features/leave/presentation/pages/leave_history_page.dart';
 import 'package:get/get.dart';
@@ -82,6 +83,12 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
   void initState() {
     super.initState();
     profileController.fetchUserProfile();
+  }
+
+  @override
+  void dispose() {
+    reasonController.dispose();
+    super.dispose();
   }
 
   @override
@@ -259,7 +266,8 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Types of leave',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14)),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
                         initialValue: selectedType,
@@ -276,15 +284,28 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                         },
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.black),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.black),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                                color: AppColors.primary, width: 2),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 8),
+                              horizontal: 16, vertical: 18),
+                          filled: true,
+                          fillColor: Colors.white,
                         ),
                       ),
                       const SizedBox(height: 16),
                       const Text('Duration',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14)),
                       const SizedBox(height: 8),
                       Row(
                         children: [
@@ -294,15 +315,29 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                               child: InputDecorator(
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: AppColors.primary, width: 2),
                                   ),
                                   contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 8),
+                                      horizontal: 16, vertical: 18),
+                                  filled: true,
+                                  fillColor: Colors.white,
                                 ),
                                 child: Row(
                                   children: [
                                     const Icon(Icons.calendar_today,
-                                        size: 18, color: Colors.grey),
+                                        size: 18, color: AppColors.primary),
                                     const SizedBox(width: 8),
                                     Text(
                                         '${startDate.day}/${startDate.month}/${startDate.year}'),
@@ -320,15 +355,29 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                               child: InputDecorator(
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: AppColors.primary, width: 2),
                                   ),
                                   contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 8),
+                                      horizontal: 16, vertical: 18),
+                                  filled: true,
+                                  fillColor: Colors.white,
                                 ),
                                 child: Row(
                                   children: [
                                     const Icon(Icons.calendar_today,
-                                        size: 18, color: Colors.grey),
+                                        size: 18, color: AppColors.primary),
                                     const SizedBox(width: 8),
                                     Text(
                                         '${endDate.day}/${endDate.month}/${endDate.year}'),
@@ -340,20 +389,12 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      const Text('Reason (optional)',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-                      TextField(
+                      CustomTextField(
+                        label: 'Reason (optional)',
                         controller: reasonController,
-                        maxLines: 2,
-                        decoration: InputDecoration(
-                          hintText: 'Write description here..',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 8),
-                        ),
+                        hintText: 'Write description here..',
+                        maxLines: 3,
+                        labelFontSize: 14,
                       ),
                       const SizedBox(height: 16),
                       InkWell(
