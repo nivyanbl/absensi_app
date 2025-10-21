@@ -172,8 +172,25 @@ class _DashboardPageState extends State<DashboardPage> {
                 const SizedBox(height: 20),
                 const OverviewGrid(),
                 const SizedBox(height: 24),
-                const CheckOutCard(),
-                const SizedBox(height: 24),
+                Obx(() {
+                  final checkInTime = controller.checkInTime.value;
+                  final checkOutTime = controller.checkOutTime.value;
+                  final hasCheckedIn =
+                      checkInTime.isNotEmpty && checkInTime != '--:--';
+                  final hasCheckedOut =
+                      checkOutTime.isNotEmpty && checkOutTime != '--:--';
+
+                  if (hasCheckedIn && !hasCheckedOut) {
+                    return const Column(
+                      children: [
+                        CheckOutCard(),
+                        SizedBox(height: 24),
+                      ],
+                    );
+                  }
+
+                  return const SizedBox.shrink();
+                }),
                 const CompanyNewsList(),
                 const SizedBox(height: 16),
               ],
