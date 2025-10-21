@@ -1,8 +1,9 @@
 import 'package:employment_attendance/core/services/api_service.dart';
 import 'package:employment_attendance/features/slip/domain/models/payslip_model.dart';
+import 'package:get/get.dart';
 
 class PayslipRepository {
-  final ApiService _api = ApiService();
+  final ApiService _api = Get.find<ApiService>();
 
   Future<List<PayslipModel>> listPayslips(
       {int? year, int? month, int page = 1, int pageSize = 20}) async {

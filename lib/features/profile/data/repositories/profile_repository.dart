@@ -2,16 +2,22 @@ import 'package:dio/dio.dart';
 import 'package:employment_attendance/core/services/api_service.dart';
 import 'package:employment_attendance/features/profile/domain/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart'; 
 
 class ProfileRepository {
-  final ApiService _apiService = ApiService();
+  final ApiService _apiService = Get.find<ApiService>();
 
   Future<UserModel?> getUserProfile() async {
     try {
       final response = await _apiService.get('/auth/me');
 
-      if (response.statusCode == 200) {
-        return UserModel.fromJson(response.data['data']);
+      if (response.statusCode == 200 && response.data != null) {
+        try {
+          return UserModel.fromJson(response.data['data']);
+        } catch (e) {
+          debugPrint('Gagal parsing JSON user profile: $e');
+          return null;
+        }
       } else {
         return null;
       }
@@ -32,8 +38,8 @@ class ProfileRepository {
       if (email != null) data['email'] = email;
       if (phone != null) data['phone'] = phone;
 
-      final response = await _apiService.put('/auth/me', data: data);
-      return response.statusCode == 200 || response.statusCode == 204;
+      final response = await _apiService.put('/auth/me', data: data); 
+      return response.statusCode == 200 || response.statusCode == 204; 
     } catch (e) {
       debugPrint('Error updating profile: $e');
       return false;

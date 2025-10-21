@@ -2,9 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:employment_attendance/core/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:get/get.dart';
 
 class AuthRepository {
-  final ApiService _apiService = ApiService();
+  final ApiService _apiService = Get.find<ApiService>();
   final _storage = GetStorage();
 
   Future<String?> login(String email, String password) async {
@@ -14,18 +15,13 @@ class AuthRepository {
         data: {'email': email, 'password': password},
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.data != null) {
         final accessToken = response.data['data']['tokens']['accessToken'];
-        final refreshToken =
-            response.data['data']['tokens']['refreshToken'] as String?;
 
         await _storage.write('authToken', accessToken);
-        // persist issued timestamp so we can force re-login after a day
         await _storage.write('authIssuedAt', DateTime.now().toIso8601String());
-        if (refreshToken != null && refreshToken.isNotEmpty) {
-          await _storage.write('refreshToken', refreshToken);
-        }
-        debugPrint('Login successful. Token saved.');
+
+        debugPrint('Login successful. AccessToken saved (Cookie auto-saved).');
         return accessToken;
       }
       return null;
@@ -50,11 +46,14 @@ class AuthRepository {
         },
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 && response.data != null) {
         final accessToken = response.data['data']['tokens']['accessToken'];
 
         await _storage.write('authToken', accessToken);
-        debugPrint('Registration successful. Token saved.');
+        await _storage.write('authIssuedAt', DateTime.now().toIso8601String());
+
+        debugPrint(
+            'Registration successful. AccessToken saved (Cookie auto-saved).');
         return accessToken;
       }
       return null;
@@ -68,9 +67,6 @@ class AuthRepository {
   }
 
   Future<void> logout() async {
-    await _storage.remove('authToken');
-    await _storage.remove('authIssuedAt');
-    await _storage.remove('refreshToken');
-    debugPrint('Token and auth metadata deleted, logout successful.');
+    await _apiService.logout();
   }
 }

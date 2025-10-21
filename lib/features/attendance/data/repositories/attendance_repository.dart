@@ -1,10 +1,11 @@
 import 'package:employment_attendance/core/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:employment_attendance/features/attendance/domain/models/attendance_model.dart';
 
 class AttendanceRepository {
-  final ApiService _apiService = ApiService();
+ final ApiService _apiService = Get.find<ApiService>();
 
   Future<List<AttendanceModel>> getAttendanceHistory({
     required String month,

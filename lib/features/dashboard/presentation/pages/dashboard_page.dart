@@ -29,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    profileController.fetchUserProfile();
+    _loadDashboardData();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (mounted) {
@@ -44,6 +44,17 @@ class _DashboardPageState extends State<DashboardPage> {
   void dispose() {
     _timer.cancel();
     super.dispose();
+  }
+
+  Future<void> _loadDashboardData() async {
+    await profileController.fetchUserProfile();
+  }
+
+  Future<void> _onRefresh() async {
+    await Future.wait([
+      profileController.fetchUserProfile(),
+      controller.refresh(),
+    ]);
   }
 
   String _getGreeting() {
@@ -85,18 +96,16 @@ class _DashboardPageState extends State<DashboardPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(_getGreeting(),
-                      style: const TextStyle(
-                          fontSize: 14,
-                          color:
-                                  Colors.white)),
+                      style:
+                          const TextStyle(fontSize: 14, color: Colors.white)),
                   Obx(() {
                     final userName = profileController.user.value?.fullName;
                     return Text(
                       userName ?? AppStrings.loading,
-                      style:const  TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                          color:   Colors.white,
+                        color: Colors.white,
                       ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -115,54 +124,60 @@ class _DashboardPageState extends State<DashboardPage> {
           const SizedBox(width: 10),
         ],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Make the date text flexible so it won't overflow when location label is long
-                  Expanded(
-                    child: Text(
-                      formattedDate,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w500),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        color: primaryColor,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Make the date text flexible so it won't overflow when location label is long
+                    Expanded(
+                      child: Text(
+                        formattedDate,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(20),
+                    const SizedBox(width: 12),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: primaryColor,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Obx(() => ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 140),
+                            child: Text(
+                              controller.location.value,
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  fontSize: 13),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )),
                     ),
-                    child: Obx(() => ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 140),
-                          child: Text(
-                            controller.location.value,
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                fontSize: 13),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const OverviewGrid(),
-              const SizedBox(height: 24),
-              const CheckOutCard(),
-              const SizedBox(height: 24),
-              const CompanyNewsList(),
-              const SizedBox(height: 16),
-            ],
+                  ],
+                ),
+                const SizedBox(height: 20),
+                const OverviewGrid(),
+                const SizedBox(height: 24),
+                const CheckOutCard(),
+                const SizedBox(height: 24),
+                const CompanyNewsList(),
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),
