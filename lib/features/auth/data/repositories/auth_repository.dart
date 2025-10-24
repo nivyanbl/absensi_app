@@ -17,11 +17,13 @@ class AuthRepository {
 
       if (response.statusCode == 200 && response.data != null) {
         final accessToken = response.data['data']['tokens']['accessToken'];
+        final refreshToken = response.data['data']['tokens']['refreshToken'];
 
         await _storage.write('authToken', accessToken);
+        await _storage.write('refreshToken', refreshToken);
         await _storage.write('authIssuedAt', DateTime.now().toIso8601String());
 
-        debugPrint('Login successful. AccessToken saved (Cookie auto-saved).');
+        debugPrint('Login successful. Tokens saved.');
         return accessToken;
       }
       return null;
@@ -48,12 +50,13 @@ class AuthRepository {
 
       if (response.statusCode == 201 && response.data != null) {
         final accessToken = response.data['data']['tokens']['accessToken'];
+        final refreshToken = response.data['data']['tokens']['refreshToken'];
 
         await _storage.write('authToken', accessToken);
+        await _storage.write('refreshToken', refreshToken);
         await _storage.write('authIssuedAt', DateTime.now().toIso8601String());
 
-        debugPrint(
-            'Registration successful. AccessToken saved (Cookie auto-saved).');
+        debugPrint('Registration successful. Tokens saved.');
         return accessToken;
       }
       return null;

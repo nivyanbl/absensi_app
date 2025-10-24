@@ -1,13 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:cookie_jar/cookie_jar.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart' as getx;
 import 'package:employment_attendance/navigation/app_routes.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:io';
 
 class _PendingRequest {
   final DioException error;
@@ -18,7 +14,6 @@ class _PendingRequest {
 class ApiService {
   final Dio _dio;
   final box = GetStorage();
-  late PersistCookieJar _cookieJar;
 
   bool _isRefreshing = false;
   final List<_PendingRequest> _subscribers = [];
@@ -33,17 +28,7 @@ class ApiService {
       sendTimeout: const Duration(seconds: 30),
     ));
 
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
-    final cookieJar = PersistCookieJar(
-      ignoreExpires: true,
-      storage: FileStorage(appDocPath + "/.cookies/"),
-    );
-
     final apiService = ApiService._(dio);
-    apiService._cookieJar = cookieJar;
-
-    dio.interceptors.add(CookieManager(cookieJar));
 
     dio.interceptors.add(
       QueuedInterceptorsWrapper(
@@ -131,18 +116,30 @@ class ApiService {
 
   Future<String?> _refreshToken() async {
     try {
+      final refreshToken = box.read('refreshToken') as String?;
+
+      if (refreshToken == null || refreshToken.isEmpty) {
+        debugPrint('No refresh token available');
+        return null;
+      }
+
       final refreshDio = Dio(BaseOptions(
         baseUrl: dotenv.env['API_BASE_URL'] ?? '',
       ));
-      refreshDio.interceptors.add(CookieManager(_cookieJar));
 
-      final response = await refreshDio.post('/auth/refresh');
+      final response = await refreshDio.post(
+        '/auth/refresh',
+        data: {'refreshToken': refreshToken},
+      );
 
       if (response.statusCode == 200 && response.data != null) {
         try {
           final newAccessToken = response.data['data']['tokens']['accessToken'];
+          final newRefreshToken =
+              response.data['data']['tokens']['refreshToken'];
 
           await box.write('authToken', newAccessToken);
+          await box.write('refreshToken', newRefreshToken);
           await box.write('authIssuedAt', DateTime.now().toIso8601String());
 
           return newAccessToken;
@@ -166,14 +163,12 @@ class ApiService {
       debugPrint("Server logout failed (ignoring): $e");
     }
 
-    await _cookieJar.deleteAll();
-
     box.remove('authToken');
     box.remove('authIssuedAt');
     box.remove('refreshToken');
 
     getx.Get.offAllNamed(AppRoutes.login);
-    debugPrint("Local tokens and cookies cleared. Logged out.");
+    debugPrint("Local tokens cleared. Logged out.");
   }
 
   void _logError(DioException e) {
