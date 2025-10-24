@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:employment_attendance/features/dashboard/presentation/controllers/dashboard_controller.dart';
 
 class CheckInController extends GetxController with WidgetsBindingObserver {
-  final ApiService _apiService = ApiService();
+ final ApiService _apiService = Get.find<ApiService>();
 
   RxBool isLoading = true.obs;
   RxBool isCheckingIn = false.obs;

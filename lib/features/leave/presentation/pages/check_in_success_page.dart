@@ -82,6 +82,7 @@ class CheckInSuccessPage extends StatelessWidget {
 
               //button
               CustomButton(
+                width: double.infinity,
                 text: 'Back to Home',
                 onPressed: () {
                   Get.toNamed(AppRoutes.dashboard);

@@ -2,9 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:employment_attendance/core/services/api_service.dart';
 import 'package:employment_attendance/features/leave/domain/models/leave_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LeaveRepository {
-  final ApiService _apiService = ApiService();
+ final ApiService _apiService = Get.find<ApiService>();
 
   Future<LeaveModel?> createLeave({
     required String type,

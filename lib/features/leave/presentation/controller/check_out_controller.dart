@@ -8,7 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
 class CheckOutController extends GetxController {
-  final ApiService _apiService = ApiService();
+ final ApiService _apiService = Get.find<ApiService>();
   final ProfileController _profileController = Get.find<ProfileController>();
 
   var isCheckingOut = false.obs;
