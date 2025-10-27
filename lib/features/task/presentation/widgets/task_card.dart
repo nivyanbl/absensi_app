@@ -1,45 +1,70 @@
-import 'dart:io';
-import 'package:employment_attendance/core/constants/app_colors.dart';
-import 'package:employment_attendance/features/task/domain/models/task_model.dart';
-import 'package:employment_attendance/features/task/presentation/controllers/task_controller.dart';
+// lib/features/task/presentation/widgets/task_card.dart
+// DIUBAH untuk model baru, dengan DESAIN LAMA dipertahankan
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:employment_attendance/core/constants/app_colors.dart';
+import 'package:employment_attendance/features/task/presentation/controllers/task_controller.dart';
+import 'package:employment_attendance/features/task/domain/models/task_entry_model.dart';
+import 'package:intl/intl.dart';
 
 class TaskCard extends StatelessWidget {
-  final Task task;
+  final TaskEntry task;
   const TaskCard({super.key, required this.task});
+
+  String _formatDate(DateTime date) {
+    final formatter = DateFormat('EEEE, d MMM yyyy', 'en_US');
+    return formatter.format(date).toLowerCase();
+  }
 
   @override
   Widget build(BuildContext context) {
     final TaskController controller = Get.find();
-    final statusColor = task.status == 'Pending' ? Colors.orange : Colors.green;
-    final statusBgColor =
-        task.status == 'Pending' ? Colors.orange[100] : Colors.green[100];
+    final bool isPending = task.status != TaskStatus.DONE;
+
+    final statusColor = isPending ? Colors.orange : Colors.green;
+    final statusBgColor = isPending ? Colors.orange[100] : Colors.green[100];
+    final statusText = isPending ? "Pending" : "Completed";
 
     Widget imageWidget;
-    if (task.image.startsWith('assets/')) {
-      imageWidget = Image.asset(
-        task.image,
+    final firstUrl = task.attachments.isNotEmpty ? task.attachments[0].url : '';
+    final lower = firstUrl.toLowerCase();
+    final isHttp = lower.startsWith('http');
+    final looksLikeImage = lower.endsWith('.png') ||
+        lower.endsWith('.jpg') ||
+        lower.endsWith('.jpeg') ||
+        lower.endsWith('.gif') ||
+        lower.endsWith('.webp');
+
+    if (isHttp && looksLikeImage) {
+      imageWidget = Image.network(
+        firstUrl,
         height: 60,
         width: 60,
         fit: BoxFit.cover,
+        errorBuilder: (context, error, StackTrace? stackTrace) {
+          debugPrint("Error loading image: $error");
+          return Container(
+            height: 60,
+            width: 60,
+            color: Colors.grey[200],
+            child: const Icon(
+              Icons.insert_drive_file,
+              color: Colors.grey,
+            ),
+          );
+        },
       );
     } else {
-      imageWidget = Image.file(File(task.image),
-          height: 60,
-          width: 60,
-          fit: BoxFit.cover, errorBuilder: (context, error, StackTrace? stackTrace) {
-        debugPrint("Error loading image: $error");
-        return Container(
-          height: 60,
-          width: 60,
+      imageWidget = Container(
+        height: 60,
+        width: 60,
+        color: Colors.grey[200],
+        child: const Icon(
+          Icons.insert_drive_file,
           color: Colors.grey,
-          child: const Icon(
-            Icons.broken_image,
-            color: Colors.grey,
-          ),
-        );
-      });
+        ),
+      );
     }
 
     return GestureDetector(
@@ -58,19 +83,22 @@ class TaskCard extends StatelessWidget {
               children: <Widget>[
                 ListTile(
                   leading: Icon(
-                    task.status == 'Pending'
+                    isPending
                         ? Icons.check_circle_outline
                         : Icons.pending_actions_outlined,
                     color: Colors.green,
                   ),
                   title: Text(
-                    task.status == 'Pending'
-                        ? 'Mark as Completed'
-                        : 'Mark as Pending',
+                    isPending ? 'Mark as Completed' : 'Mark as Pending',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
-                    controller.updateTaskStatus(task.id);
+                    if (isPending) {
+                      controller.updateTaskStatus(task, TaskStatus.DONE);
+                    } else {
+                      controller.updateTaskStatus(task, TaskStatus.PLANNED);
+                    }
+                    Get.back();
                   },
                 ),
               ],
@@ -105,14 +133,19 @@ class TaskCard extends StatelessWidget {
                 const SizedBox(
                   width: 8,
                 ),
-                Text(
-                  task.date,
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    task.createdAt != null
+                        ? _formatDate(task.createdAt!)
+                        : 'No Date',
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 8),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -121,7 +154,7 @@ class TaskCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    task.status,
+                    statusText,
                     style: TextStyle(
                       color: statusColor,
                       fontWeight: FontWeight.bold,
@@ -154,7 +187,7 @@ class TaskCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        task.description,
+                        task.description ?? '',
                         style: const TextStyle(
                             color: AppColors.textSecondary,
                             fontWeight: FontWeight.bold),

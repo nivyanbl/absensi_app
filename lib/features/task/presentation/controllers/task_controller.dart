@@ -1,77 +1,132 @@
+import 'package:employment_attendance/core/error/failures.dart';
 import 'package:employment_attendance/features/task/data/repositories/task_repository.dart';
-import 'package:employment_attendance/features/task/domain/models/task_model.dart';
+import 'package:employment_attendance/features/task/domain/models/task_plan_model.dart';
+import 'package:employment_attendance/features/task/domain/models/task_entry_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+
+enum PageState { loading, error, success, empty }
 
 class TaskController extends GetxController {
   final TaskRepository _taskRepository = TaskRepository();
 
-  var tasks = <Task>[].obs;
-  var pickedImage = Rx<File?>(null);
-  var isLoading = false.obs;
+  var pageState = PageState.loading.obs;
+  var errorMessage = Rxn<String>();
+  var todayPlan = Rxn<TaskPlan>();
 
   @override
   void onInit() {
     super.onInit();
-    fetchTasks();
+    loadTodayPlan();
   }
 
-  void fetchTasks() async {
+  Future<void> loadTodayPlan() async {
+    pageState.value = PageState.loading;
+    errorMessage.value = null;
+
     try {
-      isLoading.value = true;
-      var fetchedTasks = await _taskRepository.getTasks();
-      tasks.assignAll(fetchedTasks);
-    } finally {
-      isLoading.value = false;
+      final plan = await _taskRepository.getTodayPlan();
+      if (plan == null) {
+        pageState.value = PageState.empty;
+      } else {
+        todayPlan.value = plan;
+        pageState.value = PageState.success;
+      }
+    } on ServerFailure catch (e) {
+      pageState.value = PageState.error;
+      errorMessage.value = e.message;
+    } catch (e) {
+      pageState.value = PageState.error;
+      errorMessage.value = 'An error occurred: ${e.toString()}';
     }
   }
 
-  // buat ubah status
-  void updateTaskStatus(String id) {
-    int index = tasks.indexWhere((task) => task.id == id);
-    if (index != -1) {
-      tasks[index].status =
-          tasks[index].status == 'Pending' ? 'Completed' : 'Pending';
-      tasks.refresh();
-      Get.snackbar('Success', 'Task status has been updated',
-          backgroundColor: Colors.green, colorText: Colors.white);
+  Future<void> createPlan(String summary, List<TaskEntry> tasks) async {
+    try {
+      final plan = await _taskRepository.createTodayPlan(
+        summary: summary,
+        tasks: tasks,
+      );
+
+      todayPlan.value = plan;
+      pageState.value = PageState.success;
+      Get.back();
+      Get.snackbar(
+        'Success',
+        'Plan created successfully',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } on ServerFailure catch (e) {
+      Get.snackbar(
+        'Error',
+        e.message,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'An error occurred: ${e.toString()}',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
   }
 
-  void addTask({
-    required String title,
-    required String description,
-    required String date,
-    required String status,
-    File? imageFile,
-  }) async {
-    final newTask = Task(
-      id: DateTime.now().toString(),
-      title: title,
-      description: description,
-      date: date,
-      status: status,
-      image: imageFile?.path ?? 'assets/image/task.png',
+  Future<void> updateTaskStatus(TaskEntry task, TaskStatus newStatus) async {
+    if (task.id == null) {
+      Get.snackbar(
+        'Error',
+        'Task ID not found',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    final updatedTask = TaskEntry(
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      status: newStatus,
+      order: task.order,
+      attachments: task.attachments,
+      createdAt: task.createdAt,
     );
-    await _taskRepository.addTask(newTask);
-    fetchTasks();
-    pickedImage.value = null;
-  }
 
-  Future<void> pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    try {
+      final updatedEntry =
+          await _taskRepository.updateTaskEntry(task.id!, updatedTask);
 
-    if (image != null) {
-      pickedImage.value = File(image.path);
-    } else {
-      Get.snackbar('Image Selection', 'No image selected.');
+      if (todayPlan.value != null) {
+        final taskIndex =
+            todayPlan.value!.tasks.indexWhere((t) => t.id == task.id);
+        if (taskIndex != -1) {
+          todayPlan.value!.tasks[taskIndex] = updatedEntry;
+          todayPlan.refresh();
+        }
+      }
+      Get.snackbar(
+        'Success',
+        'Task status updated',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } on ServerFailure catch (e) {
+      Get.snackbar(
+        'Error',
+        e.message,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'An error occurred: ${e.toString()}',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
-  }
-
-  void clearPickedImage() {
-    pickedImage.value = null;
   }
 }

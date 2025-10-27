@@ -27,10 +27,14 @@ class ProfilePage extends StatelessWidget {
           ),
           actions: [
             IconButton(
+                onPressed: () => Get.toNamed(AppRoutes.task),
+                icon: const Icon(
+                  Icons.task,
+                )),
+            IconButton(
                 onPressed: () => Get.toNamed(AppRoutes.settings),
                 icon: const Icon(
                   Icons.settings,
-                  // color: Theme.of(context).iconTheme.color
                 )),
             const SizedBox(width: 10),
           ],
